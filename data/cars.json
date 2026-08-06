@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-06T12:13:02.638Z",
+  "updatedAt": "2026-07-10T01:00:00.000Z",
   "cars": [
     {
       "store": "福岡西店",
@@ -8,25 +8,11 @@
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018345111&Sdlr=18101",
       "id": "8345111",
       "stock": "055",
-      "priceTotal": 8,
-      "priceVehicle": 9,
+      "priceTotal": 601.2,
+      "priceVehicle": 589.9,
       "image": "/file/special/18101/31090/event202607_u-car/car01.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "リ済込",
-        "ロングラン保証",
-        "ハイブリッド保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "2024年式",
-        "km": "3.2万km",
-        "shaken": "車検 2027年7月",
-        "fuel": "ハイブリッド",
-        "mission": "CVT",
-        "color": "プラチナホワイトパールマイカ"
-      },
+      "badges": ["修無", "整付", "リ済込", "ロングラン保証", "ハイブリッド保証", "あんしん診断"],
+      "specs": {"year": "2024年式", "km": "3.2万km", "shaken": "車検 2027年7月", "fuel": "ハイブリッド", "mission": "CVT", "color": "プラチナホワイトパールマイカ"},
       "soldout": false
     },
     {
@@ -38,21 +24,8 @@
       "priceTotal": 399.3,
       "priceVehicle": 383,
       "image": "/file/special/18101/31090/event202607_u-car/car02.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "車検整備付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "2022年式",
-        "km": "5.2万km",
-        "shaken": "車検整備付",
-        "fuel": "ガソリン",
-        "mission": "CVT",
-        "color": "ホワイトパールクリスタルシャイン"
-      },
+      "badges": ["修無", "整付", "車検整備付", "ロングラン保証", "あんしん診断"],
+      "specs": {"year": "2022年式", "km": "5.2万km", "shaken": "車検整備付", "fuel": "ガソリン", "mission": "CVT", "color": "ホワイトパールクリスタルシャイン"},
       "soldout": false
     },
     {
@@ -61,24 +34,11 @@
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018332906&Sdlr=18101",
       "id": "8332906",
       "stock": "110",
-      "priceTotal": 2,
-      "priceVehicle": 5,
+      "priceTotal": 384,
+      "priceVehicle": null,
       "image": "/file/special/18101/31090/event202607_u-car/car03.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "リ済込",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
+      "badges": ["修無", "整付", "リ済込", "ロングラン保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
       "soldout": false
     },
     {
@@ -90,20 +50,8 @@
       "priceTotal": 230.5,
       "priceVehicle": null,
       "image": "/file/special/18101/31090/event202607_u-car/car04.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
+      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
       "soldout": false
     },
     {
@@ -115,20 +63,8 @@
       "priceTotal": 272.7,
       "priceVehicle": null,
       "image": "/file/special/18101/31090/event202607_u-car/car05.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
+      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
       "soldout": false
     },
     {
@@ -137,23 +73,11 @@
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018360161&Sdlr=18101",
       "id": "8360161",
       "stock": "",
-      "priceTotal": 2,
-      "priceVehicle": 8,
+      "priceTotal": 322.5,
+      "priceVehicle": null,
       "image": "/file/special/18101/31090/event202607_u-car/car06.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
+      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
       "soldout": false
     },
     {
@@ -165,21 +89,8 @@
       "priceTotal": 401.2,
       "priceVehicle": null,
       "image": "/file/special/18101/31090/event202607_u-car/car07.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "ロングラン保証",
-        "ハイブリッド保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
+      "badges": ["修無", "整付", "ロングラン保証", "ハイブリッド保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
       "soldout": false
     },
     {
@@ -188,23 +99,11 @@
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018353041&Sdlr=18101",
       "id": "8353041",
       "stock": "",
-      "priceTotal": 6,
-      "priceVehicle": 298,
+      "priceTotal": 312.9,
+      "priceVehicle": null,
       "image": "/file/special/18101/31090/event202607_u-car/car08.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
+      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
       "soldout": false
     },
     {
@@ -213,24 +112,11 @@
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018360349&Sdlr=18101",
       "id": "8360349",
       "stock": "",
-      "priceTotal": 2,
-      "priceVehicle": 227,
+      "priceTotal": 240.5,
+      "priceVehicle": null,
       "image": "/file/special/18101/31090/event202607_u-car/car09.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "ロングラン保証",
-        "ハイブリッド保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
+      "badges": ["修無", "整付", "ロングラン保証", "ハイブリッド保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
       "soldout": false
     },
     {
@@ -239,23 +125,11 @@
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018355001&Sdlr=18101",
       "id": "8355001",
       "stock": "",
-      "priceTotal": 4,
-      "priceVehicle": 9,
+      "priceTotal": 178.8,
+      "priceVehicle": null,
       "image": "/file/special/18101/31090/event202607_u-car/car10.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
+      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
       "soldout": false
     }
   ]
