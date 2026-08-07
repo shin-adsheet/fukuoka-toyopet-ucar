@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-06T12:27:51.261Z",
+  "updatedAt": "2026-08-07T01:01:03.481Z",
   "cars": [
     {
       "store": "福岡西店",
@@ -8,8 +8,8 @@
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018345111&Sdlr=18101",
       "id": "8345111",
       "stock": "055",
-      "priceTotal": 600.8,
-      "priceVehicle": 589.9,
+      "priceTotal": 585.8,
+      "priceVehicle": 574.9,
       "image": "/file/special/18101/31090/event202607_u-car/car01.jpg?1",
       "badges": [
         "修無",
@@ -137,8 +137,8 @@
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018360161&Sdlr=18101",
       "id": "8360161",
       "stock": "",
-      "priceTotal": 322.2,
-      "priceVehicle": 307.8,
+      "priceTotal": 313.2,
+      "priceVehicle": 298.8,
       "image": "/file/special/18101/31090/event202607_u-car/car06.jpg?1",
       "badges": [
         "修無",
@@ -213,8 +213,8 @@
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018360349&Sdlr=18101",
       "id": "8360349",
       "stock": "",
-      "priceTotal": 240.2,
-      "priceVehicle": 227,
+      "priceTotal": 234.2,
+      "priceVehicle": 221,
       "image": "/file/special/18101/31090/event202607_u-car/car09.jpg?1",
       "badges": [
         "修無",
@@ -239,8 +239,8 @@
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018355001&Sdlr=18101",
       "id": "8355001",
       "stock": "",
-      "priceTotal": 165.4,
-      "priceVehicle": 155.9,
+      "priceTotal": 159.4,
+      "priceVehicle": 149.9,
       "image": "/file/special/18101/31090/event202607_u-car/car10.jpg?1",
       "badges": [
         "修無",
