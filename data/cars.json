@@ -3,7 +3,7 @@
     {
       "autoImageUpdate": true,
       "gazooStatus": "ok",
-      "lastGazooCheck": "2026-08-10T04:49:31.305Z",
+      "lastGazooCheck": "2026-08-10T06:52:34.813Z",
       "store": "福岡西店",
       "priceVehicle": 9,
       "uid": "car-8345111",
@@ -58,7 +58,7 @@
       "name": "アルファード S Cパッケージ",
       "autoImageUpdate": true,
       "gazooStatus": "ok",
-      "lastGazooCheck": "2026-08-10T04:49:35.052Z",
+      "lastGazooCheck": "2026-08-10T06:52:38.311Z",
       "store": "博多南店",
       "priceVehicle": 383,
       "uid": "car-8342847",
@@ -67,7 +67,7 @@
     {
       "store": "小倉東店",
       "gazooStatus": "ok",
-      "lastGazooCheck": "2026-08-10T04:49:38.406Z",
+      "lastGazooCheck": "2026-08-10T06:52:41.600Z",
       "autoImageUpdate": true,
       "uid": "car-8332906",
       "priceVehicle": 5,
@@ -119,7 +119,7 @@
       "id": "8352575",
       "name": "エスクァイア GIプレミアムパッケージBLT",
       "store": "飯塚店",
-      "lastGazooCheck": "2026-08-10T04:49:42.204Z",
+      "lastGazooCheck": "2026-08-10T06:52:44.991Z",
       "gazooStatus": "ok",
       "autoImageUpdate": true,
       "autoUpdate": true,
@@ -129,7 +129,7 @@
     {
       "autoImageUpdate": true,
       "gazooStatus": "ok",
-      "lastGazooCheck": "2026-08-10T04:49:45.683Z",
+      "lastGazooCheck": "2026-08-10T06:52:48.296Z",
       "store": "飯塚店",
       "autoUpdate": true,
       "uid": "car-8355591",
@@ -180,7 +180,7 @@
       "soldout": false,
       "id": "8360161",
       "name": "ノア Z",
-      "lastGazooCheck": "2026-08-10T04:49:48.980Z",
+      "lastGazooCheck": "2026-08-10T06:52:51.620Z",
       "gazooStatus": "ok",
       "autoImageUpdate": true,
       "store": "福岡インター店",
@@ -212,7 +212,7 @@
       "autoUpdate": true,
       "uid": "car-8349442",
       "autoImageUpdate": true,
-      "lastGazooCheck": "2026-08-10T04:49:52.712Z",
+      "lastGazooCheck": "2026-08-10T06:52:55.055Z",
       "gazooStatus": "ok",
       "store": "小倉東店",
       "name": "ヴォクシー HEV S-Z",
@@ -247,7 +247,7 @@
       "uid": "car-8353041",
       "priceVehicle": 298,
       "store": "飯塚店",
-      "lastGazooCheck": "2026-08-10T04:49:56.008Z",
+      "lastGazooCheck": "2026-08-10T06:52:58.345Z",
       "gazooStatus": "ok",
       "autoImageUpdate": true
     },
@@ -280,7 +280,7 @@
       "store": "八幡店",
       "autoImageUpdate": true,
       "gazooStatus": "ok",
-      "lastGazooCheck": "2026-08-10T04:49:59.478Z",
+      "lastGazooCheck": "2026-08-10T06:53:01.581Z",
       "name": "シエンタ HEV G",
       "id": "8360349"
     },
@@ -292,7 +292,7 @@
       "autoUpdate": true,
       "store": "福岡西店",
       "autoImageUpdate": true,
-      "lastGazooCheck": "2026-08-10T04:50:02.898Z",
+      "lastGazooCheck": "2026-08-10T06:53:04.817Z",
       "gazooStatus": "ok",
       "stock": "",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018355001&Sdlr=18101",
@@ -319,30 +319,35 @@
     {
       "soldout": false,
       "specs": {
-        "mission": "",
-        "shaken": "",
-        "fuel": "",
-        "color": "",
-        "km": "",
-        "year": ""
+        "mission": "CVT",
+        "shaken": "車検整備付",
+        "fuel": "ハイブリッド",
+        "color": "ホワイトパールクリスタルシャイン",
+        "km": "2.9万km",
+        "year": "2023年式"
       },
       "stock": "",
-      "image": "",
-      "priceTotal": null,
+      "image": "images/gazoo-8348179.jpg",
+      "priceTotal": 1,
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018348179&Sdlr=18101",
       "badges": [
         "修無",
         "整付",
+        "リ済込",
+        "車検整備付",
         "ロングラン保証",
-        "あんしん診断"
+        "ハイブリッド保証"
       ],
-      "priceVehicle": null,
+      "priceVehicle": 5,
       "uid": "car-msmswpwn-6jr8",
       "autoUpdate": true,
       "autoImageUpdate": true,
       "store": "福岡西店",
       "name": "",
-      "id": "8348179"
+      "id": "8348179",
+      "lastGazooCheck": "2026-08-10T06:53:08.050Z",
+      "gazooStatus": "ok",
+      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8348179/83481792026042415234501_S.jpg"
     }
   ],
   "pages": [
@@ -370,6 +375,6 @@
       ]
     }
   ],
-  "updatedAt": "2026-08-10T06:51:18.464Z",
+  "updatedAt": "2026-08-10T06:53:11.215Z",
   "version": 2
 }
