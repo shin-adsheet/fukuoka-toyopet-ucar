@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": "2026-08-07T01:01:03.481Z",
+  "updatedAt": "2026-08-10T04:50:06.063Z",
   "cars": [
     {
       "store": "福岡西店",
@@ -9,14 +9,31 @@
       "uid": "car-8345111",
       "id": "8345111",
       "stock": "055",
-      "priceTotal": 585.8,
-      "priceVehicle": 574.9,
-      "image": "/file/special/18101/31090/event202607_u-car/car01.jpg?1",
-      "badges": ["修無", "整付", "リ済込", "ロングラン保証", "ハイブリッド保証", "あんしん診断"],
-      "specs": {"year": "2024年式", "km": "3.2万km", "shaken": "車検 2027年7月", "fuel": "ハイブリッド", "mission": "CVT", "color": "プラチナホワイトパールマイカ"},
+      "priceTotal": 8,
+      "priceVehicle": 9,
+      "image": "images/gazoo-8345111.jpg",
+      "badges": [
+        "修無",
+        "整付",
+        "リ済込",
+        "車検整備付",
+        "ロングラン保証",
+        "ハイブリッド保証"
+      ],
+      "specs": {
+        "year": "2024年式",
+        "km": "3.2万km",
+        "shaken": "車検 2027年7月",
+        "fuel": "ハイブリッド",
+        "mission": "CVT",
+        "color": "プラチナホワイトパールマイカ"
+      },
       "soldout": false,
       "autoUpdate": true,
-      "autoImageUpdate": true
+      "autoImageUpdate": true,
+      "lastGazooCheck": "2026-08-10T04:49:31.305Z",
+      "gazooStatus": "ok",
+      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8345111/83451112026050914225101_S.jpg"
     },
     {
       "store": "博多南店",
@@ -28,11 +45,26 @@
       "priceTotal": 399.3,
       "priceVehicle": 383,
       "image": "/file/special/18101/31090/event202607_u-car/car02.jpg?1",
-      "badges": ["修無", "整付", "車検整備付", "ロングラン保証", "あんしん診断"],
-      "specs": {"year": "2022年式", "km": "5.2万km", "shaken": "車検整備付", "fuel": "ガソリン", "mission": "CVT", "color": "ホワイトパールクリスタルシャイン"},
+      "badges": [
+        "修無",
+        "整付",
+        "車検整備付",
+        "ロングラン保証",
+        "あんしん診断"
+      ],
+      "specs": {
+        "year": "2022年式",
+        "km": "5.2万km",
+        "shaken": "車検整備付",
+        "fuel": "ガソリン",
+        "mission": "CVT",
+        "color": "ホワイトパールクリスタルシャイン"
+      },
       "soldout": false,
       "autoUpdate": true,
-      "autoImageUpdate": true
+      "autoImageUpdate": true,
+      "lastGazooCheck": "2026-08-10T04:49:35.052Z",
+      "gazooStatus": "ok"
     },
     {
       "store": "小倉東店",
@@ -41,14 +73,30 @@
       "uid": "car-8332906",
       "id": "8332906",
       "stock": "110",
-      "priceTotal": 376.2,
-      "priceVehicle": 365.5,
-      "image": "/file/special/18101/31090/event202607_u-car/car03.jpg?1",
-      "badges": ["修無", "整付", "リ済込", "ロングラン保証", "あんしん診断"],
-      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "priceTotal": 2,
+      "priceVehicle": 5,
+      "image": "images/gazoo-8332906.jpg",
+      "badges": [
+        "修無",
+        "整付",
+        "リ済込",
+        "車検整備付",
+        "ロングラン保証"
+      ],
+      "specs": {
+        "year": "2022年式",
+        "km": "2.4万km",
+        "shaken": "車検 2027年4月",
+        "fuel": "ガソリン",
+        "mission": "CVT",
+        "color": "ホワイトパールクリスタルシャイン"
+      },
       "soldout": false,
       "autoUpdate": true,
-      "autoImageUpdate": true
+      "autoImageUpdate": true,
+      "lastGazooCheck": "2026-08-10T04:49:38.406Z",
+      "gazooStatus": "ok",
+      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8332906/83329062026060213033001_S.jpg"
     },
     {
       "store": "飯塚店",
@@ -60,11 +108,25 @@
       "priceTotal": 230.5,
       "priceVehicle": null,
       "image": "/file/special/18101/31090/event202607_u-car/car04.jpg?1",
-      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
-      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "badges": [
+        "修無",
+        "整付",
+        "ロングラン保証",
+        "あんしん診断"
+      ],
+      "specs": {
+        "year": "",
+        "km": "",
+        "shaken": "",
+        "fuel": "",
+        "mission": "",
+        "color": ""
+      },
       "soldout": false,
       "autoUpdate": true,
-      "autoImageUpdate": true
+      "autoImageUpdate": true,
+      "lastGazooCheck": "2026-08-10T04:49:42.204Z",
+      "gazooStatus": "ok"
     },
     {
       "store": "飯塚店",
@@ -76,11 +138,25 @@
       "priceTotal": 272.7,
       "priceVehicle": null,
       "image": "/file/special/18101/31090/event202607_u-car/car05.jpg?1",
-      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
-      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "badges": [
+        "修無",
+        "整付",
+        "ロングラン保証",
+        "あんしん診断"
+      ],
+      "specs": {
+        "year": "",
+        "km": "",
+        "shaken": "",
+        "fuel": "",
+        "mission": "",
+        "color": ""
+      },
       "soldout": false,
       "autoUpdate": true,
-      "autoImageUpdate": true
+      "autoImageUpdate": true,
+      "lastGazooCheck": "2026-08-10T04:49:45.683Z",
+      "gazooStatus": "ok"
     },
     {
       "store": "福岡インター店",
@@ -89,14 +165,30 @@
       "uid": "car-8360161",
       "id": "8360161",
       "stock": "",
-      "priceTotal": 313.2,
-      "priceVehicle": 298.8,
-      "image": "/file/special/18101/31090/event202607_u-car/car06.jpg?1",
-      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
-      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "priceTotal": 2,
+      "priceVehicle": 8,
+      "image": "images/gazoo-8360161.jpg",
+      "badges": [
+        "修無",
+        "整付",
+        "リ済込",
+        "車検整備付",
+        "ロングラン保証"
+      ],
+      "specs": {
+        "year": "2022年式",
+        "km": "1.1万km",
+        "shaken": "車検整備付",
+        "fuel": "ガソリン",
+        "mission": "CVT",
+        "color": "メタルストリームメタリック"
+      },
       "soldout": false,
       "autoUpdate": true,
-      "autoImageUpdate": true
+      "autoImageUpdate": true,
+      "lastGazooCheck": "2026-08-10T04:49:48.980Z",
+      "gazooStatus": "ok",
+      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8360161/83601612026061014471101_S.jpg"
     },
     {
       "store": "小倉東店",
@@ -108,11 +200,26 @@
       "priceTotal": 401.2,
       "priceVehicle": null,
       "image": "/file/special/18101/31090/event202607_u-car/car07.jpg?1",
-      "badges": ["修無", "整付", "ロングラン保証", "ハイブリッド保証", "あんしん診断"],
-      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "badges": [
+        "修無",
+        "整付",
+        "ロングラン保証",
+        "ハイブリッド保証",
+        "あんしん診断"
+      ],
+      "specs": {
+        "year": "",
+        "km": "",
+        "shaken": "",
+        "fuel": "",
+        "mission": "",
+        "color": ""
+      },
       "soldout": false,
       "autoUpdate": true,
-      "autoImageUpdate": true
+      "autoImageUpdate": true,
+      "lastGazooCheck": "2026-08-10T04:49:52.712Z",
+      "gazooStatus": "ok"
     },
     {
       "store": "飯塚店",
@@ -121,14 +228,30 @@
       "uid": "car-8353041",
       "id": "8353041",
       "stock": "",
-      "priceTotal": 312.6,
+      "priceTotal": 6,
       "priceVehicle": 298,
-      "image": "/file/special/18101/31090/event202607_u-car/car08.jpg?1",
-      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
-      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "image": "images/gazoo-8353041.jpg",
+      "badges": [
+        "修無",
+        "整付",
+        "リ済込",
+        "車検整備付",
+        "ロングラン保証"
+      ],
+      "specs": {
+        "year": "2023年式",
+        "km": "2.8万km",
+        "shaken": "車検整備付",
+        "fuel": "ガソリン",
+        "mission": "CVT",
+        "color": "アティチュードブラックマイカ"
+      },
       "soldout": false,
       "autoUpdate": true,
-      "autoImageUpdate": true
+      "autoImageUpdate": true,
+      "lastGazooCheck": "2026-08-10T04:49:56.008Z",
+      "gazooStatus": "ok",
+      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8353041/83530412026051916532301_S.jpg"
     },
     {
       "store": "八幡店",
@@ -137,14 +260,31 @@
       "uid": "car-8360349",
       "id": "8360349",
       "stock": "",
-      "priceTotal": 234.2,
+      "priceTotal": 2,
       "priceVehicle": 221,
-      "image": "/file/special/18101/31090/event202607_u-car/car09.jpg?1",
-      "badges": ["修無", "整付", "ロングラン保証", "ハイブリッド保証", "あんしん診断"],
-      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "image": "images/gazoo-8360349.jpg",
+      "badges": [
+        "修無",
+        "整付",
+        "リ済込",
+        "車検整備付",
+        "ロングラン保証",
+        "ハイブリッド保証"
+      ],
+      "specs": {
+        "year": "2023年式",
+        "km": "3.3万km",
+        "shaken": "車検整備付",
+        "fuel": "ハイブリッド",
+        "mission": "CVT",
+        "color": "グレイッシュブルー"
+      },
       "soldout": false,
       "autoUpdate": true,
-      "autoImageUpdate": true
+      "autoImageUpdate": true,
+      "lastGazooCheck": "2026-08-10T04:49:59.478Z",
+      "gazooStatus": "ok",
+      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8360349/83603492026061017172401_S.jpg"
     },
     {
       "store": "福岡西店",
@@ -153,14 +293,30 @@
       "uid": "car-8355001",
       "id": "8355001",
       "stock": "",
-      "priceTotal": 159.4,
-      "priceVehicle": 149.9,
-      "image": "/file/special/18101/31090/event202607_u-car/car10.jpg?1",
-      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
-      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "priceTotal": 4,
+      "priceVehicle": 9,
+      "image": "images/gazoo-8355001.jpg",
+      "badges": [
+        "修無",
+        "整付",
+        "リ済込",
+        "車検整備付",
+        "ロングラン保証"
+      ],
+      "specs": {
+        "year": "2022年式",
+        "km": "3.3万km",
+        "shaken": "車検 2027年7月",
+        "fuel": "ガソリン",
+        "mission": "CVT",
+        "color": "センシュアルレッドマイカ"
+      },
       "soldout": false,
       "autoUpdate": true,
-      "autoImageUpdate": true
+      "autoImageUpdate": true,
+      "lastGazooCheck": "2026-08-10T04:50:02.898Z",
+      "gazooStatus": "ok",
+      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8355001/83550012026052314403301_S.jpg"
     }
   ],
   "pages": [
