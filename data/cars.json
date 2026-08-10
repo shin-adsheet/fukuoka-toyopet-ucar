@@ -1,262 +1,184 @@
 {
-  "version": 1,
+  "version": 2,
   "updatedAt": "2026-08-07T01:01:03.481Z",
   "cars": [
     {
       "store": "福岡西店",
       "name": "アルファード HEV Z",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018345111&Sdlr=18101",
+      "uid": "car-8345111",
       "id": "8345111",
       "stock": "055",
       "priceTotal": 585.8,
       "priceVehicle": 574.9,
       "image": "/file/special/18101/31090/event202607_u-car/car01.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "リ済込",
-        "ロングラン保証",
-        "ハイブリッド保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "2024年式",
-        "km": "3.2万km",
-        "shaken": "車検 2027年7月",
-        "fuel": "ハイブリッド",
-        "mission": "CVT",
-        "color": "プラチナホワイトパールマイカ"
-      },
-      "soldout": false
+      "badges": ["修無", "整付", "リ済込", "ロングラン保証", "ハイブリッド保証", "あんしん診断"],
+      "specs": {"year": "2024年式", "km": "3.2万km", "shaken": "車検 2027年7月", "fuel": "ハイブリッド", "mission": "CVT", "color": "プラチナホワイトパールマイカ"},
+      "soldout": false,
+      "autoUpdate": true,
+      "autoImageUpdate": true
     },
     {
       "store": "博多南店",
       "name": "アルファード S Cパッケージ",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018342847&Sdlr=18101",
+      "uid": "car-8342847",
       "id": "8342847",
       "stock": "435",
       "priceTotal": 399.3,
       "priceVehicle": 383,
       "image": "/file/special/18101/31090/event202607_u-car/car02.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "車検整備付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "2022年式",
-        "km": "5.2万km",
-        "shaken": "車検整備付",
-        "fuel": "ガソリン",
-        "mission": "CVT",
-        "color": "ホワイトパールクリスタルシャイン"
-      },
-      "soldout": false
+      "badges": ["修無", "整付", "車検整備付", "ロングラン保証", "あんしん診断"],
+      "specs": {"year": "2022年式", "km": "5.2万km", "shaken": "車検整備付", "fuel": "ガソリン", "mission": "CVT", "color": "ホワイトパールクリスタルシャイン"},
+      "soldout": false,
+      "autoUpdate": true,
+      "autoImageUpdate": true
     },
     {
       "store": "小倉東店",
       "name": "アルファード Sタイプゴールド2",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018332906&Sdlr=18101",
+      "uid": "car-8332906",
       "id": "8332906",
       "stock": "110",
       "priceTotal": 376.2,
       "priceVehicle": 365.5,
       "image": "/file/special/18101/31090/event202607_u-car/car03.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "リ済込",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
-      "soldout": false
+      "badges": ["修無", "整付", "リ済込", "ロングラン保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "soldout": false,
+      "autoUpdate": true,
+      "autoImageUpdate": true
     },
     {
       "store": "飯塚店",
       "name": "エスクァイア GIプレミアムパッケージBLT",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018352575&Sdlr=18101",
+      "uid": "car-8352575",
       "id": "8352575",
       "stock": "069",
       "priceTotal": 230.5,
       "priceVehicle": null,
       "image": "/file/special/18101/31090/event202607_u-car/car04.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
-      "soldout": false
+      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "soldout": false,
+      "autoUpdate": true,
+      "autoImageUpdate": true
     },
     {
       "store": "飯塚店",
       "name": "ノア SI WxB3",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018355591&Sdlr=18101",
+      "uid": "car-8355591",
       "id": "8355591",
       "stock": "",
       "priceTotal": 272.7,
       "priceVehicle": null,
       "image": "/file/special/18101/31090/event202607_u-car/car05.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
-      "soldout": false
+      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "soldout": false,
+      "autoUpdate": true,
+      "autoImageUpdate": true
     },
     {
       "store": "福岡インター店",
       "name": "ノア Z",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018360161&Sdlr=18101",
+      "uid": "car-8360161",
       "id": "8360161",
       "stock": "",
       "priceTotal": 313.2,
       "priceVehicle": 298.8,
       "image": "/file/special/18101/31090/event202607_u-car/car06.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
-      "soldout": false
+      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "soldout": false,
+      "autoUpdate": true,
+      "autoImageUpdate": true
     },
     {
       "store": "小倉東店",
       "name": "ヴォクシー HEV S-Z",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018349442&Sdlr=18101",
+      "uid": "car-8349442",
       "id": "8349442",
       "stock": "",
       "priceTotal": 401.2,
       "priceVehicle": null,
       "image": "/file/special/18101/31090/event202607_u-car/car07.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "ロングラン保証",
-        "ハイブリッド保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
-      "soldout": false
+      "badges": ["修無", "整付", "ロングラン保証", "ハイブリッド保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "soldout": false,
+      "autoUpdate": true,
+      "autoImageUpdate": true
     },
     {
       "store": "飯塚店",
       "name": "ヴォクシー S-Z",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018353041&Sdlr=18101",
+      "uid": "car-8353041",
       "id": "8353041",
       "stock": "",
       "priceTotal": 312.6,
       "priceVehicle": 298,
       "image": "/file/special/18101/31090/event202607_u-car/car08.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
-      "soldout": false
+      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "soldout": false,
+      "autoUpdate": true,
+      "autoImageUpdate": true
     },
     {
       "store": "八幡店",
       "name": "シエンタ HEV G",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018360349&Sdlr=18101",
+      "uid": "car-8360349",
       "id": "8360349",
       "stock": "",
       "priceTotal": 234.2,
       "priceVehicle": 221,
       "image": "/file/special/18101/31090/event202607_u-car/car09.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "ロングラン保証",
-        "ハイブリッド保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
-      "soldout": false
+      "badges": ["修無", "整付", "ロングラン保証", "ハイブリッド保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "soldout": false,
+      "autoUpdate": true,
+      "autoImageUpdate": true
     },
     {
       "store": "福岡西店",
       "name": "シエンタ ファンベースGクエロ",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018355001&Sdlr=18101",
+      "uid": "car-8355001",
       "id": "8355001",
       "stock": "",
       "priceTotal": 159.4,
       "priceVehicle": 149.9,
       "image": "/file/special/18101/31090/event202607_u-car/car10.jpg?1",
-      "badges": [
-        "修無",
-        "整付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "specs": {
-        "year": "",
-        "km": "",
-        "shaken": "",
-        "fuel": "",
-        "mission": "",
-        "color": ""
-      },
-      "soldout": false
+      "badges": ["修無", "整付", "ロングラン保証", "あんしん診断"],
+      "specs": {"year": "", "km": "", "shaken": "", "fuel": "", "mission": "", "color": ""},
+      "soldout": false,
+      "autoUpdate": true,
+      "autoImageUpdate": true
+    }
+  ],
+  "pages": [
+    {
+      "id": "main",
+      "name": "中古車フェア",
+      "carUids": [
+        "car-8345111",
+        "car-8342847",
+        "car-8332906",
+        "car-8352575",
+        "car-8355591",
+        "car-8360161",
+        "car-8349442",
+        "car-8353041",
+        "car-8360349",
+        "car-8355001"
+      ]
     }
   ]
 }
