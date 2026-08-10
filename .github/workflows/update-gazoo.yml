@@ -1,10 +1,13 @@
+# Gazooの価格・車両情報・売約状況・メイン画像を自動でチェックする仕組み
+# 毎日 朝6時と夕方18時（日本時間）に自動で動きます。
+# GitHubの Actions タブ → 「Gazoo自動更新」 → 「Run workflow」で手動実行もできます。
 name: Gazoo自動更新
 
 on:
   schedule:
     - cron: "0 21 * * *"   # 日本時間 朝6:00
     - cron: "0 9 * * *"    # 日本時間 夕方18:00
-  workflow_dispatch:
+  workflow_dispatch:        # 手動実行ボタン
 
 permissions:
   contents: write
@@ -19,12 +22,12 @@ jobs:
         with:
           node-version: 20
 
-      - name: Gazooをチェックしてデータを更新
+      - name: Gazooをチェックしてデータと画像を更新
         run: node scripts/update-from-gazoo.mjs
 
       - name: 変更があれば保存
         run: |
           git config user.name "gazoo-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data/cars.json
-          git diff --cached --quiet || (git commit -m "自動更新: Gazooの価格・売約状況" && git push)
+          git add -A
+          git diff --cached --quiet || (git commit -m "自動更新: Gazooの車両情報・売約・画像" && git push)
