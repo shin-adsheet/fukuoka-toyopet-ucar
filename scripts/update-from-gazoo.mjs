@@ -11,6 +11,7 @@ const DATA_FILE = "data/cars.json";
 const IMAGE_DIR = "images";
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) ucar-card-updater/1.1";
 const WAIT_MS = 3000; // ページとページの間に3秒待つ（相手に負荷をかけないため）
+const SOLDOUT_RECHECK_DAYS = 14; // 売約にした車を、この日数だけは念のため見に行く
 
 // HTMLの中から「ラベルの近くにある ○○万円」を探す
 export function pickNumber(text, label) {
@@ -21,14 +22,44 @@ export function pickNumber(text, label) {
   return Number.isFinite(n) ? n : null;
 }
 
-// 「写真でクルマをチェック」の先頭の写真（_S.jpg）を取る。
+// 「写真でクルマをチェック」の先頭の写真を、高画質から順に探す。
+// _L（大）→ _M（中）→ _S（小）の順。GAS側 gazooMainImage_ と同じ優先順位。
 // 取れなければ null を返し、既存の写真は変更しない。
 export function pickMainImage(html) {
-  const re = /(?:https?:\/\/gazoo\.com)?\/U-Car\/carImg\/[^"'<>\s?]+?_S\.jpe?g(?:\?[^"'<>\s]*)?/i;
-  const m = html.match(re);
-  if (!m) return null;
-  const url = m[0].replace(/\\\//g, "/").replace(/&amp;/g, "&");
-  return url.startsWith("http") ? url : "https://gazoo.com" + url;
+  const patterns = [
+    /(?:https?:\/\/gazoo\.com)?\/U-Car\/carImg\/[^"'<>\s?]+?_L\.jpe?g(?:\?[^"'<>\s]*)?/i,
+    /(?:https?:\/\/gazoo\.com)?\/U-Car\/carImg\/[^"'<>\s?]+?_M\.jpe?g(?:\?[^"'<>\s]*)?/i,
+    /(?:https?:\/\/gazoo\.com)?\/U-Car\/carImg\/[^"'<>\s?]+?_S\.jpe?g(?:\?[^"'<>\s]*)?/i,
+  ];
+  for (const pattern of patterns) {
+    const m = html.match(pattern);
+    if (!m) continue;
+    const url = m[0].replace(/\\\//g, "/").replace(/&amp;/g, "&");
+    return url.startsWith("http") ? url : "https://gazoo.com" + url;
+  }
+  return null;
+}
+
+// 支払総額と車両価格を取る。GAS側 gazooPrices_ と同じ考え方で、
+// まず価格ブロック（sum-price / base-price）から読み、駄目ならラベル近接で探す。
+// 支払総額が車両価格を下回る組み合わせは読み違いとみなし、どちらも更新しない。
+export function pickPrices(html, text) {
+  function fromBlock(className) {
+    const re = new RegExp('<div[^>]*class=["\'][^"\']*\\b' + className + '\\b[^"\']*["\'][^>]*>([\\s\\S]{0,600}?)<\\/div>', "i");
+    const block = (html.match(re) || [])[1];
+    if (!block) return null;
+    const plain = compactText(block).replace(/(\d)\s+(?=[.\d])/g, "$1");
+    const raw = (plain.match(/([\d,]+(?:\.\d+)?)\s*万円/) || [])[1];
+    if (!raw) return null;
+    const n = Number(raw.replace(/,/g, ""));
+    return Number.isFinite(n) ? n : null;
+  }
+  const total = fromBlock("sum-price") ?? pickNumber(text, "支払総額");
+  const vehicle = fromBlock("base-price") ?? pickNumber(text, "車両価格");
+  if (total != null && vehicle != null && total < vehicle) {
+    return { priceTotal: null, priceVehicle: null };
+  }
+  return { priceTotal: total, priceVehicle: vehicle };
 }
 
 function compactText(html) {
@@ -112,9 +143,10 @@ function parseBadges(text) {
 export function parseGazoo(html) {
   // タグを取り除いて文字だけにしてから探す。NFKCで半角カナ等も揃える。
   const text = compactText(html);
+  const prices = pickPrices(html, text);
   return {
-    priceTotal: pickNumber(text, "支払総額"),
-    priceVehicle: pickNumber(text, "車両価格"),
+    priceTotal: prices.priceTotal,
+    priceVehicle: prices.priceVehicle,
     imageUrl: pickMainImage(html),
     specs: parseSpecs(text),
     badges: parseBadges(text),
@@ -171,28 +203,52 @@ async function updateImage(car, imageUrl) {
   return true;
 }
 
+// 売約にした車を再確認する期間かどうか。
+// 掲載終了の誤判定から戻せるように、売約にしてから一定期間だけ見に行く。
+export function shouldRecheckSoldout(car, now = Date.now()) {
+  const marked = Date.parse(String(car.soldoutAt || car.lastGazooCheck || ""));
+  if (!Number.isFinite(marked)) return true; // 記録がなければ一度は確認する
+  return now - marked < SOLDOUT_RECHECK_DAYS * 24 * 60 * 60 * 1000;
+}
+
 export async function main() {
   const data = JSON.parse(await readFile(DATA_FILE, "utf8"));
   let changed = false;
 
   for (const car of data.cars || []) {
-    // リンクなし・自動更新オフ・すでに売約のクルマは飛ばす
-    if (!car.gazooUrl || car.autoUpdate === false || car.soldout) continue;
+    // リンクなし・自動更新オフのクルマは飛ばす
+    if (!car.gazooUrl || car.autoUpdate === false) continue;
+    // 売約済みは再確認期間を過ぎたら飛ばす
+    if (car.soldout && !shouldRecheckSoldout(car)) continue;
 
     try {
       const res = await fetch(car.gazooUrl, { headers: { "user-agent": UA }, redirect: "follow" });
       const html = await res.text();
 
       if (looksGone(res.status, html)) {
-        car.soldout = true;
         car.lastGazooCheck = new Date().toISOString();
         car.gazooStatus = "soldout";
-        changed = true;
-        console.log(`売約にしました: ${car.name}（${car.store}）`);
+        if (!car.soldout) {
+          car.soldout = true;
+          car.soldoutAt = car.lastGazooCheck;
+          changed = true;
+          console.log(`売約にしました: ${car.name}（${car.store}）`);
+        } else if (!car.soldoutAt) {
+          // 以前からの売約分にも起点を残す。これがないと再確認の期限が延び続ける。
+          car.soldoutAt = car.lastGazooCheck;
+          changed = true;
+        }
       } else if (res.ok) {
         const p = parseGazoo(html);
         car.lastGazooCheck = new Date().toISOString();
         car.gazooStatus = "ok";
+        if (car.soldout) {
+          // 掲載が戻っていたら売約表示を解除する
+          car.soldout = false;
+          delete car.soldoutAt;
+          changed = true;
+          console.log(`掲載が戻っていたので売約を解除: ${car.name}（${car.store}）`);
+        }
         if (p.priceTotal == null) {
           // 価格が読み取れないときは価格を変えない（誤更新防止）
           console.log(`価格が読み取れませんでした: ${car.name}`);

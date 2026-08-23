@@ -52,10 +52,15 @@
     return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
+  var SITE_ORIGIN = "https://fukuoka-toyopet.jp";
+
   function imageSource(value, base) {
     if (!value) return "";
     if (/^data:|^https?:/.test(value)) return value;
     if (value.indexOf("images/") === 0) return base + value;
+    // CMS内のパス（/file/... など）は本サイト側の絶対URLにする。
+    // 管理画面プレビュー（index.html の imgSrc）と表示を揃えるため。
+    if (value.charAt(0) === "/") return SITE_ORIGIN + value;
     return value;
   }
 

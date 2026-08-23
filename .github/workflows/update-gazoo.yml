@@ -20,7 +20,12 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
+
+      - name: 表示設定のずれと解析処理を確認
+        run: |
+          node scripts/check-consistency.mjs
+          node scripts/test-parser.mjs
 
       - name: Gazooをチェックしてデータと画像を更新
         run: node scripts/update-from-gazoo.mjs

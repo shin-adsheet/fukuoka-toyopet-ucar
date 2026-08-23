@@ -477,8 +477,18 @@ function gazooPrices_(html) {
     const n = Number(raw.replace(/,/g, ''));
     return isNaN(n) ? null : n;
   }
-  const total = fromBlock('sum-price');
-  const vehicle = fromBlock('base-price');
+  // 価格ブロックが見つからないページ向けに、ラベル近接でも探す（Node側 pickPrices と同じ）
+  function nearLabel(label) {
+    const text = compactGazooText_(html);
+    const m = text.match(new RegExp(label + '[\\s\\S]{0,300}?([\\d,]+(?:\\.\\d+)?)\\s*万円'));
+    if (!m) return null;
+    const n = Number(m[1].replace(/,/g, ''));
+    return isNaN(n) ? null : n;
+  }
+  let total = fromBlock('sum-price');
+  if (total == null) total = nearLabel('支払総額');
+  let vehicle = fromBlock('base-price');
+  if (vehicle == null) vehicle = nearLabel('車両価格');
   if (total != null && vehicle != null && total < vehicle) return { priceTotal: null, priceVehicle: null };
   return { priceTotal: total, priceVehicle: vehicle };
 }
@@ -731,7 +741,7 @@ function mergeAutomatedFields_(draft, published) {
   const out = JSON.parse(JSON.stringify(normalizeModel_(draft)));
   const byUid = {};
   published.cars.forEach(function (c) { if (c.uid) byUid[c.uid] = c; });
-  const fields = ['name', 'store', 'id', 'priceTotal', 'priceVehicle', 'image', 'gazooImageUrl', 'soldout', 'lastGazooCheck', 'gazooStatus', 'specs', 'badges'];
+  const fields = ['name', 'store', 'id', 'priceTotal', 'priceVehicle', 'image', 'gazooImageUrl', 'soldout', 'soldoutAt', 'lastGazooCheck', 'gazooStatus', 'specs', 'badges'];
   out.cars.forEach(function (c) {
     // URL直入力やExcel取込の直後は、画面で取得した新しい値を優先する。
     // Actionsの確認時刻が取込時刻を越えたら、通常の自動同期へ戻す。
@@ -761,6 +771,8 @@ function normalizeModel_(input) {
     c.uid = uid; used[uid] = true;
     if (c.autoUpdate == null) c.autoUpdate = true;
     if (c.autoImageUpdate == null) c.autoImageUpdate = true;
+    // 売約解除後に再確認用の記録が残らないようにする
+    if (c.soldout !== true) delete c.soldoutAt;
   });
   const valid = {};
   d.cars.forEach(function (c) { valid[c.uid] = true; });
