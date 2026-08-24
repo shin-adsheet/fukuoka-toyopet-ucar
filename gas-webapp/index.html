@@ -12,6 +12,39 @@
 .top-help{font-size:11px;color:var(--muted);max-width:310px}.top-more{position:relative}.top-more summary{list-style:none}.top-more summary::-webkit-details-marker{display:none}.top-more-menu{position:absolute;right:0;top:44px;width:230px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px;box-shadow:0 10px 30px rgba(0,0,0,.13);display:grid;gap:6px}.top-more-menu .btn{text-align:left}.importbox{border:2px solid #b9d6fa;background:#f2f8ff;border-radius:10px;padding:12px;margin-bottom:14px}.importbox b{display:block;color:#15569a}.importbox p{font-size:11px;color:var(--muted);margin:3px 0 8px}.excel-modal{width:min(760px,100%)}.excel-name{width:100%;min-height:40px;border:1px solid var(--line);border-radius:7px;padding:8px 9px;margin:4px 0 10px}.radio-card{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:9px;margin:7px 0}.radio-card input{margin-top:3px}.excel-list{border:1px solid var(--line);border-radius:8px;max-height:38vh;overflow:auto;margin-top:10px}.excel-row{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:9px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--line)}.excel-row:last-child{border-bottom:0}.excel-no{font-size:11px;color:var(--muted);font-weight:800}.excel-price{white-space:nowrap;font-weight:800;color:#d90012}.excel-warnings{font-size:11px;color:var(--orange);margin-top:8px;white-space:pre-wrap}.excel-result{background:#e7f6ee;color:var(--green);font-weight:700;border-radius:8px;padding:9px;margin:8px 0}.modal label.title-label{display:block;font-size:11px;font-weight:800;margin-top:10px}
 .full-preview-panel{grid-column:1/-1}.full-preview-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}.full-preview-head h2{font-size:17px;margin:0;color:var(--ink)}.full-preview-head p{font-size:11px;color:var(--muted);margin:3px 0 0}.device-tabs{display:flex;gap:5px;background:#eef0f2;border-radius:9px;padding:4px}.device-tab{border:0;background:transparent;border-radius:7px;padding:7px 13px;font-weight:800;color:#60666c}.device-tab.active{background:#fff;color:var(--blue);box-shadow:0 1px 4px rgba(0,0,0,.12)}.page-preview-shell{margin-top:12px;padding:18px;background:#e7eaed;border-radius:11px;overflow:auto}.page-preview-frame{background:#fff;margin:0 auto;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,.09);transition:width .2s}.page-preview-shell.pc .page-preview-frame{width:100%;min-width:760px;max-width:1120px}.page-preview-shell.sp .page-preview-frame{width:390px;max-width:100%;padding:10px}.page-preview-grid{display:grid;gap:14px}.page-preview-shell.pc .page-preview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.page-preview-shell.sp .page-preview-grid{grid-template-columns:1fr}.page-preview-grid .utc-card{max-width:none}.page-preview-empty{text-align:center;color:var(--muted);padding:50px 10px}.cms-code-box{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}.cms-code-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.cms-code-head h2{margin:0!important;font-size:15px!important;color:var(--ink)!important}.cms-code-head p{font-size:11px;color:var(--muted);margin:2px 0 0}.cms-code{width:100%;height:124px;margin-top:9px;border:1px solid var(--line);border-radius:8px;padding:10px;background:#f7f8f9;color:#333;font:12px/1.5 Consolas,Monaco,monospace;resize:vertical}.copy-ok{background:var(--green)!important;border-color:var(--green)!important;color:#fff!important}
 </style>
+<style>
+/* クルマ追加ダイアログ */
+.add-modal{max-width:620px}
+.add-choices{display:grid;gap:10px;margin:14px 0 0}
+.add-choice{display:block;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;font:inherit;color:inherit;transition:border-color .12s,background .12s}
+.add-choice:hover{border-color:var(--blue);background:var(--blue2)}
+.add-choice.on{border-color:var(--blue);background:var(--blue2)}
+.add-choice b{display:block;font-size:14px;margin-bottom:3px}
+.add-choice small{display:block;font-size:11px;color:var(--muted);line-height:1.6}
+.add-choice-icon{float:right;font-size:22px;line-height:1;margin-left:12px}
+.add-url-step{display:none;margin-top:14px}
+.add-url-step.show{display:block}
+.add-url-step label{display:block;font-size:11px;font-weight:800;margin-bottom:5px}
+.add-url-step textarea{width:100%;box-sizing:border-box;font:inherit;font-size:13px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;resize:vertical;min-height:74px}
+.add-url-step textarea:focus{outline:2px solid var(--blue);outline-offset:-1px;border-color:var(--blue)}
+.add-results{margin-top:10px;display:grid;gap:7px;max-height:250px;overflow:auto}
+.add-result{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:9px;padding:7px 9px;background:var(--bg)}
+.add-result.ng{border-color:var(--red);background:#fdf1f1}
+.add-result .rthumb{width:56px;height:42px;flex:none;border-radius:5px;background:#e9ebed;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted)}
+.add-result .rthumb img{width:100%;height:100%;object-fit:contain;display:block}
+.add-result .rbody{min-width:0;flex:1}
+.add-result .rname{display:block;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.add-result .rsub{display:block;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.add-result .rmark{font-size:15px;flex:none}
+.add-result.ok .rmark{color:var(--green)}
+.add-result.ng .rmark{color:var(--red)}
+.add-result.busy .rmark{color:var(--muted)}
+/* 一覧の並び替えを分かりやすく */
+.car-row.drop-before{box-shadow:inset 0 3px 0 0 var(--blue)}
+.car-row.drop-after{box-shadow:inset 0 -3px 0 0 var(--blue)}
+.car-row.dragging{opacity:.45}
+.todo-pill{flex:none;font-size:10px;font-weight:800;padding:1px 6px;border-radius:999px;background:#fdf0e2;color:var(--orange);border:1px solid #f0d6b5}
+</style>
 </head>
 <body>
 <header class="top">
@@ -77,7 +110,7 @@
         <div class="field"><label for="fColor">色</label><input id="fColor" type="text"></div>
         <div class="field wide"><label class="toggle"><input type="checkbox" id="fSold"><span><b>売約済みにする</b><br><small>オンにすると指定の「売約済」画像を重ね、ボタンを無効にします。</small></span></label></div>
       </div>
-      <div class="rowtools"><button class="btn" id="btnUp">↑ 1つ上へ</button><button class="btn" id="btnDown">↓ 1つ下へ</button><button class="btn danger" id="btnDelete">このクルマを削除</button></div>
+      <div class="rowtools"><button class="btn" id="btnUp">↑ 1つ上へ</button><button class="btn" id="btnDown">↓ 1つ下へ</button><button class="btn" id="btnDuplicate">このクルマを複製</button><button class="btn danger" id="btnDelete">このクルマを削除</button></div>
       <div class="preview-title">カードプレビュー（縦横比 780 : 714 固定）</div>
       <div class="preview-stage"><div id="preview"></div></div>
     </div>
@@ -92,6 +125,19 @@
 
 <div class="modal-bg" id="chooseModal"><div class="modal"><h3>このページに載せるクルマ</h3><p>同じクルマを別ページにも掲載できます。</p><div class="picklist" id="pickList"></div><div class="modal-actions"><button class="btn" id="chooseCancel">キャンセル</button><button class="btn primary" id="chooseSave">保存</button></div></div></div>
 <div class="modal-bg" id="excelModal"><div class="modal excel-modal"><h3>Excelの取込内容を確認</h3><p id="excelSummary">確認中です。</p><div class="excel-result" id="excelResult"></div><label class="title-label" for="excelPageName">掲載ページ名</label><input class="excel-name" id="excelPageName" type="text"><label class="radio-card"><input type="radio" name="excelMode" value="replace" checked><span><b>今のページを入れ替える（おすすめ）</b><br><small>今開いているページの掲載車を、Excelの並び順に置き換えます。</small></span></label><label class="radio-card"><input type="radio" name="excelMode" value="new"><span><b>新しいページとして追加する</b><br><small>今のページを残したまま、新しい掲載ページを作ります。</small></span></label><div class="excel-list" id="excelCars"></div><div class="excel-warnings" id="excelWarnings"></div><div class="modal-actions"><button class="btn" id="excelCancel">キャンセル</button><button class="btn primary" id="excelApply">取り込んでサイトへ反映</button></div></div></div>
+<div class="modal-bg" id="addModal"><div class="modal add-modal"><h3>クルマを追加</h3><p>追加のしかたを選んでください。</p>
+<div class="add-choices">
+<button class="add-choice" id="addChoiceAuto" type="button"><span class="add-choice-icon">🔗</span><b>GazooのURLから取り込む（おすすめ）</b><small>URLを貼るだけで、店舗・車名・価格・装備・写真をまとめて読み込みます。追加したあとも毎日自動で更新されます。</small></button>
+<button class="add-choice" id="addChoiceManual" type="button"><span class="add-choice-icon">✎</span><b>手動で入力する</b><small>Gazooに載っていないクルマ向け。項目はすべて自分で入力します。</small></button>
+</div>
+<div class="add-url-step" id="addUrlStep">
+<label for="addUrls">GazooのURL（複数まとめて入れるときは改行で区切る）</label>
+<textarea id="addUrls" placeholder="https://gazoo.com/DealerU-Car/detail?Id=..."></textarea>
+<div class="gazoo-state" id="addState">URLを貼り付けると、そのまま読み込みを始めます。</div>
+<div class="add-results" id="addResults"></div>
+</div>
+<div class="modal-actions"><button class="btn" id="addCancel">キャンセル</button><button class="btn primary" id="addConfirm" disabled>このクルマを追加</button></div></div></div>
+
 <div class="blocker" id="blocker"><div class="blockcard"><h2>中古車カード管理</h2><p id="blockMsg">管理パスワードを入力してください。</p><div class="loginform" id="loginBox"><label for="editorKey">管理パスワード</label><input id="editorKey" type="password" autocomplete="current-password" autofocus><label class="remember"><input id="rememberKey" type="checkbox" checked>この端末にパスワードを保存する</label><button class="btn primary" id="loginBtn">管理画面を開く</button><p class="loginhint">共有PCでは「この端末に保存する」をオフにしてください。</p></div><div class="error" id="blockErr"></div></div></div>
 <div class="toast" id="toast"></div>
 
@@ -104,6 +150,7 @@ var SLOTS=[['修無'],['ロングラン保証'],['整付'],['ハイブリッド�
 var EMBED_VERSION='20260823-1';
 var state={version:2,cars:[],pages:[]},revision=null,selectedUid=null,currentPageId='main',boot=null,dirty=false,saveTimer=null,savePromise=null,saveAgain=false,gazooTimer=null,gazooSeq=0,excelPreview=null;
 var auth={name:'担当者',key:''};
+var addMode=null,addRows=[],addBusy=false,addSeq=0,addTimer=null;
 var F={};
 
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
@@ -135,7 +182,7 @@ async function flushSave(){clearTimeout(saveTimer);if(dirty)await saveNow();if(s
 
 function renderAll(){renderPages();renderList();renderEditor();renderPagePreview();renderCmsCode()}
 function renderPages(){var s=document.getElementById('pageSelect');s.innerHTML=state.pages.map(function(p){return'<option value="'+esc(p.id)+'">'+esc(p.name)+'</option>'}).join('');if(!state.pages.some(function(p){return p.id===currentPageId}))currentPageId=state.pages[0]?state.pages[0].id:'main';s.value=currentPageId;document.getElementById('pageId').textContent=page()?page().id:'';document.getElementById('btnPageDelete').disabled=state.pages.length<=1}
-function renderList(){var list=document.getElementById('carList'),cars=pageCars();document.getElementById('carCount').textContent=cars.length;if(!cars.length){list.innerHTML='<div class="empty">このページにはまだクルマがありません。</div>';return}list.innerHTML=cars.map(function(c){var im=imgSrc(c.image);return'<div class="car-row'+(c.uid===selectedUid?' active':'')+'" draggable="true" data-uid="'+esc(c.uid)+'"><span class="drag">↕</span><span class="thumb">'+(im?'<img src="'+esc(im)+'" alt="">':'写真')+'</span><span class="car-meta"><span class="car-name">'+esc(c.name||'（車名未入力）')+'</span><span class="car-sub">'+esc(c.store||'')+' '+esc(c.id||'')+'</span></span><span class="auto-pill'+(c.autoUpdate===false?' manual':'')+'">'+(c.autoUpdate===false?'手動':'自動')+'</span>'+(c.soldout?'<span class="sold-pill">売約</span>':'')+'</div>'}).join('');var dragUid=null;list.querySelectorAll('.car-row').forEach(function(row){row.addEventListener('click',function(){select(row.dataset.uid)});row.addEventListener('dragstart',function(e){dragUid=row.dataset.uid;row.classList.add('dragging');e.dataTransfer.effectAllowed='move'});row.addEventListener('dragover',function(e){e.preventDefault()});row.addEventListener('drop',function(e){e.preventDefault();var to=row.dataset.uid,p=page(),a=p.carUids.indexOf(dragUid),b=p.carUids.indexOf(to);if(a>=0&&b>=0&&a!==b){p.carUids.splice(a,1);p.carUids.splice(b,0,dragUid);markDirty();renderList();renderPagePreview()}});row.addEventListener('dragend',function(){row.classList.remove('dragging')})})}
+function renderList(){var list=document.getElementById('carList'),cars=pageCars();document.getElementById('carCount').textContent=cars.length;if(!cars.length){list.innerHTML='<div class="empty">このページにはまだクルマがありません。<br><button class="btn primary" id="btnAddEmpty" style="margin-top:10px">＋ 最初のクルマを追加</button></div>';document.getElementById('btnAddEmpty').onclick=openAddModal;return}list.innerHTML=cars.map(function(c){var im=imgSrc(c.image);return'<div class="car-row'+(c.uid===selectedUid?' active':'')+'" draggable="true" data-uid="'+esc(c.uid)+'"><span class="drag">↕</span><span class="thumb">'+(im?'<img src="'+esc(im)+'" alt="">':'写真')+'</span><span class="car-meta"><span class="car-name">'+esc(c.name||'（車名未入力）')+'</span><span class="car-sub">'+esc(c.store||'')+' '+esc(c.id||'')+'</span></span><span class="auto-pill'+(c.autoUpdate===false?' manual':'')+'">'+(c.autoUpdate===false?'手動':'自動')+'</span>'+(needsInput(c)?'<span class="todo-pill">要入力</span>':'')+(c.soldout?'<span class="sold-pill">売約</span>':'')+'</div>'}).join('');var dragUid=null;list.querySelectorAll('.car-row').forEach(function(row){row.addEventListener('click',function(){select(row.dataset.uid)});row.addEventListener('dragstart',function(e){dragUid=row.dataset.uid;row.classList.add('dragging');e.dataTransfer.effectAllowed='move'});row.addEventListener('dragover',function(e){e.preventDefault();if(row.dataset.uid===dragUid)return;var box=row.getBoundingClientRect(),after=e.clientY>box.top+box.height/2;row.classList.toggle('drop-after',after);row.classList.toggle('drop-before',!after)});row.addEventListener('dragleave',function(){row.classList.remove('drop-before','drop-after')});row.addEventListener('drop',function(e){e.preventDefault();var after=row.classList.contains('drop-after');row.classList.remove('drop-before','drop-after');var to=row.dataset.uid,p=page(),a=p.carUids.indexOf(dragUid),b=p.carUids.indexOf(to);if(a<0||b<0||a===b)return;p.carUids.splice(a,1);var at=p.carUids.indexOf(to)+(after?1:0);p.carUids.splice(at,0,dragUid);markDirty();renderList();renderPagePreview()});row.addEventListener('dragend',function(){row.classList.remove('dragging');list.querySelectorAll('.car-row').forEach(function(r){r.classList.remove('drop-before','drop-after')})})})}
 function select(uidv){selectedUid=uidv;renderList();renderEditor()}
 function renderEditor(){var c=selected();document.getElementById('editorEmpty').style.display=c?'none':'';document.getElementById('editor').style.display=c?'':'none';if(!c)return;F.fMode.value=c.autoUpdate===false?'manual':'auto';F.fAutoImage.checked=c.autoImageUpdate!==false;F.fStore.value=STORES.indexOf(c.store)>=0?c.store:STORES[0];F.fName.value=c.name||'';F.fGazoo.value=c.gazooUrl||'';F.fId.value=c.id||'';F.fStock.value=c.stock||'';F.fTotal.value=c.priceTotal==null?'':c.priceTotal;F.fVehicle.value=c.priceVehicle==null?'':c.priceVehicle;var s=c.specs||{};F.fYear.value=s.year||'';F.fKm.value=s.km||'';F.fShaken.value=s.shaken||'';F.fFuel.value=s.fuel||'';F.fMission.value=s.mission||'';F.fColor.value=s.color||'';F.fSold.checked=!!c.soldout;document.querySelectorAll('#badges input').forEach(function(cb){cb.checked=(c.badges||[]).indexOf(cb.value)>=0});var photo=imgSrc(c.image);document.getElementById('photoPreview').innerHTML=photo?'<img src="'+esc(photo)+'" alt="写真">':'写真なし';setAutoLocks(c);if(c.gazooStatus==='ok'&&c.lastGazooCheck)setGazooState('Gazoo取得済み','ok');else setGazooState('自動更新では、URLを貼ると車両情報を自動入力します。','');renderFee();renderPreview()}
 function setAutoLocks(c){var auto=!!c&&c.autoUpdate!==false,photoAuto=auto&&c.autoImageUpdate!==false;['fStore','fName','fId','fTotal','fVehicle','fYear','fKm','fShaken','fFuel','fMission','fColor','fSold'].forEach(function(id){if(F[id])F[id].disabled=auto});document.querySelectorAll('#badges input').forEach(function(cb){cb.disabled=auto});F.fAutoImage.disabled=!auto;document.getElementById('btnPhoto').disabled=photoAuto;document.getElementById('btnPhotoDelete').disabled=photoAuto;document.getElementById('autoLockNote').classList.toggle('show',auto)}
@@ -153,7 +200,129 @@ function cmsEmbedCode(){var p=page(),owner=boot&&boot.owner?boot.owner:'shin-ads
 function renderCmsCode(){var el=document.getElementById('cmsCode');if(el)el.value=cmsEmbedCode()}
 async function copyCmsCode(){var el=document.getElementById('cmsCode'),btn=document.getElementById('btnCopyCms');try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(el.value);else{el.focus();el.select();if(!document.execCommand('copy'))throw new Error('copy failed')}btn.textContent='コピーしました';btn.classList.add('copy-ok');showToast('CMSコードをコピーしました');setTimeout(function(){btn.textContent='コードをコピー';btn.classList.remove('copy-ok')},1800)}catch(e){el.focus();el.select();alert('自動コピーできませんでした。選択されたコードを Ctrl+C でコピーしてください。')}}
 
-function initForm(){F.fStore=document.getElementById('fStore');F.fStore.innerHTML=STORES.map(function(s){return'<option>'+esc(s)+'</option>'}).join('');['fMode','fAutoImage','fName','fGazoo','fId','fStock','fTotal','fVehicle','fYear','fKm','fShaken','fFuel','fMission','fColor','fSold'].forEach(function(id){F[id]=document.getElementById(id)});document.getElementById('badges').innerHTML=BADGES.map(function(b){return'<label class="check"><input type="checkbox" value="'+esc(b)+'">'+esc(b)+'</label>'}).join('');Object.keys(F).forEach(function(k){F[k].addEventListener('input',applyForm);F[k].addEventListener('change',applyForm)});document.querySelectorAll('#badges input').forEach(function(cb){cb.addEventListener('change',applyForm)});F.fGazoo.addEventListener('input',function(){scheduleGazooImport(false)});F.fGazoo.addEventListener('change',function(){scheduleGazooImport(true)});F.fMode.addEventListener('change',function(){if(F.fMode.value==='auto')scheduleGazooImport(true)});F.fAutoImage.addEventListener('change',function(){setAutoLocks(selected())})}
+function initForm(){F.fStore=document.getElementById('fStore');F.fStore.innerHTML=STORES.map(function(s){return'<option>'+esc(s)+'</option>'}).join('');['fMode','fAutoImage','fName','fGazoo','fId','fStock','fTotal','fVehicle','fYear','fKm','fShaken','fFuel','fMission','fColor','fSold'].forEach(function(id){F[id]=document.getElementById(id)});document.getElementById('badges').innerHTML=BADGES.map(function(b){return'<label class="check"><input type="checkbox" value="'+esc(b)+'">'+esc(b)+'</label>'}).join('');Object.keys(F).forEach(function(k){F[k].addEventListener('input',applyForm);F[k].addEventListener('change',applyForm)});document.querySelectorAll('#badges input').forEach(function(cb){cb.addEventListener('change',applyForm)});F.fGazoo.addEventListener('input',function(){scheduleGazooImport(false)});F.fGazoo.addEventListener('change',function(){scheduleGazooImport(true)});F.fGazoo.addEventListener('paste',function(){setTimeout(function(){applyForm();scheduleGazooImport(true)},0)});F.fMode.addEventListener('change',function(){if(F.fMode.value==='auto')scheduleGazooImport(true)});F.fAutoImage.addEventListener('change',function(){setAutoLocks(selected())})}
+
+/* ===== クルマの追加（モードを選んでから、URLを貼るだけ） ===== */
+function newCar(over){var c={uid:uid(),store:STORES[0],name:'',gazooUrl:'',id:'',stock:'',priceTotal:null,priceVehicle:null,image:'',badges:['修無','整付','ロングラン保証','あんしん診断'],specs:{year:'',km:'',shaken:'',fuel:'',mission:'',color:''},soldout:false,autoUpdate:true,autoImageUpdate:true};Object.keys(over||{}).forEach(function(k){c[k]=over[k]});return c}
+function needsInput(c){return !String(c.name||'').trim()||c.priceTotal==null}
+function setAddState(text,kind){var el=document.getElementById('addState');el.textContent=text;el.className='gazoo-state '+(kind||'')}
+
+function openAddModal(){
+  addMode=null;addRows=[];addBusy=false;addSeq++;clearTimeout(addTimer);
+  document.getElementById('addUrls').value='';
+  document.getElementById('addResults').innerHTML='';
+  document.getElementById('addUrlStep').classList.remove('show');
+  document.getElementById('addChoiceAuto').classList.remove('on');
+  document.getElementById('addChoiceManual').classList.remove('on');
+  setAddState('URLを貼り付けると、そのまま読み込みを始めます。','');
+  updateAddConfirm();
+  document.getElementById('addModal').classList.add('show');
+}
+function closeAddModal(){addSeq++;clearTimeout(addTimer);document.getElementById('addModal').classList.remove('show')}
+
+function chooseAddMode(mode){
+  addMode=mode;
+  document.getElementById('addChoiceAuto').classList.toggle('on',mode==='auto');
+  document.getElementById('addChoiceManual').classList.toggle('on',mode==='manual');
+  if(mode==='manual'){addManualCar();return}
+  document.getElementById('addUrlStep').classList.add('show');
+  document.getElementById('addUrls').focus();
+  updateAddConfirm();
+}
+function addManualCar(){
+  var c=newCar({autoUpdate:false,autoImageUpdate:false});
+  state.cars.push(c);page().carUids.push(c.uid);selectedUid=c.uid;
+  closeAddModal();markDirty();renderAll();
+  showToast('手動入力のクルマを追加しました。右側で内容を入力してください。');
+}
+
+function parseAddUrls(text){var seen={},out=[];String(text||'').split(/\s+/).forEach(function(u){u=u.trim();if(!u||seen[u])return;seen[u]=1;out.push(u)});return out}
+function scheduleAddImport(immediate){clearTimeout(addTimer);addTimer=setTimeout(runAddImport,immediate?0:600)}
+
+async function runAddImport(){
+  var urls=parseAddUrls(document.getElementById('addUrls').value),seq=++addSeq;
+  if(!urls.length){addRows=[];renderAddResults();setAddState('URLを貼り付けると、そのまま読み込みを始めます。','');updateAddConfirm();return}
+  // 読み込み済みのURLはそのまま引き継ぎ、増えた分だけ取りに行く
+  var done={};addRows.forEach(function(r){if(r.state==='ok')done[r.url]=r});
+  addRows=urls.map(function(u){
+    if(done[u])return done[u];
+    var okUrl=validGazooUrl(u);
+    return{url:u,state:okUrl?'wait':'ng',error:okUrl?'':'Gazooの車両詳細URLではありません。'};
+  });
+  addBusy=true;renderAddResults();updateAddConfirm();
+  for(var i=0;i<addRows.length;i++){
+    if(seq!==addSeq)return;
+    var row=addRows[i];
+    if(row.state!=='wait')continue;
+    row.state='busy';renderAddResults();
+    setAddState('Gazooから読み込み中…（'+(i+1)+'/'+addRows.length+'）','busy');
+    try{
+      var r=await gas('importGazooCar',[row.url]);
+      if(seq!==addSeq)return;
+      row.car=r.car||{};row.state='ok';
+    }catch(e){
+      if(seq!==addSeq)return;
+      row.state='ng';row.error=e.message;
+    }
+    renderAddResults();updateAddConfirm();
+  }
+  if(seq!==addSeq)return;
+  addBusy=false;updateAddConfirm();
+  var ok=addRows.filter(function(r){return r.state==='ok'}).length,ng=addRows.length-ok;
+  if(ok)setAddState(ok+'台を読み込みました。'+(ng?'（'+ng+'件は読み込めませんでした）':'内容を確認して追加してください。'),ng?'':'ok');
+  else setAddState('読み込めませんでした。URLを確認してください。','err');
+}
+
+function renderAddResults(){
+  document.getElementById('addResults').innerHTML=addRows.map(function(r){
+    var c=r.car||{},ok=r.state==='ok',ng=r.state==='ng';
+    var im=ok?imgSrc(c.image):'';
+    var name=ok?(c.name||'（車名を読み取れませんでした）'):r.url;
+    var sub=ok?[c.store,c.id,c.priceTotal!=null?c.priceTotal+'万円':''].filter(Boolean).join('　'):(ng?(r.error||'読み込めませんでした'):'読み込み中…');
+    return'<div class="add-result '+(ok?'ok':ng?'ng':'busy')+'"><span class="rthumb">'+(im?'<img src="'+esc(im)+'" alt="">':'写真')+'</span><span class="rbody"><span class="rname">'+esc(name)+'</span><span class="rsub">'+esc(sub)+'</span></span><span class="rmark">'+(ok?'✓':ng?'✕':'…')+'</span></div>';
+  }).join('');
+}
+function updateAddConfirm(){
+  var ok=addRows.filter(function(r){return r.state==='ok'}).length,btn=document.getElementById('addConfirm');
+  btn.disabled=addBusy||!ok;
+  btn.textContent=ok>1?('この'+ok+'台を追加'):'このクルマを追加';
+}
+function confirmAdd(){
+  var rows=addRows.filter(function(r){return r.state==='ok'});
+  if(!rows.length)return;
+  var now=new Date().toISOString(),first=null,p=page();
+  rows.forEach(function(r){
+    var src=r.car||{},c=newCar({gazooUrl:r.url});
+    if(src.name)c.name=src.name;
+    if(src.id)c.id=src.id;
+    if(src.store&&STORES.indexOf(src.store)>=0)c.store=src.store;
+    if(src.priceTotal!=null)c.priceTotal=src.priceTotal;
+    if(src.priceVehicle!=null)c.priceVehicle=src.priceVehicle;
+    if(src.image){c.image=src.image;c.gazooImageUrl=src.gazooImageUrl||src.image}
+    Object.keys(src.specs||{}).forEach(function(k){if(src.specs[k])c.specs[k]=src.specs[k]});
+    if(Array.isArray(src.badges)&&src.badges.length)c.badges=src.badges.slice();
+    c.soldout=!!src.soldout;
+    c.lastGazooCheck=src.lastGazooCheck||now;
+    c.gazooStatus='ok';
+    c.syncPending=true;c.syncPendingAt=now;
+    state.cars.push(c);p.carUids.push(c.uid);
+    if(!first)first=c.uid;
+  });
+  selectedUid=first;
+  closeAddModal();markDirty();renderAll();
+  showToast(rows.length+'台を追加しました。');
+}
+
+function duplicateSelected(){
+  var c=selected();if(!c)return;
+  var copy=clone(c);copy.uid=uid();
+  copy.syncPending=true;copy.syncPendingAt=new Date().toISOString();
+  state.cars.push(copy);
+  var p=page(),at=p.carUids.indexOf(c.uid);
+  p.carUids.splice(at<0?p.carUids.length:at+1,0,copy.uid);
+  selectedUid=copy.uid;markDirty();renderAll();
+  showToast('クルマを複製しました');
+}
 
 function bind(){
   document.getElementById('pageSelect').addEventListener('change',function(){currentPageId=this.value;localStorage.setItem('ucarWebPage',currentPageId);selectedUid=null;renderAll()});
@@ -162,7 +331,17 @@ function bind(){
   document.getElementById('btnPageRename').onclick=function(){var p=page();if(!p)return;var n=prompt('ページ名',p.name);if(!n||!n.trim())return;p.name=n.trim();markDirty();renderPages()};
   document.getElementById('btnPageDelete').onclick=function(){if(state.pages.length<=1)return;var p=page();if(!confirm('「'+p.name+'」を削除します。\nクルマ自体は削除されません。'))return;state.pages=state.pages.filter(function(x){return x.id!==p.id});currentPageId=state.pages[0].id;selectedUid=null;markDirty();renderAll()};
   document.getElementById('btnChoose').onclick=openChoose;document.getElementById('chooseCancel').onclick=closeChoose;document.getElementById('chooseSave').onclick=saveChoose;
-  document.getElementById('btnAdd').onclick=function(){var c={uid:uid(),store:STORES[0],name:'',gazooUrl:'',id:'',stock:'',priceTotal:null,priceVehicle:null,image:'',badges:['修無','整付','ロングラン保証','あんしん診断'],specs:{year:'',km:'',shaken:'',fuel:'',mission:'',color:''},soldout:false,autoUpdate:true,autoImageUpdate:true};state.cars.push(c);page().carUids.push(c.uid);selectedUid=c.uid;markDirty();renderAll()};
+  document.getElementById('btnAdd').onclick=openAddModal;
+  document.getElementById('addChoiceAuto').onclick=function(){chooseAddMode('auto')};
+  document.getElementById('addChoiceManual').onclick=function(){chooseAddMode('manual')};
+  document.getElementById('addCancel').onclick=closeAddModal;
+  document.getElementById('addConfirm').onclick=confirmAdd;
+  document.getElementById('addModal').addEventListener('click',function(e){if(e.target===this)closeAddModal()});
+  var addUrls=document.getElementById('addUrls');
+  addUrls.addEventListener('input',function(){scheduleAddImport(false)});
+  addUrls.addEventListener('paste',function(){setTimeout(function(){scheduleAddImport(true)},0)});
+  document.getElementById('btnDuplicate').onclick=duplicateSelected;
+  document.addEventListener('keydown',function(e){if(e.key!=='Escape')return;if(document.getElementById('addModal').classList.contains('show'))closeAddModal()});
   document.getElementById('btnDelete').onclick=function(){var c=selected();if(!c||!confirm('「'+(c.name||'このクルマ')+'」を全ページから削除しますか？'))return;state.cars=state.cars.filter(function(x){return x.uid!==c.uid});state.pages.forEach(function(p){p.carUids=p.carUids.filter(function(u){return u!==c.uid})});selectedUid=null;markDirty();renderAll()};
   document.getElementById('btnUp').onclick=function(){moveSelected(-1)};document.getElementById('btnDown').onclick=function(){moveSelected(1)};
   document.getElementById('btnPhoto').onclick=function(){document.getElementById('filePhoto').click()};document.getElementById('filePhoto').addEventListener('change',uploadPhoto);document.getElementById('btnPhotoDelete').onclick=function(){var c=selected();if(!c)return;c.image='';c.autoImageUpdate=false;markDirty();renderEditor();renderPagePreview()};
