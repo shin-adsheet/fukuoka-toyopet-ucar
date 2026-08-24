@@ -2,7 +2,7 @@
 // Gazoo解析部分の動作確認。ネットにはつながず、手元のHTML断片で確かめる。
 // 実行： node scripts/test-parser.mjs
 // =============================================================
-import { pickMainImage, pickPrices, parseGazoo, looksGone, shouldRecheckSoldout } from "./update-from-gazoo.mjs";
+import { pickMainImage, pickPrices, parseGazoo, looksGone, shouldRecheckSoldout, isPending } from "./update-from-gazoo.mjs";
 
 let failed = 0;
 
@@ -68,10 +68,25 @@ check("parseGazoo の画像は _L", parsed.imageUrl, "https://gazoo.com" + IMG +
 check("parseGazoo の年式・走行距離", [parsed.specs.year, parsed.specs.km], ["2024年式", "3.2万km"]);
 check("parseGazoo のバッジ", parsed.badges, ["修無", "ロングラン保証"]);
 
-// --- 掲載終了の判定 ---
-check("404 は掲載終了", looksGone(404, ""), true);
+// --- 掲載されていない状態の判定 ---
+check("404 は掲載なし", looksGone(404, ""), true);
 check("掲載終了の文言", looksGone(200, "この車両は掲載を終了しました"), true);
-check("通常ページは掲載終了ではない", looksGone(200, "<p>販売中</p>"), false);
+check(
+  "販売開始前の「売約済み」画面",
+  looksGone(200, "お選びのU-Car（中古車）はすでに売約済みとなっております。"),
+  true
+);
+check(
+  "error/disabled へ飛ばされた場合",
+  looksGone(200, "<p>なにか</p>", "https://gazoo.com/DealerU-Car/error/disabled?Sdlr=18101&Scn="),
+  true
+);
+check("通常ページは掲載ありとみなす", looksGone(200, "<p>販売中</p>", "https://gazoo.com/DealerU-Car/detail?Id=1"), false);
+
+// --- 掲載開始待ちの判定 ---
+check("Excel取込直後は掲載待ち", isPending({ autoUpdate: false, gazooPending: true }), true);
+check("手動管理は掲載待ちではない", isPending({ autoUpdate: false }), false);
+check("自動更新中は掲載待ちではない", isPending({ autoUpdate: true, gazooPending: true }), false);
 
 // --- 売約の再確認期間 ---
 const now = Date.parse("2026-08-23T00:00:00Z");

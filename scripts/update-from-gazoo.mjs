@@ -153,10 +153,18 @@ export function parseGazoo(html) {
   };
 }
 
-// 掲載が終了（＝売約の可能性大）かどうか
-export function looksGone(status, html) {
+// Gazooがそのクルマを表示していない状態かどうか。
+// 販売開始前と売約済みは同じ「売約済み」画面になるため、ここでは区別しない。
+// どちらとして扱うかは、掲載待ち（gazooPending）かどうかで呼び出し側が決める。
+export function looksGone(status, html, finalUrl) {
   if (status === 404 || status === 410) return true;
-  return /掲載を終了|ページが見つかりません|お探しのページは|該当する車両がありません/.test(html);
+  if (/\/DealerU-Car\/error\//i.test(String(finalUrl || ""))) return true;
+  return /すでに売約済み|売約済みとなって|掲載を終了|ページが見つかりません|お探しのページは|該当する車両がありません/.test(html);
+}
+
+// Excelから取り込んだ直後の「掲載開始待ち」かどうか
+export function isPending(car) {
+  return car.autoUpdate === false && car.gazooPending === true;
 }
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -211,36 +219,102 @@ export function shouldRecheckSoldout(car, now = Date.now()) {
   return now - marked < SOLDOUT_RECHECK_DAYS * 24 * 60 * 60 * 1000;
 }
 
+// Gazooで読み取れた内容をクルマへ反映する。読めなかった項目は既存値を残す。
+async function applyGazooData(car, html) {
+  const p = parseGazoo(html);
+  let changed = false;
+
+  if (p.priceTotal == null) {
+    // 価格が読み取れないときは価格を変えない（誤更新防止）
+    console.log(`価格が読み取れませんでした: ${car.name}`);
+  } else {
+    if (p.priceTotal !== car.priceTotal) {
+      console.log(`支払総額を更新: ${car.name} ${car.priceTotal} → ${p.priceTotal}万円`);
+      car.priceTotal = p.priceTotal;
+      changed = true;
+    }
+    if (p.priceVehicle != null && p.priceVehicle !== car.priceVehicle) {
+      console.log(`車両価格を更新: ${car.name} ${car.priceVehicle} → ${p.priceVehicle}万円`);
+      car.priceVehicle = p.priceVehicle;
+      changed = true;
+    }
+  }
+
+  car.specs = car.specs || {};
+  for (const key of ["year", "km", "shaken", "fuel", "mission", "color"]) {
+    if (p.specs[key] && p.specs[key] !== car.specs[key]) {
+      console.log(`車両情報を更新: ${car.name} ${key} ${car.specs[key] || "（空）"} → ${p.specs[key]}`);
+      car.specs[key] = p.specs[key];
+      changed = true;
+    }
+  }
+
+  // 保証・整備等は1つでもGazooで検出できた場合だけ同期する。
+  if (p.badges.length && JSON.stringify(p.badges) !== JSON.stringify(car.badges || [])) {
+    console.log(`表示バッジを更新: ${car.name} → ${p.badges.join(" / ")}`);
+    car.badges = p.badges;
+    changed = true;
+  }
+
+  // 画像取得エラーだけで価格・売約更新全体を止めない。
+  try {
+    if (await updateImage(car, p.imageUrl)) changed = true;
+  } catch (e) {
+    console.log(`画像は更新しませんでした: ${car.name} ${e.message}`);
+  }
+  return changed;
+}
+
 export async function main() {
   const data = JSON.parse(await readFile(DATA_FILE, "utf8"));
   let changed = false;
 
   for (const car of data.cars || []) {
-    // リンクなし・自動更新オフのクルマは飛ばす
-    if (!car.gazooUrl || car.autoUpdate === false) continue;
-    // 売約済みは再確認期間を過ぎたら飛ばす
-    if (car.soldout && !shouldRecheckSoldout(car)) continue;
+    if (!car.gazooUrl) continue;
+    const pending = isPending(car);
+    if (!pending) {
+      // 手動管理のクルマは触らない
+      if (car.autoUpdate === false) continue;
+      // 売約済みは再確認期間を過ぎたら飛ばす
+      if (car.soldout && !shouldRecheckSoldout(car)) continue;
+    }
 
     try {
       const res = await fetch(car.gazooUrl, { headers: { "user-agent": UA }, redirect: "follow" });
       const html = await res.text();
+      const unavailable = looksGone(res.status, html, res.url);
+      const now = new Date().toISOString();
 
-      if (looksGone(res.status, html)) {
-        car.lastGazooCheck = new Date().toISOString();
+      if (pending) {
+        // 掲載開始待ち。売約済み画面なら販売開始前なので、まだ何もしない。
+        if (unavailable) {
+          console.log(`掲載開始を待っています: ${car.name}（${car.store}）`);
+        } else if (res.ok) {
+          car.autoUpdate = true;
+          delete car.gazooPending;
+          car.lastGazooCheck = now;
+          car.gazooStatus = "ok";
+          changed = true;
+          console.log(`掲載が始まったので自動更新へ切り替え: ${car.name}（${car.store}）`);
+          if (await applyGazooData(car, html)) changed = true;
+        } else {
+          console.log(`確認できませんでした（HTTP ${res.status}）: ${car.name}`);
+        }
+      } else if (unavailable) {
+        car.lastGazooCheck = now;
         car.gazooStatus = "soldout";
         if (!car.soldout) {
           car.soldout = true;
-          car.soldoutAt = car.lastGazooCheck;
+          car.soldoutAt = now;
           changed = true;
           console.log(`売約にしました: ${car.name}（${car.store}）`);
         } else if (!car.soldoutAt) {
           // 以前からの売約分にも起点を残す。これがないと再確認の期限が延び続ける。
-          car.soldoutAt = car.lastGazooCheck;
+          car.soldoutAt = now;
           changed = true;
         }
       } else if (res.ok) {
-        const p = parseGazoo(html);
-        car.lastGazooCheck = new Date().toISOString();
+        car.lastGazooCheck = now;
         car.gazooStatus = "ok";
         if (car.soldout) {
           // 掲載が戻っていたら売約表示を解除する
@@ -249,45 +323,7 @@ export async function main() {
           changed = true;
           console.log(`掲載が戻っていたので売約を解除: ${car.name}（${car.store}）`);
         }
-        if (p.priceTotal == null) {
-          // 価格が読み取れないときは価格を変えない（誤更新防止）
-          console.log(`価格が読み取れませんでした: ${car.name}`);
-        } else {
-          if (p.priceTotal !== car.priceTotal) {
-            console.log(`支払総額を更新: ${car.name} ${car.priceTotal} → ${p.priceTotal}万円`);
-            car.priceTotal = p.priceTotal;
-            changed = true;
-          }
-          if (p.priceVehicle != null && p.priceVehicle !== car.priceVehicle) {
-            console.log(`車両価格を更新: ${car.name} ${car.priceVehicle} → ${p.priceVehicle}万円`);
-            car.priceVehicle = p.priceVehicle;
-            changed = true;
-          }
-        }
-
-        // Gazooで読めた項目だけ上書きする。読めない項目は既存値を残す。
-        car.specs = car.specs || {};
-        for (const key of ["year", "km", "shaken", "fuel", "mission", "color"]) {
-          if (p.specs[key] && p.specs[key] !== car.specs[key]) {
-            console.log(`車両情報を更新: ${car.name} ${key} ${car.specs[key] || "（空）"} → ${p.specs[key]}`);
-            car.specs[key] = p.specs[key];
-            changed = true;
-          }
-        }
-
-        // 保証・整備等は1つでもGazooで検出できた場合だけ同期する。
-        if (p.badges.length && JSON.stringify(p.badges) !== JSON.stringify(car.badges || [])) {
-          console.log(`表示バッジを更新: ${car.name} → ${p.badges.join(" / ")}`);
-          car.badges = p.badges;
-          changed = true;
-        }
-
-        // 画像取得エラーだけで価格・売約更新全体を止めない。
-        try {
-          if (await updateImage(car, p.imageUrl)) changed = true;
-        } catch (e) {
-          console.log(`画像は更新しませんでした: ${car.name} ${e.message}`);
-        }
+        if (await applyGazooData(car, html)) changed = true;
       } else {
         console.log(`確認できませんでした（HTTP ${res.status}）: ${car.name}`);
       }

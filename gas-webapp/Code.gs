@@ -23,6 +23,8 @@ const APP = Object.freeze({
   draftChunkPrefix: 'UCAR_DRAFT_',
   draftChunkSize: 7000,
   maxCars: 200,
+  // 管理画面の店舗一覧・CMSの電話番号表と同じ並び。Excelの表記ゆれ検出にも使う。
+  stores: ['福岡西店', '博多南店', '福岡インター店', '小倉東店', '八幡店', '飯塚店', '久留米インター店'],
 });
 
 function doGet() {
@@ -159,8 +161,8 @@ function importGazooCar(auth, gazooUrl) {
   });
   const code = res.getResponseCode();
   const html = res.getContentText('UTF-8');
-  if (code === 404 || code === 410 || /掲載を終了|ページが見つかりません|該当する車両がありません/.test(html)) {
-    throw new Error('このGazoo車両は掲載終了、またはページが見つかりません。');
+  if (code === 404 || code === 410 || /すでに売約済み|売約済みとなって|掲載を終了|ページが見つかりません|該当する車両がありません/.test(html)) {
+    throw new Error('このクルマはGazooにまだ掲載されていないか、売約済みです。販売開始前のURLはこの画面になります。Excelから取り込んでおけば、掲載が始まった時点で自動更新へ切り替わります。');
   }
   if (code < 200 || code >= 300) throw new Error('Gazooを読み込めませんでした（HTTP ' + code + '）。');
 
@@ -303,7 +305,7 @@ function parseSpecialCarsSheet_(xml, shared, fileName) {
   }
   if (!pageName) pageName = String(fileName || '特選車').replace(/\.xlsx$/i, '');
 
-  const cars = [], warnings = [], seen = {};
+  const cars = [], warnings = [], seen = {}, storeWarned = {};
   for (let i = headerIndex + 1; i < rows.length; i++) {
     const c = rows[i].cells;
     const id = excelId_(c[col.vehicleNo]);
@@ -320,9 +322,15 @@ function parseSpecialCarsSheet_(xml, shared, fileName) {
       warnings.push((i + 1) + '行目：支払総額が車両価格より小さいため価格を空欄にしました');
     }
     const badges = excelBadges_(c, col, name);
+    const store = formatExcelStore_(c[col.store]);
+    // 店舗名がずれると電話番号を引けず、編集画面の店舗選択にも出せない
+    if (store && APP.stores.indexOf(store) < 0 && !storeWarned[store]) {
+      storeWarned[store] = true;
+      warnings.push('店舗名「' + store + '」は登録されている店舗と一致しません。取込後に店舗を選び直してください。');
+    }
     cars.push({
       id: id,
-      store: formatExcelStore_(c[col.store]),
+      store: store,
       name: name,
       gazooUrl: url,
       stock: excelStock_(c[col.stock]),
@@ -340,8 +348,11 @@ function parseSpecialCarsSheet_(xml, shared, fileName) {
       },
       comment: cleanExcelText_(c[col.comment]),
       soldout: false,
-      autoUpdate: !!url,
-      autoImageUpdate: !!url,
+      // 販売開始前のGazooは「売約済み」画面になり取り込めない。
+      // まずExcelの内容を手動管理で入れておき、掲載が始まったら自動更新へ切り替える。
+      autoUpdate: false,
+      autoImageUpdate: true,
+      gazooPending: !!url,
       excelSource: String(fileName || ''),
     });
   }
@@ -369,13 +380,21 @@ function excelStock_(value) {
 
 function formatExcelStore_(value) {
   let s = cleanExcelText_(value).replace(/^トヨタ認定中古車\s*/, '').replace(/^福岡トヨペット\s*/, '');
+  // Excelでは「久留米I」のように略される。表記がずれると電話番号を引けないため、
+  // 管理画面の店舗一覧・CMSの電話番号表と同じ正式名へ揃える。
+  s = s.replace(/[Ii](?:ンター)?(店)?$/, 'インター$1');
   if (s && !/店$/.test(s)) s += '店';
   return s;
 }
 
 function formatExcelCarName_(value) {
+  // 「C-HRHEV」「アクアHEV」のようにくっついた表記を、車名とエンジン表記に分ける。
+  // 「PHEV」を「P HEV」に割らないよう、直前がPのHEVだけは触らない。
   return cleanExcelText_(value)
-    .replace(/([ァ-ヶ一-龠々ー])((?:P?HEV|PHV)\b)/gi, '$1 $2')
+    .replace(/([0-9A-Za-zァ-ヶ一-龠々ー])(PHEV|PHV|HEV)\b/g, function (whole, before, word) {
+      if (word === 'HEV' && /[Pp]/.test(before)) return whole;
+      return before + ' ' + word;
+    })
     .replace(/\s+/g, ' ');
 }
 
@@ -414,9 +433,12 @@ function formatExcelFuel_(hv, name) {
 }
 
 function excelPriceMan_(value) {
-  const n = Number(cleanExcelText_(value).replace(/,/g, ''));
+  // 空欄は「未入力」。0扱いにすると支払総額が車両価格を下回った判定になり、価格が消える。
+  const s = cleanExcelText_(value).replace(/,/g, '');
+  if (!s) return null;
+  const n = Number(s);
   if (!isFinite(n)) return null;
-  return Math.round((n / 10) * 10) / 10;
+  return Math.round(n) / 10;
 }
 
 function excelBadges_(cells, col, name) {
@@ -745,7 +767,9 @@ function mergeAutomatedFields_(draft, published) {
   out.cars.forEach(function (c) {
     // URL直入力やExcel取込の直後は、画面で取得した新しい値を優先する。
     // Actionsの確認時刻が取込時刻を越えたら、通常の自動同期へ戻す。
-    if (c.autoUpdate === false || !c.uid || !byUid[c.uid]) return;
+    // 掲載待ちの車は手動管理だが、掲載開始をActionsが検知するので同期対象に含める。
+    const waitingForListing = c.autoUpdate === false && c.gazooPending === true;
+    if ((c.autoUpdate === false && !waitingForListing) || !c.uid || !byUid[c.uid]) return;
     const src = byUid[c.uid];
     const pendingAt = Date.parse(String(c.syncPendingAt || ''));
     const checkedAt = Date.parse(String(src.lastGazooCheck || ''));
@@ -753,6 +777,11 @@ function mergeAutomatedFields_(draft, published) {
     if (isFinite(pendingAt) && (!isFinite(checkedAt) || checkedAt <= pendingAt)) return;
     delete c.syncPending;
     delete c.syncPendingAt;
+    // 掲載が始まってActions側が自動更新へ切り替えていたら、この画面にも反映する
+    if (waitingForListing && src.autoUpdate === true) {
+      c.autoUpdate = true;
+      delete c.gazooPending;
+    }
     fields.forEach(function (k) { if (Object.prototype.hasOwnProperty.call(src, k)) c[k] = src[k]; });
   });
   return out;
@@ -773,6 +802,8 @@ function normalizeModel_(input) {
     if (c.autoImageUpdate == null) c.autoImageUpdate = true;
     // 売約解除後に再確認用の記録が残らないようにする
     if (c.soldout !== true) delete c.soldoutAt;
+    // 自動更新に切り替わった車に「掲載待ち」の印を残さない
+    if (c.autoUpdate === true) delete c.gazooPending;
   });
   const valid = {};
   d.cars.forEach(function (c) { valid[c.uid] = true; });
