@@ -3,7 +3,7 @@
     {
       "autoImageUpdate": true,
       "gazooStatus": "ok",
-      "lastGazooCheck": "2026-08-24T21:24:16.764Z",
+      "lastGazooCheck": "2026-08-26T09:34:56.500Z",
       "store": "福岡西店",
       "priceVehicle": 574.9,
       "uid": "car-8345111",
@@ -58,7 +58,7 @@
       "name": "アルファード S Cパッケージ",
       "autoImageUpdate": true,
       "gazooStatus": "soldout",
-      "lastGazooCheck": "2026-08-24T21:24:20.322Z",
+      "lastGazooCheck": "2026-08-26T09:34:59.874Z",
       "store": "博多南店",
       "priceVehicle": 383,
       "uid": "car-8342847",
@@ -68,7 +68,7 @@
     {
       "store": "小倉東店",
       "gazooStatus": "soldout",
-      "lastGazooCheck": "2026-08-24T21:24:23.699Z",
+      "lastGazooCheck": "2026-08-26T09:35:03.213Z",
       "autoImageUpdate": true,
       "uid": "car-8332906",
       "priceVehicle": 5,
@@ -121,7 +121,7 @@
       "id": "8352575",
       "name": "エスクァイア GIプレミアムパッケージBLT",
       "store": "飯塚店",
-      "lastGazooCheck": "2026-08-24T21:24:27.077Z",
+      "lastGazooCheck": "2026-08-26T09:35:06.540Z",
       "gazooStatus": "soldout",
       "autoImageUpdate": true,
       "autoUpdate": true,
@@ -132,7 +132,7 @@
     {
       "autoImageUpdate": true,
       "gazooStatus": "soldout",
-      "lastGazooCheck": "2026-08-24T21:24:30.452Z",
+      "lastGazooCheck": "2026-08-26T09:35:09.853Z",
       "store": "飯塚店",
       "autoUpdate": true,
       "uid": "car-8355591",
@@ -181,16 +181,17 @@
         "color": "メタルストリームメタリック"
       },
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8360161/83601612026061014471101_L.jpg",
-      "soldout": false,
+      "soldout": true,
       "id": "8360161",
       "name": "ノア Z",
-      "lastGazooCheck": "2026-08-24T21:24:33.855Z",
-      "gazooStatus": "ok",
+      "lastGazooCheck": "2026-08-26T09:35:13.192Z",
+      "gazooStatus": "soldout",
       "autoImageUpdate": true,
       "store": "福岡インター店",
       "autoUpdate": true,
       "priceVehicle": 298.8,
-      "uid": "car-8360161"
+      "uid": "car-8360161",
+      "soldoutAt": "2026-08-26T09:35:13.192Z"
     },
     {
       "soldout": true,
@@ -216,7 +217,7 @@
       "autoUpdate": true,
       "uid": "car-8349442",
       "autoImageUpdate": true,
-      "lastGazooCheck": "2026-08-24T21:24:37.321Z",
+      "lastGazooCheck": "2026-08-26T09:35:16.538Z",
       "gazooStatus": "soldout",
       "store": "小倉東店",
       "name": "ヴォクシー HEV S-Z",
@@ -252,7 +253,7 @@
       "uid": "car-8353041",
       "priceVehicle": 298,
       "store": "飯塚店",
-      "lastGazooCheck": "2026-08-24T21:24:40.591Z",
+      "lastGazooCheck": "2026-08-26T09:35:19.736Z",
       "gazooStatus": "ok",
       "autoImageUpdate": true
     },
@@ -285,7 +286,7 @@
       "store": "八幡店",
       "autoImageUpdate": true,
       "gazooStatus": "soldout",
-      "lastGazooCheck": "2026-08-24T21:24:44.108Z",
+      "lastGazooCheck": "2026-08-26T09:35:23.113Z",
       "name": "シエンタ HEV G",
       "id": "8360349",
       "soldoutAt": "2026-08-24T21:24:44.108Z"
@@ -298,7 +299,7 @@
       "autoUpdate": true,
       "store": "福岡西店",
       "autoImageUpdate": true,
-      "lastGazooCheck": "2026-08-24T21:24:47.525Z",
+      "lastGazooCheck": "2026-08-26T09:35:26.413Z",
       "gazooStatus": "soldout",
       "stock": "",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018355001&Sdlr=18101",
@@ -352,7 +353,7 @@
       "store": "福岡西店",
       "name": "",
       "id": "8348179",
-      "lastGazooCheck": "2026-08-24T21:24:50.961Z",
+      "lastGazooCheck": "2026-08-26T09:35:29.712Z",
       "gazooStatus": "soldout",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8348179/83481792026042415234501_S.jpg",
       "soldoutAt": "2026-08-24T21:24:50.961Z"
@@ -383,6 +384,6 @@
       ]
     }
   ],
-  "updatedAt": "2026-08-24T21:24:53.964Z",
+  "updatedAt": "2026-08-26T09:35:32.715Z",
   "version": 2
 }
