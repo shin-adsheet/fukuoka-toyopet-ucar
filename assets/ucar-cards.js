@@ -24,26 +24,31 @@
     var style = document.createElement("style");
     style.id = STYLE_ID;
     style.textContent = [
+      // カードは 780:714 の比率で固定。中の文字と余白はカード幅（cqw）に比例させ、
+      // どの幅でも同じ見た目のまま拡大縮小する。固定pxのままだと、幅が縮んだときに
+      // 中身が入りきらず、スマホでボタンが切れてしまう。
+      // ※カード自身の padding / border-radius に cqw は使えない（外側の基準になるため）。
       ".event-ucar-cards{display:flex;flex-wrap:wrap;justify-content:space-between;margin:10px auto 0;padding:0 5%;}",
-      ".event-ucar-cards .utc-card{width:49%;aspect-ratio:780/714;margin-bottom:1.2%;background:#e60012;border-radius:14px;padding:6px;box-sizing:border-box;position:relative;font-family:inherit;overflow:hidden;}",
+      ".event-ucar-cards .utc-card{width:49%;aspect-ratio:780/714;margin-bottom:1.2%;background:#e60012;border-radius:14px;padding:6px;box-sizing:border-box;position:relative;font-family:inherit;overflow:hidden;container-type:inline-size;}",
       ".event-ucar-cards .utc-card-main{display:block;height:100%;color:#222;}",
-      ".event-ucar-cards .utc-head{display:flex;height:44px;box-sizing:border-box;justify-content:space-between;align-items:center;color:#fff;padding:4px 10px 6px;font-weight:bold;}",
-      ".event-ucar-cards .utc-head small{font-size:12px;font-weight:normal;margin-right:6px;}",
-      ".event-ucar-cards .utc-store{font-size:18px;}.event-ucar-cards .utc-id{font-size:16px;letter-spacing:.05em;}",
-      ".event-ucar-cards .utc-inner{height:calc(100% - 44px);box-sizing:border-box;background:#fff;border-radius:10px;padding:10px;display:flex;flex-direction:column;overflow:hidden;}",
-      ".event-ucar-cards .utc-body{display:flex;gap:10px;}.event-ucar-cards .utc-photo{width:55%;position:relative;flex:none;}",
+      ".event-ucar-cards .utc-head{display:flex;height:9.1cqw;box-sizing:border-box;justify-content:space-between;align-items:center;color:#fff;padding:0.8cqw 2.1cqw 1.2cqw;font-weight:bold;}",
+      ".event-ucar-cards .utc-head small{font-size:2.8cqw;font-weight:normal;margin-right:1.2cqw;}",
+      ".event-ucar-cards .utc-store{font-size:4.3cqw;}.event-ucar-cards .utc-id{font-size:3.8cqw;letter-spacing:.05em;}",
+      ".event-ucar-cards .utc-inner{height:calc(100% - 9.1cqw);box-sizing:border-box;background:#fff;border-radius:2.1cqw;padding:2.1cqw;display:flex;flex-direction:column;overflow:hidden;}",
+      ".event-ucar-cards .utc-body{display:flex;gap:2.1cqw;}.event-ucar-cards .utc-photo{width:52%;position:relative;flex:none;}",
       ".event-ucar-cards .utc-photo .ph{width:100%;aspect-ratio:4/3;background:#eee;overflow:hidden;}.event-ucar-cards .utc-photo img{width:100%;height:100%;object-fit:contain;display:block;}",
-      ".event-ucar-cards .utc-stock{position:absolute;top:4px;right:4px;background:#fff;border:1px solid #333;font-size:12px;padding:0 6px;font-weight:bold;}",
-      ".event-ucar-cards .utc-info{flex:1;min-width:0;}.event-ucar-cards .utc-badges{margin:0 0 8px;padding:0;list-style:none;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.8fr);gap:3px 4px;}",
-      ".event-ucar-cards .utc-badges li{min-width:0;font-size:11px;line-height:1.4;padding:2px 5px;font-weight:bold;text-align:center;white-space:nowrap;background:#888;color:#fff;}.event-ucar-cards .utc-badges li.is-off{visibility:hidden;}",
+      ".event-ucar-cards .utc-stock{position:absolute;top:0.8cqw;right:0.8cqw;background:#fff;border:1px solid #333;font-size:2.8cqw;padding:0 1.2cqw;font-weight:bold;}",
+      ".event-ucar-cards .utc-info{flex:1;min-width:0;}.event-ucar-cards .utc-badges{margin:0 0 1.4cqw;padding:0;list-style:none;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.8fr);gap:0.6cqw 0.8cqw;}",
+      ".event-ucar-cards .utc-badges li{min-width:0;font-size:2.6cqw;line-height:1.4;padding:0.4cqw 1cqw;font-weight:bold;text-align:center;white-space:nowrap;background:#888;color:#fff;}.event-ucar-cards .utc-badges li.is-off{visibility:hidden;}",
       ".event-ucar-cards .utc-badges li.b-longrun{background:#1a2f80;}.event-ucar-cards .utc-badges li.b-hv{background:#1e9cd7;}.event-ucar-cards .utc-badges li.b-anshin{background:#21b8b3;color:#fff;}",
-      ".event-ucar-cards .utc-price{text-align:right;}.event-ucar-cards .utc-price-label{display:block;color:#e60012;font-weight:bold;font-size:14px;}",
-      ".event-ucar-cards .utc-price-main{color:#e60012;font-weight:900;font-size:44px;line-height:1;}.event-ucar-cards .utc-price-main small{font-size:26px;}.event-ucar-cards .utc-price-main .utc-unit{font-size:18px;margin-left:2px;font-weight:700;}",
-      ".event-ucar-cards .utc-price-sub{display:block;font-size:12px;color:#333;margin-top:4px;}.event-ucar-cards .utc-name{font-size:20px;font-weight:bold;margin:10px 0 4px;}.event-ucar-cards .utc-specs{font-size:12px;margin:0 0 10px;line-height:1.7;}",
-      ".event-ucar-cards .utc-btns{display:flex;gap:7px;margin-top:auto;}.event-ucar-cards .utc-btn{display:flex;align-items:center;justify-content:center;min-width:0;background:#e60012;color:#fff;text-align:center;text-decoration:none;font-weight:bold;font-size:17px;border-radius:999px;padding:10px 8px;position:relative;line-height:1.2;}",
-      ".event-ucar-cards .utc-detail-btn{flex:1.35;}.event-ucar-cards .utc-phone-btn{flex:1;background:#2077c8;}.event-ucar-cards .utc-detail-btn::after{content:'▶';position:absolute;right:10px;font-size:11px;top:50%;transform:translateY(-50%);}",
+      ".event-ucar-cards .utc-price{text-align:right;}.event-ucar-cards .utc-price-label{display:block;color:#e60012;font-weight:bold;font-size:3.3cqw;}",
+      ".event-ucar-cards .utc-price-main{color:#e60012;font-weight:900;font-size:10.4cqw;line-height:1;}.event-ucar-cards .utc-price-main small{font-size:6.2cqw;}.event-ucar-cards .utc-price-main .utc-unit{font-size:4.3cqw;margin-left:0.4cqw;font-weight:700;}",
+      ".event-ucar-cards .utc-price-sub{display:block;font-size:2.9cqw;color:#333;margin-top:0.8cqw;line-height:1.5;}.event-ucar-cards .utc-name{font-size:4.7cqw;font-weight:bold;margin:1.6cqw 0 0.6cqw;}.event-ucar-cards .utc-specs{font-size:2.9cqw;margin:0 0 1.6cqw;line-height:1.7;}",
+      ".event-ucar-cards .utc-btns{display:flex;gap:1.4cqw;margin-top:auto;}.event-ucar-cards .utc-btn{display:flex;align-items:center;justify-content:center;min-width:0;background:#e60012;color:#fff;text-align:center;text-decoration:none;font-weight:bold;font-size:4cqw;border-radius:999px;padding:2.1cqw 1.6cqw;position:relative;line-height:1.2;}",
+      ".event-ucar-cards .utc-detail-btn{flex:1.35;}.event-ucar-cards .utc-phone-btn{flex:1;background:#2077c8;}.event-ucar-cards .utc-detail-btn::after{content:'▶';position:absolute;right:2.1cqw;font-size:2.3cqw;top:50%;transform:translateY(-50%);}",
       ".event-ucar-cards .utc-soldout-img{position:absolute;z-index:5;width:58%;max-width:270px;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;}.event-ucar-cards .utc-card.soldout a{pointer-events:none;cursor:default;opacity:.65;}",
-      "@media screen and (max-width:767px){.event-ucar-cards{display:block;}.event-ucar-cards .utc-card{width:100%;margin-bottom:12px;}.event-ucar-cards .utc-price-main{font-size:38px;}}"
+      // スマホは1列。文字はカード幅に連動するので、ここで大きさを指定し直す必要はない。
+      "@media screen and (max-width:767px){.event-ucar-cards{display:block;padding:0 4%;}.event-ucar-cards .utc-card{width:100%;margin-bottom:12px;}}"
     ].join("");
     document.head.appendChild(style);
   }
@@ -70,7 +75,12 @@
       fee = Math.round((Number(car.priceTotal) - Number(car.priceVehicle)) * 10) / 10;
       if (isNaN(fee) || fee < 0) fee = null;
     }
-    var price = car.priceTotal == null ? "" : String(car.priceTotal);
+    // 支払総額がまだ無い間（掲載開始前など）は、車両価格を主役にして「万円」だけが
+    // 残らないようにする。どちらも無ければ価格欄そのものを出さない。
+    var showTotal = car.priceTotal != null;
+    var mainPrice = showTotal ? car.priceTotal : car.priceVehicle;
+    var priceLabel = showTotal ? "支払総額" : "車両価格";
+    var price = mainPrice == null ? "" : String(mainPrice);
     var priceParts = price.split(".");
     var specs = car.specs || {};
     var specText = [specs.year, specs.km, specs.shaken, specs.fuel, specs.mission, specs.color ? "色：" + specs.color : ""]
@@ -83,7 +93,8 @@
     }).join("");
     var source = imageSource(car.image, base);
     var image = source ? '<img src="' + esc(source) + '" alt="' + esc((car.store || "") + " " + (car.name || "") + " " + price + "万円") + '" loading="lazy">' : "";
-    var priceSub = car.priceVehicle == null ? "" : '<span class="utc-price-sub">車両価格 ' + esc(car.priceVehicle) + "万円" + (fee != null ? "<br>諸費用 " + fee + "万円" : "") + "</span>";
+    var priceSub = !showTotal || car.priceVehicle == null ? "" : '<span class="utc-price-sub">車両価格 ' + esc(car.priceVehicle) + "万円" + (fee != null ? "<br>諸費用 " + fee + "万円" : "") + "</span>";
+    var priceBlock = price === "" ? "" : '<div class="utc-price"><span class="utc-price-label">' + priceLabel + '</span><span class="utc-price-main">' + esc(priceParts[0] || "") + (priceParts[1] ? "<small>." + esc(priceParts[1]) + "</small>" : "") + '<span class="utc-unit">万円</span></span>' + priceSub + "</div>";
     var sold = car.soldout ? '<img class="utc-soldout-img" src="' + esc(base + "assets/soldout.png") + '" alt="売約済">' : "";
     var phone = PHONE_BY_STORE[car.store] || "";
     var tag = pageId + "_" + ("0" + (index + 1)).slice(-2) + "_" + (car.name || "") + "_" + (car.store || "").replace(/店$/, "");
@@ -92,7 +103,7 @@
     return '<div class="utc-card' + (car.soldout ? " soldout" : "") + '"><div class="utc-card-main">'
       + '<div class="utc-head"><span class="utc-store"><small>トヨタ認定中古車</small>' + esc(car.store || "") + '</span><span class="utc-id">' + esc(car.id || "") + "</span></div>"
       + '<div class="utc-inner"><div class="utc-body"><div class="utc-photo"><div class="ph">' + image + "</div>" + (car.stock ? '<span class="utc-stock">' + esc(car.stock) + "</span>" : "") + "</div>"
-      + '<div class="utc-info"><ul class="utc-badges">' + badges + '</ul><div class="utc-price"><span class="utc-price-label">支払総額</span><span class="utc-price-main">' + esc(priceParts[0] || "") + (priceParts[1] ? "<small>." + esc(priceParts[1]) + "</small>" : "") + '<span class="utc-unit">万円</span></span>' + priceSub + "</div></div></div>"
+      + '<div class="utc-info"><ul class="utc-badges">' + badges + "</ul>" + priceBlock + "</div></div>"
       + '<h3 class="utc-name">' + esc(car.name || "") + '</h3><p class="utc-specs">' + specText + '</p><div class="utc-btns">' + detailButton + phoneButton + "</div></div></div>" + sold + "</div>";
   }
 
