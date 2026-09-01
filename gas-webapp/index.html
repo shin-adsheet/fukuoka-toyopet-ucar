@@ -86,7 +86,7 @@
   <span class="sync busy" id="syncState">読み込み中…</span>
   <div class="top-actions">
     <button class="btn primary" id="btnPublish">変更をサイトへ反映</button>
-    <details class="top-more" id="topMore"><summary class="btn">その他 ▾</summary><div class="top-more-menu"><button class="btn" id="btnPull">公開中の内容を読み直す</button><button class="btn" id="btnGazoo">Gazoo更新だけ実行</button><button class="btn" id="btnLogout">ログアウト</button></div></details>
+    <details class="top-more" id="topMore"><summary class="btn">その他 ▾</summary><div class="top-more-menu"><button class="btn" id="btnJumpAnalytics">分析を見る</button><button class="btn" id="btnPull">公開中の内容を読み直す</button><button class="btn" id="btnGazoo">Gazoo更新だけ実行</button><button class="btn" id="btnLogout">ログアウト</button></div></details>
   </div>
 </header>
 
@@ -161,7 +161,7 @@
       <button class="an-tab" data-an="rest" type="button">売れ残り</button>
       <button class="an-tab" data-an="model" type="button">車種・タイプ</button>
       <button class="an-tab" data-an="price" type="button">価格帯</button>
-      <button class="an-tab" data-an="order" type="button">掲載順ヒートマップ</button>
+      <button class="an-tab" data-an="click" type="button">クリック数</button><button class="an-tab" data-an="order" type="button">掲載順ヒートマップ</button>
       <button class="an-tab" data-an="time" type="button">期間推移</button>
     </div>
     <div id="anBody"></div>
@@ -200,7 +200,7 @@ var STORES=['福岡西店','博多南店','福岡インター店','小倉東店'
 var PHONES={'福岡西店':'092-894-8639','博多南店':'092-581-3131','福岡インター店':'092-938-1422','小倉東店':'093-472-1234','八幡店':'093-621-5352','飯塚店':'0948-82-2594','久留米インター店':'0942-44-6144'};
 var BADGES=['修無','整付','リ済込','車検整備付','ロングラン保証','ハイブリッド保証','あんしん診断'];
 var SLOTS=[['修無'],['ロングラン保証'],['整付'],['ハイブリッド保証'],['リ済込','車検整備付'],['あんしん診断']];
-var EMBED_VERSION='20260901-1';
+var EMBED_VERSION='20260901-2';
 var state={version:2,cars:[],pages:[]},revision=null,selectedUid=null,currentPageId='main',boot=null,dirty=false,saveTimer=null,savePromise=null,saveAgain=false,gazooTimer=null,gazooSeq=0,excelPreview=null;
 var auth={name:'担当者',key:''};
 var addMode=null,addRows=[],addBusy=false,addSeq=0,addTimer=null;
@@ -208,7 +208,7 @@ var F={};
 
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function clone(v){return JSON.parse(JSON.stringify(v))}
-function gas(name,args){return new Promise(function(resolve,reject){var r=google.script.run.withSuccessHandler(resolve).withFailureHandler(function(e){reject(new Error((e&&e.message)||String(e)))}),a=args||[];if(name==='getBootstrap')r.getBootstrap(auth);else if(name==='saveDraft')r.saveDraft(auth,a[0],a[1]);else if(name==='publishCurrent')r.publishCurrent(auth,a[0]);else if(name==='pullPublished')r.pullPublished(auth);else if(name==='uploadCarImage')r.uploadCarImage(auth,a[0],a[1]);else if(name==='runGazooNow')r.runGazooNow(auth);else if(name==='getPublishedStatus')r.getPublishedStatus(auth);else if(name==='importGazooCar')r.importGazooCar(auth,a[0]);else if(name==='previewExcelImport')r.previewExcelImport(auth,a[0],a[1]);else reject(new Error('未対応の操作です。'))})}
+function gas(name,args){return new Promise(function(resolve,reject){var r=google.script.run.withSuccessHandler(resolve).withFailureHandler(function(e){reject(new Error((e&&e.message)||String(e)))}),a=args||[];if(name==='getBootstrap')r.getBootstrap(auth);else if(name==='saveDraft')r.saveDraft(auth,a[0],a[1]);else if(name==='publishCurrent')r.publishCurrent(auth,a[0]);else if(name==='pullPublished')r.pullPublished(auth);else if(name==='uploadCarImage')r.uploadCarImage(auth,a[0],a[1]);else if(name==='runGazooNow')r.runGazooNow(auth);else if(name==='getPublishedStatus')r.getPublishedStatus(auth);else if(name==='importGazooCar')r.importGazooCar(auth,a[0]);else if(name==='previewExcelImport')r.previewExcelImport(auth,a[0],a[1]);else if(name==='getClickStats')r.getClickStats(auth);else reject(new Error('未対応の操作です。'))})}
 function showToast(s){var t=document.getElementById('toast');t.textContent=s;t.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(function(){t.classList.remove('show')},2600)}
 function syncStatus(text,kind){var s=document.getElementById('syncState');s.textContent=text;s.className='sync '+(kind||'')}
 function page(){return state.pages.filter(function(p){return p.id===currentPageId})[0]||state.pages[0]}
@@ -254,7 +254,8 @@ if(showTotal&&c.priceVehicle!=null){var f=Math.round((Number(c.priceTotal)-Numbe
 var priceBlock=price===''?'':'<div class="utc-price"><span class="utc-label">'+(showTotal?'支払総額':'車両価格')+'</span><span class="utc-mainprice">'+esc(p[0]||'')+(p[1]?'<small>.'+esc(p[1])+'</small>':'')+'<em>万円</em></span>'+fee+'</div>';var im=imgSrc(c.image),s=c.specs||{},spec=[s.year,s.km,s.shaken,s.fuel,s.mission,s.color?'色：'+s.color:''].filter(Boolean).map(function(x){return'■'+esc(x)}).join('　'),phone=PHONES[c.store]||'',sold=c.soldout?'<img class="soldout-img" src="'+esc(soldSrc())+'" alt="売約済">':'';return'<div class="utc-card'+(c.soldout?' soldout':'')+'"><div class="utc-main"><div class="utc-head"><span class="utc-store"><small>トヨタ認定中古車</small>'+esc(c.store||'')+'</span><span class="utc-id">'+esc(c.id||'')+'</span></div><div class="utc-inner"><div class="utc-body"><div class="utc-photo"><div class="ph">'+(im?'<img src="'+esc(im)+'" alt="">':'写真なし')+'</div>'+(c.stock?'<span class="utc-stock">'+esc(c.stock)+'</span>':'')+'</div><div class="utc-info"><ul class="utc-badges">'+badgeHtml(c)+'</ul>'+priceBlock+'</div></div><h3 class="utc-name">'+esc(c.name||'')+'</h3><p class="utc-specs">'+spec+'</p><div class="utc-btns"><a class="utc-btn utc-detail" href="'+esc(c.gazooUrl||'#')+'" target="_blank">詳しくはこちら</a>'+(phone?'<a class="utc-btn utc-phone" href="tel:'+esc(phone.replace(/-/g,''))+'"><svg class="utc-btn-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>確認する</a>':'')+'</div></div></div>'+sold+'</div>'}
 function renderPreview(){var box=document.getElementById('preview'),c=selected();box.innerHTML=c?cardMarkup(c):''}
 function renderPagePreview(){var box=document.getElementById('pagePreview');if(!box)return;var cars=pageCars();box.innerHTML=cars.length?cars.map(cardMarkup).join(''):'<div class="page-preview-empty">このページには掲載車がありません。</div>'}
-function cmsEmbedCode(){var p=page(),owner=boot&&boot.owner?boot.owner:'shin-adsheet',repo=boot&&boot.repo?boot.repo:'fukuoka-toyopet-ucar',branch=boot&&boot.branch?boot.branch:'main',base='https://raw.githubusercontent.com/'+owner+'/'+repo+'/'+branch+'/',cdn='https://cdn.jsdelivr.net/gh/'+owner+'/'+repo+'@'+branch+'/assets/ucar-cards.js?v='+EMBED_VERSION;return'<div class="event-ucar-cards" data-ucar-page="'+(p?p.id:'main')+'" data-ucar-base="'+base+'">読み込み中…</div>\n<script src="'+cdn+'"><\/script>'}
+function cmsEmbedCode(){var p=page(),owner=boot&&boot.owner?boot.owner:'shin-adsheet',repo=boot&&boot.repo?boot.repo:'fukuoka-toyopet-ucar',branch=boot&&boot.branch?boot.branch:'main',base='https://raw.githubusercontent.com/'+owner+'/'+repo+'/'+branch+'/',cdn='https://cdn.jsdelivr.net/gh/'+owner+'/'+repo+'@'+branch+'/assets/ucar-cards.js?v='+EMBED_VERSION;var log=boot&&boot.logUrl?' data-ucar-log="'+esc(boot.logUrl)+'"':'';
+return'<div class="event-ucar-cards" data-ucar-page="'+(p?p.id:'main')+'" data-ucar-base="'+base+'"'+log+'>読み込み中…</div>\n<script src="'+cdn+'"><\/script>'}
 function renderCmsCode(){var el=document.getElementById('cmsCode');if(el)el.value=cmsEmbedCode()}
 async function copyCmsCode(){var el=document.getElementById('cmsCode'),btn=document.getElementById('btnCopyCms');try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(el.value);else{el.focus();el.select();if(!document.execCommand('copy'))throw new Error('copy failed')}btn.textContent='コピーしました';btn.classList.add('copy-ok');showToast('CMSコードをコピーしました');setTimeout(function(){btn.textContent='コードをコピー';btn.classList.remove('copy-ok')},1800)}catch(e){el.focus();el.select();alert('自動コピーできませんでした。選択されたコードを Ctrl+C でコピーしてください。')}}
 
@@ -438,10 +439,69 @@ function anTime(){
    +block('週別',group(weekKey))
    +block('日別',group(function(d){return d.getFullYear()+'/'+pad(d.getMonth()+1)+'/'+pad(d.getDate())}));
 }
+/* クリック数。GitHubに保存した分＋まだ書き出していない分をGAS側で合算して受け取る */
+var clickData=null,clickState='idle';
+var CLICK_KIND={d:'詳しくはこちら',p:'電話で確認'};
+async function loadClicks(force){
+  if(clickState==='loading')return;
+  if(clickData&&!force)return;
+  clickState='loading';renderAnalytics();
+  try{clickData=await gas('getClickStats',[]);clickState='ready'}
+  catch(e){clickData=null;clickState='error:'+e.message}
+  renderAnalytics();
+}
+// { uid: {d:n, p:n, total:n} } と日別合計を作る
+function clickIndex(filterPage){
+  var byCar={},byDay={},byPage={},total=0;
+  var days=(clickData&&clickData.days)||{};
+  Object.keys(days).forEach(function(day){
+    Object.keys(days[day]).forEach(function(page){
+      if(filterPage&&page!==filterPage)return;
+      Object.keys(days[day][page]).forEach(function(k){
+        var at=k.lastIndexOf('|');if(at<0)return;
+        var uid=k.slice(0,at),kind=k.slice(at+1),n=Number(days[day][page][k])||0;
+        var c=byCar[uid]=byCar[uid]||{d:0,p:0,total:0};
+        if(kind==='d')c.d+=n;else if(kind==='p')c.p+=n;
+        c.total+=n;
+        byDay[day]=(byDay[day]||0)+n;
+        byPage[page]=(byPage[page]||0)+n;
+        total+=n;
+      });
+    });
+  });
+  return{byCar:byCar,byDay:byDay,byPage:byPage,total:total};
+}
+function anClick(){
+  if(clickState==='loading')return'<div class="an-empty">クリック数を読み込んでいます…</div>';
+  if(String(clickState).indexOf('error')===0)return'<div class="an-empty">クリック数を読み込めませんでした：'+esc(clickState.slice(6))+'</div>';
+  if(clickState==='idle'){loadClicks();return'<div class="an-empty">クリック数を読み込んでいます…</div>'}
+  var idx=clickIndex(),rows=anCars();
+  if(!idx.total)return'<div class="an-empty">まだクリックが記録されていません。<br>CMSへ貼るコードを最新のものに貼り替えると、その後のクリックから記録が始まります。</div>';
+  var list=rows.map(function(r){var c=idx.byCar[r.car.uid]||{d:0,p:0,total:0};return{r:r,c:c}})
+    .sort(function(a,b){return b.c.total-a.c.total});
+  var max=list.length?list[0].c.total:0;
+  var pages={};rows.forEach(function(r){pages[r.pageId]=r.pageName});
+  var pageRows=Object.keys(idx.byPage).map(function(id){return[esc(pages[id]||id),idx.byPage[id],anBarHtml(idx.byPage[id],Math.max.apply(null,Object.keys(idx.byPage).map(function(k){return idx.byPage[k]}).concat([1])))]});
+  return'<div class="an-cards">'
+   +'<div class="an-card"><div class="k">クリック合計</div><div class="v">'+idx.total+'</div><div class="s">回</div></div>'
+   +'<div class="an-card"><div class="k">記録された日数</div><div class="v">'+Object.keys(idx.byDay).length+'</div><div class="s">日</div></div>'
+   +'<div class="an-card"><div class="k">クリックのあった車</div><div class="v">'+Object.keys(idx.byCar).length+'</div><div class="s">台</div></div>'
+   +'</div>'
+   +'<h3 style="font-size:13px;margin:6px 0 8px">ページ別</h3>'
+   +anTableHtml([{label:'掲載ページ'},{label:'クリック',num:true},{label:'構成'}],pageRows)
+   +'<h3 style="font-size:13px;margin:16px 0 8px">車ごと（多い順）</h3>'
+   +anTableHtml([{label:'車名'},{label:'掲載ページ'},{label:'順',num:true},{label:'詳しくは',num:true},{label:'電話',num:true},{label:'合計',num:true},{label:'構成'},{label:'状態'}],
+     list.map(function(x){return[esc(x.r.car.name||''),esc(x.r.pageName),x.r.order,x.c.d,x.c.p,x.c.total,anBarHtml(x.c.total,max),x.r.car.soldout?'売約':'掲載中']}))
+   +'<h3 style="font-size:13px;margin:16px 0 8px">日別</h3>'
+   +anTableHtml([{label:'日付'},{label:'クリック',num:true},{label:'構成'}],
+     Object.keys(idx.byDay).sort().reverse().map(function(d){return[esc(d),idx.byDay[d],anBarHtml(idx.byDay[d],Math.max.apply(null,Object.keys(idx.byDay).map(function(k){return idx.byDay[k]}).concat([1])))]}))
+   +'<p class="an-note">クリック数はGitHubの data/clicks.json に保存されます。「変更をサイトへ反映」を押したときにまとめて書き出されます。'
+   +(clickData&&clickData.updatedAt?'<br>最後に保存した日時：'+esc(new Date(clickData.updatedAt).toLocaleString('ja-JP')):'')+'</p>';
+}
 function renderAnalytics(){
   var box=document.getElementById('anBody');
   if(!box)return;
-  var fn={summary:anSummary,pages:anPages,speed:anSpeed,rest:anRest,model:anModel,price:anPrice,order:anOrder,time:anTime}[anTab]||anSummary;
+  var fn={summary:anSummary,pages:anPages,speed:anSpeed,rest:anRest,model:anModel,price:anPrice,click:anClick,order:anOrder,time:anTime}[anTab]||anSummary;
   try{box.innerHTML=fn()}catch(e){box.innerHTML='<div class="an-empty">集計できませんでした：'+esc(e.message)+'</div>'}
   document.querySelectorAll('.an-tab').forEach(function(b){b.classList.toggle('on',b.dataset.an===anTab)});
 }
@@ -595,7 +655,7 @@ function bind(){
   document.getElementById('btnExcel').onclick=function(){document.getElementById('fileExcel').click()};bindExcelDrop();document.querySelectorAll('.an-tab').forEach(function(b){b.onclick=function(){anTab=b.dataset.an;renderAnalytics()}});document.getElementById('fileExcel').addEventListener('change',chooseExcel);document.getElementById('excelCancel').onclick=closeExcel;document.getElementById('excelApply').onclick=applyExcel;
   document.getElementById('previewPc').onclick=function(){setPreviewDevice('pc')};document.getElementById('previewSp').onclick=function(){setPreviewDevice('sp')};document.getElementById('btnCopyCms').onclick=copyCmsCode;
   document.getElementById('btnPublish').onclick=function(){publish(false)};document.getElementById('btnPull').onclick=pullPublished;document.getElementById('btnGazoo').onclick=runGazoo;
-  document.getElementById('btnLogout').onclick=function(){localStorage.removeItem('ucarEditorKey');auth.key='';location.reload()};
+  document.getElementById('btnJumpAnalytics').onclick=function(){document.getElementById('topMore').removeAttribute('open');document.querySelector('.analytics-panel').scrollIntoView({behavior:'smooth',block:'start'})};document.getElementById('btnLogout').onclick=function(){localStorage.removeItem('ucarEditorKey');auth.key='';location.reload()};
   window.addEventListener('beforeunload',function(e){if(dirty||savePromise){e.preventDefault();e.returnValue=''}});
 }
 function setPreviewDevice(mode){var shell=document.getElementById('pagePreviewShell');shell.className='page-preview-shell '+(mode==='sp'?'sp':'pc');document.getElementById('previewPc').classList.toggle('active',mode!=='sp');document.getElementById('previewSp').classList.toggle('active',mode==='sp')}

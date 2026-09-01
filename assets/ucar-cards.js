@@ -103,7 +103,7 @@
     var tag = pageId + "_" + ("0" + (index + 1)).slice(-2) + "_" + (car.name || "") + "_" + (car.store || "").replace(/店$/, "");
     var detailButton = '<a class="utc-btn utc-detail-btn clicktag" data-clicktag="' + esc(tag) + '" data-clicktagaction="gazooURL" href="' + esc(car.gazooUrl || "#") + '" target="_blank" rel="noopener">詳しくはこちら</a>';
     var phoneButton = phone ? '<a class="utc-btn utc-phone-btn" href="tel:' + esc(phone.replace(/[^0-9+]/g, "")) + '" aria-label="' + esc((car.store || "") + "へ電話で確認する") + '">' + PHONE_ICON + "確認する</a>" : "";
-    return '<div class="utc-card' + (car.soldout ? " soldout" : "") + '"><div class="utc-card-main">'
+    return '<div class="utc-card' + (car.soldout ? " soldout" : "") + '" data-uid="' + esc(car.uid || "") + '"><div class="utc-card-main">'
       + '<div class="utc-head"><span class="utc-store"><small>トヨタ認定中古車</small>' + esc(car.store || "") + '</span><span class="utc-id">' + esc(car.id || "") + "</span></div>"
       + '<div class="utc-inner"><div class="utc-body"><div class="utc-photo"><div class="ph">' + image + "</div>" + (car.stock ? '<span class="utc-stock">' + esc(car.stock) + "</span>" : "") + "</div>"
       + '<div class="utc-info"><ul class="utc-badges">' + badges + "</ul>" + priceBlock + "</div></div>"
@@ -120,10 +120,54 @@
     return (selectedPage.carUids || []).map(function (uid) { return byUid[uid]; }).filter(Boolean);
   }
 
+  // どのカードのどのボタンが押されたかを管理画面へ知らせる。
+  // 表示や遷移を邪魔しないよう、送信の失敗は黙って捨てる。
+  function sendClick(logUrl, pageId, uid, kind) {
+    if (!logUrl || !uid) return;
+    try {
+      var body = JSON.stringify({ p: pageId, u: uid, k: kind });
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(logUrl, new Blob([body], { type: "text/plain;charset=UTF-8" }));
+      } else {
+        fetch(logUrl, { method: "POST", body: body, mode: "no-cors", keepalive: true });
+      }
+    } catch (e) {}
+  }
+
+  // class名は前方一致だと utc-card-main が utc-card に引っかかるため、区切り込みで見る
+  function hasClass(node, name) {
+    return node && node.nodeType === 1 && (" " + (node.className || "") + " ").indexOf(" " + name + " ") >= 0;
+  }
+  function closestBy(node, stop, match) {
+    while (node && node !== stop) {
+      if (match(node)) return node;
+      node = node.parentNode;
+    }
+    return null;
+  }
+
+  function bindClickLog(box, pageId) {
+    var logUrl = box.getAttribute("data-ucar-log") || "";
+    if (!logUrl || box.getAttribute("data-ucar-logging") === "1") return;
+    box.setAttribute("data-ucar-logging", "1");
+    box.addEventListener("click", function (event) {
+      var btn = closestBy(event.target, box, function (n) {
+        return hasClass(n, "utc-detail-btn") || hasClass(n, "utc-phone-btn");
+      });
+      if (!btn) return;
+      var card = closestBy(btn, box, function (n) {
+        return n.nodeType === 1 && n.getAttribute && n.getAttribute("data-uid");
+      });
+      if (!card) return;
+      sendClick(logUrl, pageId, card.getAttribute("data-uid"), hasClass(btn, "utc-phone-btn") ? "p" : "d");
+    });
+  }
+
   function renderBox(box) {
     if (!box || box.getAttribute("data-ucar-loading") === "1") return;
     var base = box.getAttribute("data-ucar-base") || "https://raw.githubusercontent.com/shin-adsheet/fukuoka-toyopet-ucar/main/";
     var pageId = box.getAttribute("data-ucar-page") || "main";
+    bindClickLog(box, pageId);
     box.setAttribute("data-ucar-loading", "1");
     fetch(base + "data/cars.json?t=" + Date.now())
       .then(function (response) { if (!response.ok) throw new Error("HTTP " + response.status); return response.json(); })

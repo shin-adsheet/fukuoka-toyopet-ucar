@@ -27,10 +27,155 @@ const APP = Object.freeze({
   stores: ['福岡西店', '博多南店', '福岡インター店', '小倉東店', '八幡店', '飯塚店', '久留米インター店'],
 });
 
+/* ===== クリック数の記録 =====
+ * CMSのカードが押されるたびにGASへ通知が届く。1件ずつGitHubへ書くと
+ * コミットが増えすぎるため、いったんScript Propertiesへ日・ページ単位で
+ * ためておき、公開のタイミングでまとめて data/clicks.json へ書き出す。
+ * Googleの追加権限は使わない。
+ */
+const CLICK = Object.freeze({
+  path: 'data/clicks.json',
+  prefix: 'CLK_',
+  sep: '__',
+  maxKeysPerBucket: 400,
+  kinds: { d: '詳しくはこちら', p: '電話で確認' },
+});
+
+function doPost(e) {
+  // 公開ページからの計測なので編集用キーは求めない。失敗しても利用者へ影響を出さない。
+  try { recordClick_(JSON.parse((e && e.postData && e.postData.contents) || '{}')); } catch (err) {}
+  return ContentService.createTextOutput('ok').setMimeType(ContentService.MimeType.TEXT);
+}
+
+// 公開中のページIDと車IDの一覧。誰でも送れる口なので、実在するものだけ数える。
+// 毎回GitHubを見に行かなくて済むよう、しばらく手元に持っておく。
+function validTargets_() {
+  const cache = CacheService.getScriptCache();
+  const cached = cache.get('UCAR_TARGETS');
+  if (cached) {
+    try { return JSON.parse(cached); } catch (err) { /* 壊れていたら取り直す */ }
+  }
+  const out = { pages: {}, uids: {} };
+  try {
+    const data = readPublished_();
+    (data.pages || []).forEach(function (p) { if (p && p.id) out.pages[p.id] = 1; });
+    (data.cars || []).forEach(function (c) { if (c && c.uid) out.uids[c.uid] = 1; });
+    cache.put('UCAR_TARGETS', JSON.stringify(out), 21600);
+  } catch (err) { /* 読めないときは記録を見送る */ }
+  return out;
+}
+
+function recordClick_(body) {
+  const page = String(body && body.p || '').replace(/[^0-9A-Za-z_-]/g, '').slice(0, 40);
+  const uid = String(body && body.u || '').replace(/[^0-9A-Za-z_-]/g, '').slice(0, 60);
+  const kind = CLICK.kinds[body && body.k] ? body.k : '';
+  if (!page || !uid || !kind) return;
+
+  // 実在しないページ・車の水増しを弾く。GitHubへの問い合わせはロックの外で済ませる。
+  const valid = validTargets_();
+  if (!valid.pages[page] || !valid.uids[uid]) return;
+
+  const day = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd');
+  const key = CLICK.prefix + day + CLICK.sep + page;
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(5000)) return;
+  try {
+    const p = PropertiesService.getScriptProperties();
+    let map = {};
+    try { map = JSON.parse(p.getProperty(key) || '{}'); } catch (err) { map = {}; }
+    const k = uid + '|' + kind;
+    // 際限なく増えないよう、1日1ページあたりの種類数に上限を設ける
+    if (map[k] == null && Object.keys(map).length >= CLICK.maxKeysPerBucket) return;
+    map[k] = (map[k] || 0) + 1;
+    p.setProperty(key, JSON.stringify(map));
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// たまっている未書き出し分を { 日付: { ページ: { "uid|種類": 回数 } } } で返す
+function pendingClicks_() {
+  const all = PropertiesService.getScriptProperties().getProperties();
+  const out = {};
+  Object.keys(all).forEach(function (key) {
+    if (key.indexOf(CLICK.prefix) !== 0) return;
+    const rest = key.slice(CLICK.prefix.length);
+    const at = rest.indexOf(CLICK.sep);
+    if (at < 0) return;
+    const day = rest.slice(0, at), page = rest.slice(at + CLICK.sep.length);
+    let map = {};
+    try { map = JSON.parse(all[key] || '{}'); } catch (err) { return; }
+    out[day] = out[day] || {};
+    out[day][page] = map;
+  });
+  return out;
+}
+
+function readClicks_() {
+  try {
+    const cfg = getConfig_();
+    const res = githubFetch_('/contents/' + CLICK.path + '?ref=' + encodeURIComponent(cfg.branch), 'get');
+    if (res.getResponseCode() !== 200) return { version: 1, days: {} };
+    const j = JSON.parse(res.getContentText());
+    const json = Utilities.newBlob(Utilities.base64Decode(String(j.content || '').replace(/\s/g, ''))).getDataAsString('UTF-8');
+    const data = JSON.parse(json);
+    data.days = data.days && typeof data.days === 'object' ? data.days : {};
+    return data;
+  } catch (err) {
+    return { version: 1, days: {} };
+  }
+}
+
+function mergeClicks_(store, pending) {
+  Object.keys(pending).forEach(function (day) {
+    store.days[day] = store.days[day] || {};
+    Object.keys(pending[day]).forEach(function (page) {
+      store.days[day][page] = store.days[day][page] || {};
+      const src = pending[day][page];
+      Object.keys(src).forEach(function (k) {
+        store.days[day][page][k] = (store.days[day][page][k] || 0) + src[k];
+      });
+    });
+  });
+  return store;
+}
+
+// たまった分をGitHubへ書き出して、書けたら手元を空にする
+function flushClicks_() {
+  const pending = pendingClicks_();
+  const days = Object.keys(pending);
+  if (!days.length) return false;
+  const store = mergeClicks_(readClicks_(), pending);
+  store.version = 1;
+  store.updatedAt = new Date().toISOString();
+  putJsonToGitHub_(CLICK.path, store, 'クリック数を記録');
+  const p = PropertiesService.getScriptProperties();
+  days.forEach(function (day) {
+    Object.keys(pending[day]).forEach(function (page) {
+      p.deleteProperty(CLICK.prefix + day + CLICK.sep + page);
+    });
+  });
+  return true;
+}
+
+// 分析画面用。GitHubに保存済みの分と、まだ書き出していない分を合わせて返す
+function getClickStats(auth) {
+  requireEditor_(auth);
+  const store = mergeClicks_(readClicks_(), pendingClicks_());
+  return { ok: true, days: store.days || {}, updatedAt: store.updatedAt || null };
+}
+
 function doGet() {
   return HtmlService.createHtmlOutputFromFile('index')
     .setTitle('中古車カード管理 | 福岡トヨペット')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+// クリック通知の宛先。Script Propertiesの WEBAPP_URL が優先。
+function webAppUrl_() {
+  const fixed = PropertiesService.getScriptProperties().getProperty('WEBAPP_URL');
+  if (fixed) return String(fixed).trim();
+  try { return ScriptApp.getService().getUrl() || ''; } catch (err) { return ''; }
 }
 
 function getBootstrap(auth) {
@@ -57,6 +202,7 @@ function getBootstrap(auth) {
     owner: cfg.owner,
     repo: cfg.repo,
     branch: cfg.branch,
+    logUrl: webAppUrl_(),
     revision: draft.revision,
     updatedAt: draft.updatedAt,
     updatedBy: draft.updatedBy,
@@ -89,6 +235,8 @@ function publishCurrent(auth, expectedRevision) {
     validateModel_(model);
     model.updatedAt = new Date().toISOString();
     putJsonToGitHub_(APP.dataPath, model, '管理画面から掲載内容を公開');
+    // たまったクリック数もこのタイミングでGitHubへ残す
+    try { flushClicks_(); } catch (err) { /* 公開そのものは止めない */ }
 
     const saved = writeDraftUnlocked_(model, editor, draft.revision + 1);
     return {
