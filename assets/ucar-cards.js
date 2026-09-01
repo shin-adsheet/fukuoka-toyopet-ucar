@@ -9,6 +9,8 @@
   var STYLE_ID = "fukuoka-toyopet-ucar-style";
   var BADGE_CLASS = { "ロングラン保証": "b-longrun", "ハイブリッド保証": "b-hv", "あんしん診断": "b-anshin" };
   var BADGE_SLOT_GROUPS = [["修無"], ["ロングラン保証"], ["整付"], ["ハイブリッド保証"], ["リ済込", "車検整備付"], ["あんしん診断"]];
+  // 受話器の絵文字（☎）は古く見えるため、線の細い今どきのアイコンを埋め込む
+  var PHONE_ICON = '<svg class="utc-btn-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>';
   var PHONE_BY_STORE = {
     "福岡西店": "092-894-8639",
     "博多南店": "092-581-3131",
@@ -42,9 +44,11 @@
       ".event-ucar-cards .utc-badges li{min-width:0;font-size:2.6cqw;line-height:1.4;padding:0.4cqw 1cqw;font-weight:bold;text-align:center;white-space:nowrap;background:#888;color:#fff;}.event-ucar-cards .utc-badges li.is-off{visibility:hidden;}",
       ".event-ucar-cards .utc-badges li.b-longrun{background:#1a2f80;}.event-ucar-cards .utc-badges li.b-hv{background:#1e9cd7;}.event-ucar-cards .utc-badges li.b-anshin{background:#21b8b3;color:#fff;}",
       ".event-ucar-cards .utc-price{text-align:right;}.event-ucar-cards .utc-price-label{display:block;color:#e60012;font-weight:bold;font-size:3.3cqw;}",
-      ".event-ucar-cards .utc-price-main{color:#e60012;font-weight:900;font-size:10.4cqw;line-height:1;}.event-ucar-cards .utc-price-main small{font-size:6.2cqw;}.event-ucar-cards .utc-price-main .utc-unit{font-size:4.3cqw;margin-left:0.4cqw;font-weight:700;}",
+      // 価格は太さを最大にしたうえで、同じ色の輪郭を足してさらに太く見せる
+      ".event-ucar-cards .utc-price-main{color:#e60012;font-weight:900;font-size:10.4cqw;line-height:1;-webkit-text-stroke:0.028em #e60012;}.event-ucar-cards .utc-price-main small{font-size:6.2cqw;}.event-ucar-cards .utc-price-main .utc-unit{font-size:4.3cqw;margin-left:0.4cqw;font-weight:700;}",
       ".event-ucar-cards .utc-price-sub{display:block;font-size:2.9cqw;color:#333;margin-top:0.8cqw;line-height:1.5;}.event-ucar-cards .utc-name{font-size:4.7cqw;font-weight:bold;margin:1.6cqw 0 0.6cqw;}.event-ucar-cards .utc-specs{font-size:2.9cqw;margin:0 0 1.6cqw;line-height:1.7;}",
       ".event-ucar-cards .utc-btns{display:flex;gap:1.4cqw;margin-top:auto;}.event-ucar-cards .utc-btn{display:flex;align-items:center;justify-content:center;min-width:0;background:#e60012;color:#fff;text-align:center;text-decoration:none;font-weight:bold;font-size:4cqw;border-radius:999px;padding:2.1cqw 1.6cqw;position:relative;line-height:1.2;}",
+      ".event-ucar-cards .utc-btn-icon{width:1.15em;height:1.15em;margin-right:.35em;flex:none;fill:currentColor;}",
       ".event-ucar-cards .utc-detail-btn{flex:1.35;}.event-ucar-cards .utc-phone-btn{flex:1;background:#2077c8;}.event-ucar-cards .utc-detail-btn::after{content:'▶';position:absolute;right:2.1cqw;font-size:2.3cqw;top:50%;transform:translateY(-50%);}",
       ".event-ucar-cards .utc-soldout-img{position:absolute;z-index:5;width:58%;max-width:270px;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;}.event-ucar-cards .utc-card.soldout a{pointer-events:none;cursor:default;opacity:.65;}",
       // スマホは1列。文字はカード幅に連動するので、ここで大きさを指定し直す必要はない。
@@ -99,7 +103,7 @@
     var phone = PHONE_BY_STORE[car.store] || "";
     var tag = pageId + "_" + ("0" + (index + 1)).slice(-2) + "_" + (car.name || "") + "_" + (car.store || "").replace(/店$/, "");
     var detailButton = '<a class="utc-btn utc-detail-btn clicktag" data-clicktag="' + esc(tag) + '" data-clicktagaction="gazooURL" href="' + esc(car.gazooUrl || "#") + '" target="_blank" rel="noopener">詳しくはこちら</a>';
-    var phoneButton = phone ? '<a class="utc-btn utc-phone-btn" href="tel:' + esc(phone.replace(/[^0-9+]/g, "")) + '" aria-label="' + esc((car.store || "") + "へ電話で確認する") + '">☎ 確認する</a>' : "";
+    var phoneButton = phone ? '<a class="utc-btn utc-phone-btn" href="tel:' + esc(phone.replace(/[^0-9+]/g, "")) + '" aria-label="' + esc((car.store || "") + "へ電話で確認する") + '">' + PHONE_ICON + "確認する</a>" : "";
     return '<div class="utc-card' + (car.soldout ? " soldout" : "") + '"><div class="utc-card-main">'
       + '<div class="utc-head"><span class="utc-store"><small>トヨタ認定中古車</small>' + esc(car.store || "") + '</span><span class="utc-id">' + esc(car.id || "") + "</span></div>"
       + '<div class="utc-inner"><div class="utc-body"><div class="utc-photo"><div class="ph">' + image + "</div>" + (car.stock ? '<span class="utc-stock">' + esc(car.stock) + "</span>" : "") + "</div>"
