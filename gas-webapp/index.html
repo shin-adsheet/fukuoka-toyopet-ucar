@@ -53,6 +53,29 @@
 #excelDrop .drop-card b{display:block;font-size:19px;margin-bottom:6px}
 #excelDrop .drop-card small{color:var(--muted);font-size:12px}
 .dropzone-hint{margin-top:8px;font-size:11px;color:var(--muted)}
+/* 分析 */
+.analytics-panel{grid-column:1/-1}
+.an-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 14px}
+.an-tab{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;color:var(--muted)}
+.an-tab.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.an-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px}
+.an-card{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.an-card .k{font-size:11px;color:var(--muted);font-weight:700}
+.an-card .v{font-size:24px;font-weight:900;line-height:1.2;margin-top:2px}
+.an-card .s{font-size:11px;color:var(--muted);margin-top:2px}
+.an-table{width:100%;border-collapse:collapse;font-size:12px}
+.an-table th,.an-table td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;white-space:nowrap}
+.an-table th{background:var(--bg);font-size:11px;color:var(--muted);font-weight:800;position:sticky;top:0}
+.an-table td.num,.an-table th.num{text-align:right}
+.an-scroll{overflow:auto;max-height:420px;border:1px solid var(--line);border-radius:10px}
+.an-bar{height:8px;border-radius:999px;background:var(--line);overflow:hidden;min-width:60px}
+.an-bar i{display:block;height:100%;background:var(--blue)}
+.an-empty{color:var(--muted);font-size:12px;padding:14px 2px}
+.an-heat{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.an-heat span{width:34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;background:#cdd3d9}
+.an-legend{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-top:10px}
+.an-legend i{width:22px;height:10px;border-radius:3px;display:block}
+.an-note{font-size:11px;color:var(--muted);line-height:1.7;margin-top:12px}
 .pending-note{display:none;margin-top:8px;font-size:11px;line-height:1.6;background:var(--blue2);border:1px solid #cfdcf3;color:#123f80;border-radius:8px;padding:8px 10px}
 .pending-note.show{display:block}
 </style>
@@ -128,6 +151,22 @@
     </div>
   </section>
 
+  <section class="panel analytics-panel">
+    <h2>分析</h2>
+    <p class="tip">掲載中のデータから集計します。売却日数は、掲載を始めてから売約になるまでの日数です。</p>
+    <div class="an-tabs">
+      <button class="an-tab on" data-an="summary" type="button">サマリー</button>
+      <button class="an-tab" data-an="pages" type="button">ページ別</button>
+      <button class="an-tab" data-an="speed" type="button">売れたスピード</button>
+      <button class="an-tab" data-an="rest" type="button">売れ残り</button>
+      <button class="an-tab" data-an="model" type="button">車種・タイプ</button>
+      <button class="an-tab" data-an="price" type="button">価格帯</button>
+      <button class="an-tab" data-an="order" type="button">掲載順ヒートマップ</button>
+      <button class="an-tab" data-an="time" type="button">期間推移</button>
+    </div>
+    <div id="anBody"></div>
+  </section>
+
   <section class="panel full-preview-panel">
     <div class="full-preview-head"><div><h2>この掲載ページの完成プレビュー</h2><p>現在選んでいるページの全カードを、実際の並び順で確認できます。</p></div><div class="device-tabs"><button class="device-tab active" id="previewPc" type="button">▰ PC</button><button class="device-tab" id="previewSp" type="button">▯ スマホ</button></div></div>
     <div class="page-preview-shell pc" id="pagePreviewShell"><div class="page-preview-frame"><div class="page-preview-grid" id="pagePreview"></div></div></div>
@@ -194,7 +233,7 @@ function saveNow(){
 }
 async function flushSave(){clearTimeout(saveTimer);if(dirty)await saveNow();if(savePromise)await savePromise;if(dirty)await saveNow();return revision}
 
-function renderAll(){renderPages();renderList();renderEditor();renderPagePreview();renderCmsCode()}
+function renderAll(){renderPages();renderList();renderEditor();renderPagePreview();renderCmsCode();renderAnalytics()}
 function renderPages(){var s=document.getElementById('pageSelect');s.innerHTML=state.pages.map(function(p){return'<option value="'+esc(p.id)+'">'+esc(p.name)+'</option>'}).join('');if(!state.pages.some(function(p){return p.id===currentPageId}))currentPageId=state.pages[0]?state.pages[0].id:'main';s.value=currentPageId;document.getElementById('pageId').textContent=page()?page().id:'';document.getElementById('btnPageDelete').disabled=state.pages.length<=1}
 function renderList(){var list=document.getElementById('carList'),cars=pageCars();document.getElementById('carCount').textContent=cars.length;if(!cars.length){list.innerHTML='<div class="empty">このページにはまだクルマがありません。<br><button class="btn primary" id="btnAddEmpty" style="margin-top:10px">＋ 最初のクルマを追加</button></div>';document.getElementById('btnAddEmpty').onclick=openAddModal;return}list.innerHTML=cars.map(function(c){var im=imgSrc(c.image);return'<div class="car-row'+(c.uid===selectedUid?' active':'')+'" draggable="true" data-uid="'+esc(c.uid)+'"><span class="drag">↕</span><span class="thumb">'+(im?'<img src="'+esc(im)+'" alt="">':'写真')+'</span><span class="car-meta"><span class="car-name">'+esc(c.name||'（車名未入力）')+'</span><span class="car-sub">'+esc(c.store||'')+' '+esc(c.id||'')+'</span></span><span class="auto-pill'+(c.autoUpdate===false?' manual':'')+'">'+(c.autoUpdate===false?'手動':'自動')+'</span>'+(priceLooksWrong(c)?'<span class="warn-pill">価格要確認</span>':isPending(c)?'<span class="wait-pill">掲載待ち</span>':needsInput(c)?'<span class="todo-pill">要入力</span>':'')+(c.soldout?'<span class="sold-pill">売約</span>':'')+'</div>'}).join('');var dragUid=null;list.querySelectorAll('.car-row').forEach(function(row){row.addEventListener('click',function(){select(row.dataset.uid)});row.addEventListener('dragstart',function(e){dragUid=row.dataset.uid;row.classList.add('dragging');e.dataTransfer.effectAllowed='move'});row.addEventListener('dragover',function(e){e.preventDefault();if(row.dataset.uid===dragUid)return;var box=row.getBoundingClientRect(),after=e.clientY>box.top+box.height/2;row.classList.toggle('drop-after',after);row.classList.toggle('drop-before',!after)});row.addEventListener('dragleave',function(){row.classList.remove('drop-before','drop-after')});row.addEventListener('drop',function(e){e.preventDefault();var after=row.classList.contains('drop-after');row.classList.remove('drop-before','drop-after');var to=row.dataset.uid,p=page(),a=p.carUids.indexOf(dragUid),b=p.carUids.indexOf(to);if(a<0||b<0||a===b)return;p.carUids.splice(a,1);var at=p.carUids.indexOf(to)+(after?1:0);p.carUids.splice(at,0,dragUid);markDirty();renderList();renderPagePreview()});row.addEventListener('dragend',function(){row.classList.remove('dragging');list.querySelectorAll('.car-row').forEach(function(r){r.classList.remove('drop-before','drop-after')})})})}
 function select(uidv){selectedUid=uidv;renderList();renderEditor()}
@@ -221,8 +260,194 @@ async function copyCmsCode(){var el=document.getElementById('cmsCode'),btn=docum
 
 function initForm(){F.fStore=document.getElementById('fStore');F.fStore.innerHTML=STORES.map(function(s){return'<option>'+esc(s)+'</option>'}).join('');['fMode','fAutoImage','fName','fGazoo','fId','fStock','fTotal','fVehicle','fYear','fKm','fShaken','fFuel','fMission','fColor','fSold'].forEach(function(id){F[id]=document.getElementById(id)});document.getElementById('badges').innerHTML=BADGES.map(function(b){return'<label class="check"><input type="checkbox" value="'+esc(b)+'">'+esc(b)+'</label>'}).join('');Object.keys(F).forEach(function(k){F[k].addEventListener('input',applyForm);F[k].addEventListener('change',applyForm)});document.querySelectorAll('#badges input').forEach(function(cb){cb.addEventListener('change',applyForm)});F.fGazoo.addEventListener('input',function(){scheduleGazooImport(false)});F.fGazoo.addEventListener('change',function(){scheduleGazooImport(true)});F.fGazoo.addEventListener('paste',function(){setTimeout(function(){applyForm();scheduleGazooImport(true)},0)});F.fMode.addEventListener('change',function(){var c=selected();if(c){delete c.gazooPending;setAutoLocks(c);renderList()}if(F.fMode.value==='auto')scheduleGazooImport(true)});F.fAutoImage.addEventListener('change',function(){setAutoLocks(selected())})}
 
+/* ===== 分析 ===== */
+var anTab='summary';
+var DAY=86400000;
+function anDate(v){var t=Date.parse(String(v||''));return isFinite(t)?t:null}
+function anDays(from,to){if(from==null||to==null)return null;var d=Math.round((to-from)/DAY);return d<0?0:d}
+// 掲載してからの日数。売約済みなら売約までの日数
+function soldDays(c){var s=anDate(c.listedAt),e=anDate(c.soldoutAt);return c.soldout?anDays(s,e):null}
+function liveDays(c){var s=anDate(c.listedAt);return c.soldout?null:anDays(s,Date.now())}
+// 「アクア クロスオーバー」→「アクア」。車種のまとまりを作る
+function modelOf(c){return String(c.name||'').trim().split(/[\s　]/)[0]||'（車名なし）'}
+function fuelOf(c){var f=String((c.specs||{}).fuel||'').toUpperCase();
+  if(/PHEV|PHV/.test(f))return'PHEV';
+  if(/ハイブリッド|HYBRID|HEV/.test(f))return'ハイブリッド';
+  if(/ディーゼル/.test(f))return'ディーゼル';
+  if(/EV|電気/.test(f))return'EV';
+  return f?'ガソリン':'不明'}
+// 支払総額が未取得の間は車両価格で代用する（カードの表示と同じ考え方）
+function priceOf(c){return c.priceTotal!=null?Number(c.priceTotal):(c.priceVehicle!=null?Number(c.priceVehicle):null)}
+function avg(list){var v=list.filter(function(x){return x!=null&&isFinite(x)});return v.length?Math.round(v.reduce(function(a,b){return a+b},0)/v.length*10)/10:null}
+function pct(a,b){return b?Math.round(a/b*1000)/10:0}
+function fmt(v,unit){return v==null?'−':v+(unit||'')}
+
+// 集計の元になる一覧。ページ内の掲載順も持たせる
+function anCars(){
+  var out=[],seen={};
+  state.pages.forEach(function(p){
+    (p.carUids||[]).forEach(function(u,i){
+      var c=byUid(u);if(!c)return;
+      out.push({car:c,pageId:p.id,pageName:p.name,order:i+1});
+      seen[u]=1;
+    });
+  });
+  return out;
+}
+function anStats(rows){
+  var cars=rows.map(function(r){return r.car});
+  var sold=cars.filter(function(c){return c.soldout});
+  return {
+    total:cars.length, sold:sold.length, rest:cars.length-sold.length,
+    rate:pct(sold.length,cars.length),
+    price:avg(cars.map(priceOf)),
+    speed:avg(sold.map(soldDays)),
+  };
+}
+function anCardsHtml(s){
+  return'<div class="an-cards">'
+   +'<div class="an-card"><div class="k">掲載台数</div><div class="v">'+s.total+'</div><div class="s">台</div></div>'
+   +'<div class="an-card"><div class="k">売約済み</div><div class="v">'+s.sold+'</div><div class="s">売約率 '+s.rate+'%</div></div>'
+   +'<div class="an-card"><div class="k">売れ残り</div><div class="v">'+s.rest+'</div><div class="s">台</div></div>'
+   +'<div class="an-card"><div class="k">平均支払総額</div><div class="v">'+fmt(s.price)+'</div><div class="s">万円</div></div>'
+   +'<div class="an-card"><div class="k">平均売却日数</div><div class="v">'+fmt(s.speed)+'</div><div class="s">日</div></div>'
+   +'</div>';
+}
+function anTableHtml(cols,rows){
+  if(!rows.length)return'<div class="an-empty">対象のデータがありません。</div>';
+  return'<div class="an-scroll"><table class="an-table"><thead><tr>'
+   +cols.map(function(c){return'<th'+(c.num?' class="num"':'')+'>'+esc(c.label)+'</th>'}).join('')
+   +'</tr></thead><tbody>'
+   +rows.map(function(r){return'<tr>'+r.map(function(v,i){return'<td'+(cols[i].num?' class="num"':'')+'>'+v+'</td>'}).join('')+'</tr>'}).join('')
+   +'</tbody></table></div>';
+}
+function anBarHtml(value,max){var w=max?Math.round(value/max*100):0;return'<div class="an-bar"><i style="width:'+w+'%"></i></div>'}
+
+function anSummary(){
+  var rows=anCars(),s=anStats(rows);
+  var unknown=rows.filter(function(r){return !r.car.listedAt}).length;
+  var html=anCardsHtml(s);
+  var byPage={};
+  rows.forEach(function(r){(byPage[r.pageId]=byPage[r.pageId]||{name:r.pageName,rows:[]}).rows.push(r)});
+  var list=Object.keys(byPage).map(function(id){var g=byPage[id],st=anStats(g.rows);return{name:g.name,st:st}});
+  var maxTotal=Math.max.apply(null,list.map(function(x){return x.st.total}).concat([1]));
+  html+='<h3 style="font-size:13px;margin:6px 0 8px">ページごとの内訳</h3>';
+  html+=anTableHtml(
+    [{label:'掲載ページ'},{label:'台数',num:true},{label:'売約',num:true},{label:'売約率',num:true},{label:'構成'},{label:'平均価格',num:true},{label:'平均売却日数',num:true}],
+    list.map(function(x){return[esc(x.name),x.st.total,x.st.sold,x.st.rate+'%',anBarHtml(x.st.total,maxTotal),fmt(x.st.price,'万円'),fmt(x.st.speed,'日')]})
+  );
+  if(unknown)html+='<p class="an-note">※ '+unknown+'台は掲載開始日が記録されていないため、売却日数の集計から除いています。今後追加・取込した車から記録されます。</p>';
+  return html;
+}
+function anPages(){
+  var rows=anCars(),byPage={};
+  rows.forEach(function(r){(byPage[r.pageId]=byPage[r.pageId]||{name:r.pageName,rows:[]}).rows.push(r)});
+  return Object.keys(byPage).map(function(id){
+    var g=byPage[id],st=anStats(g.rows);
+    return'<h3 style="font-size:13px;margin:14px 0 8px">'+esc(g.name)+'</h3>'+anCardsHtml(st)
+      +anTableHtml([{label:'順'},{label:'車名'},{label:'店舗'},{label:'支払総額',num:true},{label:'状態'},{label:'経過日数',num:true}],
+        g.rows.map(function(r){var c=r.car,d=c.soldout?soldDays(c):liveDays(c);
+          return[r.order,esc(c.name||'（車名なし）'),esc(c.store||''),fmt(c.priceTotal,'万円'),c.soldout?'売約':'掲載中',fmt(d,'日')]}));
+  }).join('')||'<div class="an-empty">掲載ページがありません。</div>';
+}
+function anSpeed(){
+  var rows=anCars().filter(function(r){return r.car.soldout&&soldDays(r.car)!=null});
+  rows.sort(function(a,b){return soldDays(a.car)-soldDays(b.car)});
+  return'<p class="an-note" style="margin:0 0 10px">売約になるまでが早かった順です。</p>'
+   +anTableHtml([{label:'順位',num:true},{label:'車名'},{label:'店舗'},{label:'掲載ページ'},{label:'支払総額',num:true},{label:'売却日数',num:true}],
+     rows.map(function(r,i){return[i+1,esc(r.car.name||''),esc(r.car.store||''),esc(r.pageName),fmt(r.car.priceTotal,'万円'),fmt(soldDays(r.car),'日')]}));
+}
+function anRest(){
+  var rows=anCars().filter(function(r){return !r.car.soldout});
+  rows.sort(function(a,b){return (liveDays(b.car)||0)-(liveDays(a.car)||0)});
+  return'<p class="an-note" style="margin:0 0 10px">まだ売約になっていない車を、掲載が長い順に並べています。</p>'
+   +anTableHtml([{label:'車名'},{label:'店舗'},{label:'掲載ページ'},{label:'順',num:true},{label:'支払総額',num:true},{label:'掲載日数',num:true}],
+     rows.map(function(r){return[esc(r.car.name||''),esc(r.car.store||''),esc(r.pageName),r.order,fmt(r.car.priceTotal,'万円'),fmt(liveDays(r.car),'日')]}));
+}
+function anGroup(rows,keyFn){
+  var g={};
+  rows.forEach(function(r){var k=keyFn(r.car);(g[k]=g[k]||[]).push(r)});
+  return Object.keys(g).map(function(k){return{key:k,st:anStats(g[k])}}).sort(function(a,b){return b.st.total-a.st.total});
+}
+function anModel(){
+  var rows=anCars();
+  var models=anGroup(rows,modelOf),fuels=anGroup(rows,fuelOf);
+  var maxM=Math.max.apply(null,models.map(function(x){return x.st.total}).concat([1]));
+  var maxF=Math.max.apply(null,fuels.map(function(x){return x.st.total}).concat([1]));
+  return'<h3 style="font-size:13px;margin:6px 0 8px">車種別</h3>'
+   +anTableHtml([{label:'車種'},{label:'台数',num:true},{label:'売約',num:true},{label:'売約率',num:true},{label:'構成'},{label:'平均価格',num:true},{label:'平均売却日数',num:true}],
+     models.map(function(x){return[esc(x.key),x.st.total,x.st.sold,x.st.rate+'%',anBarHtml(x.st.total,maxM),fmt(x.st.price,'万円'),fmt(x.st.speed,'日')]}))
+   +'<h3 style="font-size:13px;margin:16px 0 8px">タイプ別（燃料・エンジン）</h3>'
+   +anTableHtml([{label:'タイプ'},{label:'台数',num:true},{label:'売約',num:true},{label:'売約率',num:true},{label:'構成'},{label:'平均価格',num:true},{label:'平均売却日数',num:true}],
+     fuels.map(function(x){return[esc(x.key),x.st.total,x.st.sold,x.st.rate+'%',anBarHtml(x.st.total,maxF),fmt(x.st.price,'万円'),fmt(x.st.speed,'日')]}));
+}
+var PRICE_BANDS=[[0,100],[100,150],[150,200],[200,250],[250,300],[300,400],[400,500],[500,1e9]];
+function anPrice(){
+  var rows=anCars().filter(function(r){return priceOf(r.car)!=null});
+  var bands=PRICE_BANDS.map(function(b){
+    var inBand=rows.filter(function(r){var v=priceOf(r.car);return v>=b[0]&&v<b[1]});
+    return{label:b[1]>=1e9?(b[0]+'万円〜'):(b[0]+'〜'+b[1]+'万円'),st:anStats(inBand)};
+  }).filter(function(x){return x.st.total});
+  var max=Math.max.apply(null,bands.map(function(x){return x.st.total}).concat([1]));
+  var noPrice=anCars().length-rows.length;
+  return anTableHtml([{label:'価格帯'},{label:'台数',num:true},{label:'売約',num:true},{label:'売約率',num:true},{label:'構成'},{label:'平均売却日数',num:true}],
+     bands.map(function(x){return[esc(x.label),x.st.total,x.st.sold,x.st.rate+'%',anBarHtml(x.st.total,max),fmt(x.st.speed,'日')]}))
+   +'<p class="an-note">支払総額がまだ取れていない車は、車両価格で集計しています。</p>'
+   +(noPrice?'<p class="an-note">※ 価格が未入力の'+noPrice+'台は含めていません。</p>':'');
+}
+function heatColor(rate,has){
+  if(!has)return'#e9ebed';
+  var t=Math.max(0,Math.min(1,rate/100));
+  // 薄い青 → 濃い青
+  var r=Math.round(214-(214-23)*t),g=Math.round(228-(228-105)*t),b=Math.round(245-(245-210)*t);
+  return'rgb('+r+','+g+','+b+')';
+}
+function anOrder(){
+  var rows=anCars(),byOrder={};
+  rows.forEach(function(r){(byOrder[r.order]=byOrder[r.order]||[]).push(r)});
+  var orders=Object.keys(byOrder).map(Number).sort(function(a,b){return a-b});
+  if(!orders.length)return'<div class="an-empty">対象のデータがありません。</div>';
+  var cells=orders.map(function(o){
+    var st=anStats(byOrder[o]);
+    return'<span title="'+o+'番目：'+st.total+'台中'+st.sold+'台が売約（'+st.rate+'%）" style="background:'+heatColor(st.rate,st.total)+'">'+o+'</span>';
+  }).join('');
+  return'<p class="an-note" style="margin:0 0 10px">掲載順ごとの売約率です。色が濃いほど売約率が高い＝その位置がよく売れています。数字は掲載順です。</p>'
+   +'<div class="an-heat">'+cells+'</div>'
+   +'<div class="an-legend"><span>売約率</span><i style="background:'+heatColor(0,1)+'"></i>0%<i style="background:'+heatColor(50,1)+'"></i>50%<i style="background:'+heatColor(100,1)+'"></i>100%</div>'
+   +'<h3 style="font-size:13px;margin:16px 0 8px">掲載順ごとの内訳</h3>'
+   +anTableHtml([{label:'掲載順',num:true},{label:'台数',num:true},{label:'売約',num:true},{label:'売約率',num:true},{label:'平均売却日数',num:true}],
+     orders.map(function(o){var st=anStats(byOrder[o]);return[o,st.total,st.sold,st.rate+'%',fmt(st.speed,'日')]}));
+}
+function weekKey(d){var t=new Date(d);var day=(t.getDay()+6)%7;t.setDate(t.getDate()-day);return t.getFullYear()+'/'+('0'+(t.getMonth()+1)).slice(-2)+'/'+('0'+t.getDate()).slice(-2)+'の週'}
+function anTime(){
+  var sold=anCars().filter(function(r){return r.car.soldout&&anDate(r.car.soldoutAt)});
+  if(!sold.length)return'<div class="an-empty">売約になった車がまだありません。売約になると、日別・週別・月別の推移がここに出ます。</div>';
+  function group(fn){
+    var g={};
+    sold.forEach(function(r){var d=new Date(anDate(r.car.soldoutAt));var k=fn(d);(g[k]=g[k]||[]).push(r)});
+    return Object.keys(g).sort().reverse().map(function(k){return{key:k,rows:g[k]}});
+  }
+  function block(title,list){
+    var max=Math.max.apply(null,list.map(function(x){return x.rows.length}).concat([1]));
+    return'<h3 style="font-size:13px;margin:14px 0 8px">'+title+'</h3>'
+     +anTableHtml([{label:'期間'},{label:'売約',num:true},{label:'件数'},{label:'平均価格',num:true},{label:'平均売却日数',num:true}],
+       list.map(function(x){var st=anStats(x.rows);return[esc(x.key),x.rows.length,anBarHtml(x.rows.length,max),fmt(st.price,'万円'),fmt(st.speed,'日')]}));
+  }
+  var pad=function(n){return('0'+n).slice(-2)};
+  return block('月別',group(function(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'}))
+   +block('週別',group(weekKey))
+   +block('日別',group(function(d){return d.getFullYear()+'/'+pad(d.getMonth()+1)+'/'+pad(d.getDate())}));
+}
+function renderAnalytics(){
+  var box=document.getElementById('anBody');
+  if(!box)return;
+  var fn={summary:anSummary,pages:anPages,speed:anSpeed,rest:anRest,model:anModel,price:anPrice,order:anOrder,time:anTime}[anTab]||anSummary;
+  try{box.innerHTML=fn()}catch(e){box.innerHTML='<div class="an-empty">集計できませんでした：'+esc(e.message)+'</div>'}
+  document.querySelectorAll('.an-tab').forEach(function(b){b.classList.toggle('on',b.dataset.an===anTab)});
+}
+
 /* ===== クルマの追加（モードを選んでから、URLを貼るだけ） ===== */
-function newCar(over){var c={uid:uid(),store:STORES[0],name:'',gazooUrl:'',id:'',stock:'',priceTotal:null,priceVehicle:null,image:'',badges:['修無','整付','ロングラン保証','あんしん診断'],specs:{year:'',km:'',shaken:'',fuel:'',mission:'',color:''},soldout:false,autoUpdate:true,autoImageUpdate:true};Object.keys(over||{}).forEach(function(k){c[k]=over[k]});return c}
+function newCar(over){var c={uid:uid(),listedAt:new Date().toISOString(),store:STORES[0],name:'',gazooUrl:'',id:'',stock:'',priceTotal:null,priceVehicle:null,image:'',badges:['修無','整付','ロングラン保証','あんしん診断'],specs:{year:'',km:'',shaken:'',fuel:'',mission:'',color:''},soldout:false,autoUpdate:true,autoImageUpdate:true};Object.keys(over||{}).forEach(function(k){c[k]=over[k]});return c}
 function needsInput(c){return !String(c.name||'').trim()||c.priceTotal==null}
 function isPending(c){return !!c&&c.autoUpdate===false&&c.gazooPending===true}
 // 支払総額が車両価格を下回るのは読み取り違いの可能性が高い
@@ -367,7 +592,7 @@ function bind(){
   document.getElementById('btnDelete').onclick=function(){var c=selected();if(!c||!confirm('「'+(c.name||'このクルマ')+'」を全ページから削除しますか？'))return;state.cars=state.cars.filter(function(x){return x.uid!==c.uid});state.pages.forEach(function(p){p.carUids=p.carUids.filter(function(u){return u!==c.uid})});selectedUid=null;markDirty();renderAll()};
   document.getElementById('btnUp').onclick=function(){moveSelected(-1)};document.getElementById('btnDown').onclick=function(){moveSelected(1)};
   document.getElementById('btnPhoto').onclick=function(){document.getElementById('filePhoto').click()};document.getElementById('filePhoto').addEventListener('change',uploadPhoto);document.getElementById('btnPhotoDelete').onclick=function(){var c=selected();if(!c)return;c.image='';c.autoImageUpdate=false;markDirty();renderEditor();renderPagePreview()};
-  document.getElementById('btnExcel').onclick=function(){document.getElementById('fileExcel').click()};bindExcelDrop();document.getElementById('fileExcel').addEventListener('change',chooseExcel);document.getElementById('excelCancel').onclick=closeExcel;document.getElementById('excelApply').onclick=applyExcel;
+  document.getElementById('btnExcel').onclick=function(){document.getElementById('fileExcel').click()};bindExcelDrop();document.querySelectorAll('.an-tab').forEach(function(b){b.onclick=function(){anTab=b.dataset.an;renderAnalytics()}});document.getElementById('fileExcel').addEventListener('change',chooseExcel);document.getElementById('excelCancel').onclick=closeExcel;document.getElementById('excelApply').onclick=applyExcel;
   document.getElementById('previewPc').onclick=function(){setPreviewDevice('pc')};document.getElementById('previewSp').onclick=function(){setPreviewDevice('sp')};document.getElementById('btnCopyCms').onclick=copyCmsCode;
   document.getElementById('btnPublish').onclick=function(){publish(false)};document.getElementById('btnPull').onclick=pullPublished;document.getElementById('btnGazoo').onclick=runGazoo;
   document.getElementById('btnLogout').onclick=function(){localStorage.removeItem('ucarEditorKey');auth.key='';location.reload()};
@@ -415,7 +640,7 @@ function bindExcelDrop(){
 }
 function openExcel(){var p=excelPreview;if(!p)return;document.getElementById('excelSummary').textContent=p.sourceFile+' から '+p.cars.length+'台を見つけました。';document.getElementById('excelResult').textContent='店舗・車名・価格・年式・走行距離・Gazoo URLをまとめて取り込みます。';document.getElementById('excelPageName').value=p.pageName||'特選車';document.querySelector('input[name="excelMode"][value="replace"]').checked=true;document.getElementById('excelCars').innerHTML=p.cars.map(function(c,i){return'<div class="excel-row"><span class="excel-no">'+(i+1)+'台目</span><span><b>'+esc(c.name||'（車名なし）')+'</b><br><small>'+esc(c.store||'店舗不明')+' / '+esc(c.id||'番号なし')+'</small></span><span class="excel-price">'+(c.priceTotal==null?'価格なし':esc(c.priceTotal)+'万円')+'</span></div>'}).join('');document.getElementById('excelWarnings').textContent=(p.warnings||[]).length?'確認事項\n'+p.warnings.join('\n'):'';document.getElementById('excelModal').classList.add('show');syncStatus('Excel確認済み','ok')}
 function closeExcel(){document.getElementById('excelModal').classList.remove('show');excelPreview=null}
-function mergeExcelIntoState(preview,mode,pageName){var byId={},byUrl={};state.cars.forEach(function(c){if(c.id)byId[String(c.id)]=c;if(c.gazooUrl)byUrl[String(c.gazooUrl)]=c});var uids=[],importedAt=new Date().toISOString();preview.cars.forEach(function(src){var c=(src.id&&byId[String(src.id)])||(src.gazooUrl&&byUrl[String(src.gazooUrl)])||null;if(c){var keep={uid:c.uid,image:c.image||'',gazooImageUrl:c.gazooImageUrl||'',lastGazooCheck:c.lastGazooCheck||'',wasAuto:c.autoUpdate===true};Object.keys(src).forEach(function(k){c[k]=clone(src[k])});c.uid=keep.uid;if(keep.image)c.image=keep.image;if(keep.gazooImageUrl)c.gazooImageUrl=keep.gazooImageUrl;if(keep.lastGazooCheck)c.lastGazooCheck=keep.lastGazooCheck;if(keep.wasAuto){c.autoUpdate=true;delete c.gazooPending}}else{c=clone(src);c.uid=uid();state.cars.push(c)}if(c.autoUpdate!==false||c.gazooPending){c.syncPending=true;c.syncPendingAt=importedAt;c.gazooStatus='excel-imported'}else{delete c.syncPending;delete c.syncPendingAt}uids.push(c.uid)});if(mode==='new'){var id=nextPageId();state.pages.push({id:id,name:pageName,carUids:uids});currentPageId=id}else{var current=page();current.name=pageName;current.carUids=uids}selectedUid=uids[0]||null;localStorage.setItem('ucarWebPage',currentPageId);markDirty();renderAll()}
+function mergeExcelIntoState(preview,mode,pageName){var byId={},byUrl={};state.cars.forEach(function(c){if(c.id)byId[String(c.id)]=c;if(c.gazooUrl)byUrl[String(c.gazooUrl)]=c});var uids=[],importedAt=new Date().toISOString();preview.cars.forEach(function(src){var c=(src.id&&byId[String(src.id)])||(src.gazooUrl&&byUrl[String(src.gazooUrl)])||null;if(c){var keep={uid:c.uid,image:c.image||'',gazooImageUrl:c.gazooImageUrl||'',lastGazooCheck:c.lastGazooCheck||'',listedAt:c.listedAt||'',wasAuto:c.autoUpdate===true};Object.keys(src).forEach(function(k){c[k]=clone(src[k])});c.uid=keep.uid;if(keep.image)c.image=keep.image;if(keep.gazooImageUrl)c.gazooImageUrl=keep.gazooImageUrl;if(keep.lastGazooCheck)c.lastGazooCheck=keep.lastGazooCheck;c.listedAt=keep.listedAt||importedAt;if(keep.wasAuto){c.autoUpdate=true;delete c.gazooPending}}else{c=clone(src);c.uid=uid();c.listedAt=importedAt;state.cars.push(c)}if(c.autoUpdate!==false||c.gazooPending){c.syncPending=true;c.syncPendingAt=importedAt;c.gazooStatus='excel-imported'}else{delete c.syncPending;delete c.syncPendingAt}uids.push(c.uid)});if(mode==='new'){var id=nextPageId();state.pages.push({id:id,name:pageName,carUids:uids});currentPageId=id}else{var current=page();current.name=pageName;current.carUids=uids}selectedUid=uids[0]||null;localStorage.setItem('ucarWebPage',currentPageId);markDirty();renderAll()}
 async function applyExcel(){var p=excelPreview;if(!p)return;var name=document.getElementById('excelPageName').value.trim();if(!name){showToast('掲載ページ名を入力してください。');return}var mode=(document.querySelector('input[name="excelMode"]:checked')||{}).value||'replace',btn=document.getElementById('excelApply');btn.disabled=true;btn.textContent='取り込み中…';try{mergeExcelIntoState(p,mode,name);document.getElementById('excelModal').classList.remove('show');excelPreview=null;var ok=await publish(true);if(ok)alert('Excelの'+p.cars.length+'台を取り込み、サイトへの反映を開始しました。\nGazoo画像と最新情報は通常1〜2分で更新されます。')}finally{btn.disabled=false;btn.textContent='取り込んでサイトへ反映'}}
 
 async function uploadPhoto(e){var f=e.target.files&&e.target.files[0],c=selected();e.target.value='';if(!f||!c)return;syncStatus('画像を準備中…','busy');try{var data=await resizeImage(f,1200,.84);syncStatus('画像を保存中…','busy');var r=await gas('uploadCarImage',[c.uid,data]);c.image=r.path;c.autoImageUpdate=false;markDirty();renderEditor();renderPagePreview();showToast('写真を保存しました')}catch(err){syncStatus('画像エラー','err');showToast(err.message)}}

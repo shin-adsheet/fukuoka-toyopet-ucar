@@ -769,6 +769,7 @@ function mergeAutomatedFields_(draft, published) {
   const byUid = {};
   published.cars.forEach(function (c) { if (c.uid) byUid[c.uid] = c; });
   const fields = ['name', 'store', 'id', 'priceTotal', 'priceVehicle', 'image', 'gazooImageUrl', 'soldout', 'soldoutAt', 'lastGazooCheck', 'gazooStatus', 'specs', 'badges'];
+  // 掲載開始日は分析に使う。先に記録された方を正とし、上書きしない。
   out.cars.forEach(function (c) {
     // URL直入力やExcel取込の直後は、画面で取得した新しい値を優先する。
     // Actionsの確認時刻が取込時刻を越えたら、通常の自動同期へ戻す。
@@ -788,6 +789,7 @@ function mergeAutomatedFields_(draft, published) {
       delete c.gazooPending;
     }
     fields.forEach(function (k) { if (Object.prototype.hasOwnProperty.call(src, k)) c[k] = src[k]; });
+    if (!c.listedAt && src.listedAt) c.listedAt = src.listedAt;
   });
   return out;
 }
