@@ -1,7 +1,7 @@
 {
   "cars": [
     {
-      "lastGazooCheck": "2026-08-27T01:37:14.222Z",
+      "lastGazooCheck": "2026-09-01T00:20:58.564Z",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018345111&Sdlr=18101",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8345111/83451112026050914225101_L.jpg",
       "soldout": false,
@@ -42,7 +42,7 @@
       "soldout": true,
       "id": "8342847",
       "name": "アルファード S Cパッケージ",
-      "lastGazooCheck": "2026-08-27T01:37:17.783Z",
+      "lastGazooCheck": "2026-09-01T00:21:02.048Z",
       "soldoutAt": "2026-08-24T21:24:20.322Z",
       "autoUpdate": true,
       "badges": [
@@ -67,9 +67,9 @@
     },
     {
       "autoUpdate": true,
-      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8332906/83329062026060213033001_S.jpg",
-      "priceVehicle": 5,
-      "lastGazooCheck": "2026-08-27T01:37:21.247Z",
+      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8332906/83329062026060213033001_L.jpg",
+      "priceVehicle": 345.7,
+      "lastGazooCheck": "2026-09-01T00:21:05.391Z",
       "store": "小倉東店",
       "image": "images/gazoo-8332906.jpg",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018332906&Sdlr=18101",
@@ -83,8 +83,8 @@
         "mission": "CVT",
         "color": "ホワイトパールクリスタルシャイン"
       },
-      "soldout": true,
-      "gazooStatus": "soldout",
+      "soldout": false,
+      "gazooStatus": "ok",
       "uid": "car-8332906",
       "badges": [
         "修無",
@@ -93,10 +93,9 @@
         "車検整備付",
         "ロングラン保証"
       ],
-      "soldoutAt": "2026-08-24T21:24:23.699Z",
       "autoImageUpdate": true,
       "id": "8332906",
-      "priceTotal": 2
+      "priceTotal": 356
     },
     {
       "store": "飯塚店",
@@ -116,7 +115,7 @@
       "name": "エスクァイア GIプレミアムパッケージBLT",
       "soldoutAt": "2026-08-24T21:24:27.077Z",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018352575&Sdlr=18101",
-      "lastGazooCheck": "2026-08-27T01:37:24.619Z",
+      "lastGazooCheck": "2026-09-01T00:21:09.189Z",
       "gazooStatus": "soldout",
       "badges": [
         "修無",
@@ -136,7 +135,7 @@
         "ロングラン保証",
         "あんしん診断"
       ],
-      "lastGazooCheck": "2026-08-27T01:37:28.010Z",
+      "lastGazooCheck": "2026-09-01T00:21:12.644Z",
       "priceTotal": 272.7,
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018355591&Sdlr=18101",
       "name": "ノア SI WxB3",
@@ -179,7 +178,7 @@
       },
       "stock": "",
       "id": "8360161",
-      "lastGazooCheck": "2026-08-27T01:37:31.451Z",
+      "lastGazooCheck": "2026-09-01T00:21:16.093Z",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8360161/83601612026061014471101_L.jpg",
       "gazooStatus": "soldout",
       "autoImageUpdate": true,
@@ -215,7 +214,7 @@
       },
       "gazooStatus": "soldout",
       "uid": "car-8349442",
-      "lastGazooCheck": "2026-08-27T01:37:34.857Z",
+      "lastGazooCheck": "2026-09-01T00:21:19.507Z",
       "soldout": true,
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018349442&Sdlr=18101",
       "priceTotal": 401.2,
@@ -226,7 +225,7 @@
       "priceVehicle": null
     },
     {
-      "lastGazooCheck": "2026-08-27T01:37:38.191Z",
+      "lastGazooCheck": "2026-09-01T00:21:22.745Z",
       "id": "8353041",
       "autoImageUpdate": true,
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8353041/83530412026051916532301_L.jpg",
@@ -283,7 +282,7 @@
       ],
       "autoImageUpdate": true,
       "soldoutAt": "2026-08-24T21:24:44.108Z",
-      "lastGazooCheck": "2026-08-27T01:37:41.783Z",
+      "lastGazooCheck": "2026-09-01T00:21:26.333Z",
       "name": "シエンタ HEV G",
       "id": "8360349",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018360349&Sdlr=18101",
@@ -292,7 +291,7 @@
       "priceVehicle": 221
     },
     {
-      "lastGazooCheck": "2026-08-27T01:37:45.181Z",
+      "lastGazooCheck": "2026-09-01T00:21:29.721Z",
       "autoImageUpdate": true,
       "id": "8355001",
       "autoUpdate": true,
@@ -327,7 +326,7 @@
     {
       "autoImageUpdate": true,
       "name": "",
-      "soldout": true,
+      "soldout": false,
       "specs": {
         "mission": "CVT",
         "shaken": "車検整備付",
@@ -339,12 +338,11 @@
       "stock": "",
       "store": "福岡西店",
       "image": "images/gazoo-8348179.jpg",
-      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8348179/83481792026042415234501_S.jpg",
+      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8348179/83481792026042415234501_L.jpg",
       "autoUpdate": true,
-      "soldoutAt": "2026-08-24T21:24:50.961Z",
-      "priceTotal": 1,
+      "priceTotal": 347.1,
       "uid": "car-msmswpwn-6jr8",
-      "gazooStatus": "soldout",
+      "gazooStatus": "ok",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018348179&Sdlr=18101",
       "id": "8348179",
       "badges": [
@@ -355,18 +353,18 @@
         "ロングラン保証",
         "ハイブリッド保証"
       ],
-      "lastGazooCheck": "2026-08-27T01:37:48.605Z",
-      "priceVehicle": 5
+      "lastGazooCheck": "2026-09-01T00:21:32.967Z",
+      "priceVehicle": 332.8
     },
     {
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8376121/83761212026082017174301_L.jpg",
-      "soldout": true,
+      "soldout": false,
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018376121&Sdlr=18101",
       "uid": "car-mt7652bd-gzm",
-      "priceTotal": 606.2,
+      "priceTotal": 605.8,
       "name": "ヴェルファイアHEV Zプレミア",
       "syncPending": true,
-      "lastGazooCheck": "2026-08-27T01:37:52.041Z",
+      "lastGazooCheck": "2026-09-01T00:21:36.422Z",
       "stock": "",
       "priceVehicle": 589.8,
       "specs": {
@@ -378,25 +376,25 @@
         "fuel": "ハイブリッド"
       },
       "syncPendingAt": "2026-08-24T11:44:35.065Z",
-      "image": "https://gazoo.com/U-Car/carImg/18101/8376121/83761212026082017174301_L.jpg",
+      "image": "images/gazoo-8376121.jpg",
       "autoImageUpdate": true,
       "store": "福岡西店",
       "autoUpdate": true,
-      "gazooStatus": "soldout",
+      "gazooStatus": "ok",
       "id": "8376121",
       "badges": [
         "修無",
         "整付",
         "リ済込",
         "車検整備付",
-        "ロングラン保証"
-      ],
-      "soldoutAt": "2026-08-27T01:37:52.041Z"
+        "ロングラン保証",
+        "ハイブリッド保証"
+      ]
     },
     {
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8365383/83653832026070116270401_L.jpg",
       "priceTotal": 273.2,
-      "lastGazooCheck": "2026-08-27T01:37:55.395Z",
+      "lastGazooCheck": "2026-09-01T00:21:39.855Z",
       "priceVehicle": 259.9,
       "soldout": false,
       "syncPending": true,
@@ -429,7 +427,7 @@
       "autoImageUpdate": true
     }
   ],
-  "updatedAt": "2026-08-27T01:37:58.607Z",
+  "updatedAt": "2026-09-01T00:21:42.857Z",
   "version": 2,
   "pages": [
     {
