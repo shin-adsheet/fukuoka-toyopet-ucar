@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "updateHours": [6, 20],
+  "note": "updateHours は日本時間。Gazoo自動更新を動かす時刻を管理画面から変更できます。"
+}

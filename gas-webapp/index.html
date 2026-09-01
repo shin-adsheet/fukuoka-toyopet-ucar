@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-:root{--ink:#242628;--muted:#72777d;--line:#e4e6e8;--bg:#f6f7f8;--card:#fff;--blue:#1769d2;--blue2:#eaf3ff;--red:#d93232;--green:#16814b;--orange:#c56d06}*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",Meiryo,sans-serif}button,input,select{font:inherit}button{cursor:pointer}.top{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--line);padding:10px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.title{font-weight:800;font-size:17px}.title small{display:block;font-size:11px;color:var(--muted);font-weight:500}.sync{font-size:12px;padding:5px 9px;border-radius:999px;background:#eef0f2;color:#596068}.sync.ok{background:#e7f6ee;color:var(--green)}.sync.busy{background:#fff3dd;color:var(--orange)}.sync.err{background:#fde9e9;color:var(--red)}.top-actions{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:8px 11px;min-height:38px;font-weight:700}.btn:hover{background:#f4f6f8}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.danger{color:var(--red)}.btn:disabled{opacity:.45;cursor:not-allowed}.wrap{max-width:1240px;margin:16px auto 60px;padding:0 18px;display:grid;grid-template-columns:390px minmax(0,1fr);gap:18px}.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}.panel h2{font-size:14px;margin:0 0 10px;color:#5b6065}.pagebox{background:#f4f6f8;border-radius:10px;padding:11px;margin-bottom:12px}.pagebox label{font-size:11px;font-weight:800;display:block;margin-bottom:4px}.pagebox select{width:100%;padding:9px;border:1px solid var(--line);border-radius:7px;background:#fff}.pageid{font-size:11px;color:var(--muted);margin-top:5px}.page-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.page-actions .btn{font-size:12px;padding:7px}.tip{font-size:11px;color:var(--muted);margin:7px 0 0}.car-row{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:7px;background:#fff;cursor:grab}.car-row:hover{background:#f7f9fb}.car-row.active{border-color:var(--blue);background:var(--blue2)}.car-row.dragging{opacity:.4}.drag{color:#9aa0a6;font-size:18px}.thumb{width:58px;height:42px;border-radius:6px;background:#eee;display:flex;align-items:center;justify-content:center;color:#999;font-size:10px;overflow:hidden;flex:none}.thumb img{width:100%;height:100%;object-fit:cover}.car-meta{min-width:0;flex:1}.car-name{display:block;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.car-sub{display:block;color:var(--muted);font-size:11px}.auto-pill{font-size:10px;padding:2px 5px;border-radius:4px;background:#e7f6ee;color:var(--green)}.auto-pill.manual{background:#fff0e0;color:var(--orange)}.sold-pill{font-size:10px;color:var(--red);font-weight:800}.empty{text-align:center;color:var(--muted);padding:24px 5px}.full{width:100%;margin-top:7px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px 14px}.field{min-width:0}.field.wide{grid-column:1/-1}.field label{display:block;font-size:11px;font-weight:800;margin-bottom:4px}.field input,.field select{width:100%;min-height:40px;border:1px solid var(--line);border-radius:7px;padding:8px 9px;background:#fff}.field input:focus,.field select:focus{outline:2px solid #a8ccfa;border-color:var(--blue)}.hint{font-size:10px;color:var(--muted);margin-top:3px}.modebox{border:1px solid #cfe1f8;background:#f3f8ff;border-radius:9px;padding:10px}.mode-row{display:flex;align-items:center;gap:10px}.mode-row select{max-width:240px}.checks{display:flex;flex-wrap:wrap;gap:6px}.check{display:inline-flex;gap:5px;align-items:center;border:1px solid var(--line);padding:6px 9px;border-radius:999px;font-size:11px}.check input{width:auto;min-height:0;margin:0}.photo-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.photo-preview{width:120px;height:80px;border:1px solid var(--line);border-radius:8px;background:#eee;display:flex;align-items:center;justify-content:center;color:#999;overflow:hidden}.photo-preview img{width:100%;height:100%;object-fit:contain}.toggle{display:flex;align-items:center;gap:9px;background:#fff3f3;border-radius:8px;padding:9px}.toggle input{width:18px;height:18px}.rowtools{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.preview-title{margin:20px 0 7px;font-size:12px;color:var(--muted);font-weight:800}.preview-stage{background:#eff1f3;border-radius:10px;padding:14px;display:flex;justify-content:center}#preview{width:100%;max-width:520px}.utc-card{width:100%;max-width:520px;aspect-ratio:780/714;background:#e60012;border-radius:14px;padding:6px;position:relative;overflow:hidden;font-family:inherit;container-type:inline-size}.utc-main{height:100%;color:#222}.utc-head{display:flex;height:9.1cqw;justify-content:space-between;align-items:center;color:#fff;padding:0.8cqw 2.1cqw 1.2cqw;font-weight:800}.utc-head small{font-size:2.8cqw;font-weight:500;margin-right:1.2cqw}.utc-store{font-size:4.3cqw}.utc-id{font-size:3.8cqw}.utc-inner{height:calc(100% - 9.1cqw);background:#fff;border-radius:2.1cqw;padding:2.1cqw;display:flex;flex-direction:column;overflow:hidden}.utc-body{display:flex;gap:2.1cqw}.utc-photo{width:52%;position:relative;flex:none}.ph{width:100%;aspect-ratio:4/3;background:#eee;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#999}.ph img{width:100%;height:100%;object-fit:contain}.utc-stock{position:absolute;top:0.8cqw;right:0.8cqw;background:#fff;border:1px solid #333;font-size:2.8cqw;padding:0 1.2cqw;font-weight:800}.utc-info{flex:1;min-width:0}.utc-badges{margin:0 0 1.4cqw;padding:0;list-style:none;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.8fr);gap:0.6cqw 0.8cqw}.utc-badges li{min-width:0;font-size:2.6cqw;line-height:1.4;padding:0.4cqw 1cqw;font-weight:800;text-align:center;white-space:nowrap;background:#888;color:#fff}.utc-badges li.off{visibility:hidden}.utc-badges li.long{background:#1a2f80}.utc-badges li.hv{background:#1e9cd7}.utc-badges li.safe{background:#21b8b3}.utc-price{text-align:right}.utc-label{display:block;color:#e60012;font-weight:800;font-size:3.3cqw}.utc-mainprice{color:#e60012;font-weight:900;font-size:10.4cqw;line-height:1}.utc-mainprice small{font-size:6.2cqw}.utc-mainprice em{font-style:normal;font-size:4.3cqw;margin-left:0.4cqw}.utc-subprice{font-size:2.9cqw;line-height:1.5}.utc-name{font-size:4.7cqw;font-weight:800;margin:1.6cqw 0 0.6cqw}.utc-specs{font-size:2.9cqw;margin:0 0 1.6cqw;line-height:1.7}.utc-btns{display:flex;gap:1.4cqw;margin-top:auto}.utc-btn{display:flex;align-items:center;justify-content:center;text-decoration:none;color:#fff;background:#e60012;border-radius:999px;padding:2.1cqw 1.6cqw;font-weight:800;font-size:4cqw;line-height:1.2}.utc-btn-icon{width:1.15em;height:1.15em;margin-right:.35em;flex:none;fill:currentColor}.utc-detail{flex:1.35}.utc-phone{flex:1;background:#2077c8}.soldout-img{position:absolute;z-index:5;width:58%;max-width:270px;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}.utc-card.soldout a{pointer-events:none;opacity:.6}.modal-bg{display:none;position:fixed;z-index:60;inset:0;background:rgba(0,0,0,.42);align-items:center;justify-content:center;padding:18px}.modal-bg.show{display:flex}.modal{width:min(560px,100%);max-height:86vh;overflow:auto;background:#fff;border-radius:12px;padding:18px}.modal h3{margin:0 0 5px}.modal p{margin:0 0 10px;color:var(--muted);font-size:12px}.picklist{border:1px solid var(--line);border-radius:8px;max-height:50vh;overflow:auto}.pick{display:flex;gap:8px;align-items:center;padding:9px;border-bottom:1px solid var(--line)}.pick:last-child{border-bottom:0}.pick input{width:17px;height:17px}.modal-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:12px}.blocker{position:fixed;z-index:100;inset:0;background:#f6f7f8;display:flex;align-items:center;justify-content:center;padding:24px}.blocker.hide{display:none}.blockcard{max-width:560px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;text-align:center}.blockcard h2{margin-top:0}.error{color:var(--red);white-space:pre-wrap}.toast{position:fixed;z-index:90;left:50%;bottom:22px;transform:translateX(-50%);background:#222;color:#fff;border-radius:8px;padding:9px 14px;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1}@media(max-width:900px){.wrap{grid-template-columns:1fr;padding:0 10px}.top{padding:10px}.top-actions{margin-left:0;width:100%}.top-actions .btn{flex:1}.formgrid{grid-template-columns:1fr}.field.wide{grid-column:auto}}@media(max-width:520px){.page-actions{grid-template-columns:1fr 1fr}}
+:root{--series-1:#2a78d6;--series-2:#eb6834;--series-3:#1baf7a;--ink:#242628;--muted:#72777d;--line:#e4e6e8;--bg:#f6f7f8;--card:#fff;--blue:#1769d2;--blue2:#eaf3ff;--red:#d93232;--green:#16814b;--orange:#c56d06}*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",Meiryo,sans-serif}button,input,select{font:inherit}button{cursor:pointer}.top{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--line);padding:10px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}.title{font-weight:800;font-size:17px}.title small{display:block;font-size:11px;color:var(--muted);font-weight:500}.sync{font-size:12px;padding:5px 9px;border-radius:999px;background:#eef0f2;color:#596068}.sync.ok{background:#e7f6ee;color:var(--green)}.sync.busy{background:#fff3dd;color:var(--orange)}.sync.err{background:#fde9e9;color:var(--red)}.top-actions{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:8px 11px;min-height:38px;font-weight:700}.btn:hover{background:#f4f6f8}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.danger{color:var(--red)}.btn:disabled{opacity:.45;cursor:not-allowed}.wrap{max-width:1240px;margin:16px auto 60px;padding:0 18px;display:grid;grid-template-columns:390px minmax(0,1fr);gap:18px}.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}.panel h2{font-size:14px;margin:0 0 10px;color:#5b6065}.pagebox{background:#f4f6f8;border-radius:10px;padding:11px;margin-bottom:12px}.pagebox label{font-size:11px;font-weight:800;display:block;margin-bottom:4px}.pagebox select{width:100%;padding:9px;border:1px solid var(--line);border-radius:7px;background:#fff}.pageid{font-size:11px;color:var(--muted);margin-top:5px}.page-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.page-actions .btn{font-size:12px;padding:7px}.tip{font-size:11px;color:var(--muted);margin:7px 0 0}.car-row{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:7px;background:#fff;cursor:grab}.car-row:hover{background:#f7f9fb}.car-row.active{border-color:var(--blue);background:var(--blue2)}.car-row.dragging{opacity:.4}.drag{color:#9aa0a6;font-size:18px}.thumb{width:58px;height:42px;border-radius:6px;background:#eee;display:flex;align-items:center;justify-content:center;color:#999;font-size:10px;overflow:hidden;flex:none}.thumb img{width:100%;height:100%;object-fit:cover}.car-meta{min-width:0;flex:1}.car-name{display:block;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.car-sub{display:block;color:var(--muted);font-size:11px}.auto-pill{font-size:10px;padding:2px 5px;border-radius:4px;background:#e7f6ee;color:var(--green)}.auto-pill.manual{background:#fff0e0;color:var(--orange)}.sold-pill{font-size:10px;color:var(--red);font-weight:800}.empty{text-align:center;color:var(--muted);padding:24px 5px}.full{width:100%;margin-top:7px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px 14px}.field{min-width:0}.field.wide{grid-column:1/-1}.field label{display:block;font-size:11px;font-weight:800;margin-bottom:4px}.field input,.field select{width:100%;min-height:40px;border:1px solid var(--line);border-radius:7px;padding:8px 9px;background:#fff}.field input:focus,.field select:focus{outline:2px solid #a8ccfa;border-color:var(--blue)}.hint{font-size:10px;color:var(--muted);margin-top:3px}.modebox{border:1px solid #cfe1f8;background:#f3f8ff;border-radius:9px;padding:10px}.mode-row{display:flex;align-items:center;gap:10px}.mode-row select{max-width:240px}.checks{display:flex;flex-wrap:wrap;gap:6px}.check{display:inline-flex;gap:5px;align-items:center;border:1px solid var(--line);padding:6px 9px;border-radius:999px;font-size:11px}.check input{width:auto;min-height:0;margin:0}.photo-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.photo-preview{width:120px;height:80px;border:1px solid var(--line);border-radius:8px;background:#eee;display:flex;align-items:center;justify-content:center;color:#999;overflow:hidden}.photo-preview img{width:100%;height:100%;object-fit:contain}.toggle{display:flex;align-items:center;gap:9px;background:#fff3f3;border-radius:8px;padding:9px}.toggle input{width:18px;height:18px}.rowtools{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.preview-title{margin:20px 0 7px;font-size:12px;color:var(--muted);font-weight:800}.preview-stage{background:#eff1f3;border-radius:10px;padding:14px;display:flex;justify-content:center}#preview{width:100%;max-width:520px}.utc-card{width:100%;max-width:520px;aspect-ratio:780/714;background:var(--utc-accent,#e60012);border-radius:14px;padding:6px;position:relative;overflow:hidden;font-family:inherit;container-type:inline-size}.utc-main{height:100%;color:#222}.utc-head{display:flex;height:9.1cqw;justify-content:space-between;align-items:center;color:#fff;padding:0.8cqw 2.1cqw 1.2cqw;font-weight:800}.utc-head small{font-size:2.8cqw;font-weight:500;margin-right:1.2cqw}.utc-store{font-size:4.3cqw}.utc-id{font-size:3.8cqw}.utc-inner{height:calc(100% - 9.1cqw);background:#fff;border-radius:2.1cqw;padding:2.1cqw;display:flex;flex-direction:column;overflow:hidden}.utc-body{display:flex;gap:2.1cqw}.utc-photo{width:52%;position:relative;flex:none}.ph{width:100%;aspect-ratio:4/3;background:#eee;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#999}.ph img{width:100%;height:100%;object-fit:contain}.utc-stock{position:absolute;top:0.8cqw;right:0.8cqw;background:#fff;border:1px solid #333;font-size:2.8cqw;padding:0 1.2cqw;font-weight:800}.utc-info{flex:1;min-width:0}.utc-badges{margin:0 0 1.4cqw;padding:0;list-style:none;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.8fr);gap:0.6cqw 0.8cqw}.utc-badges li{min-width:0;font-size:2.6cqw;line-height:1.4;padding:0.4cqw 1cqw;font-weight:800;text-align:center;white-space:nowrap;background:#888;color:#fff}.utc-badges li.off{visibility:hidden}.utc-badges li.long{background:#1a2f80}.utc-badges li.hv{background:#1e9cd7}.utc-badges li.safe{background:#21b8b3}.utc-price{text-align:right}.utc-label{display:block;color:var(--utc-accent,#e60012);font-weight:800;font-size:3.3cqw}.utc-mainprice{color:var(--utc-accent,#e60012);font-weight:900;font-size:10.4cqw;line-height:1}.utc-mainprice small{font-size:6.2cqw}.utc-mainprice em{font-style:normal;font-size:4.3cqw;margin-left:0.4cqw}.utc-subprice{font-size:2.9cqw;line-height:1.5}.utc-name{font-size:4.7cqw;font-weight:800;margin:1.6cqw 0 0.6cqw}.utc-specs{font-size:2.9cqw;margin:0 0 1.6cqw;line-height:1.7}.utc-btns{display:flex;gap:1.4cqw;margin-top:auto}.utc-btn{display:flex;align-items:center;justify-content:center;text-decoration:none;color:#fff;background:var(--utc-accent,#e60012);border-radius:999px;padding:2.1cqw 1.6cqw;font-weight:800;font-size:4cqw;line-height:1.2}.utc-btn-icon{width:1.15em;height:1.15em;margin-right:.35em;flex:none;fill:currentColor}.utc-detail{flex:1.35}.utc-phone{flex:1;background:var(--utc-phone,#2077c8)}.soldout-img{position:absolute;z-index:5;width:58%;max-width:270px;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}.utc-card.soldout a{pointer-events:none;opacity:.6}.modal-bg{display:none;position:fixed;z-index:60;inset:0;background:rgba(0,0,0,.42);align-items:center;justify-content:center;padding:18px}.modal-bg.show{display:flex}.modal{width:min(560px,100%);max-height:86vh;overflow:auto;background:#fff;border-radius:12px;padding:18px}.modal h3{margin:0 0 5px}.modal p{margin:0 0 10px;color:var(--muted);font-size:12px}.picklist{border:1px solid var(--line);border-radius:8px;max-height:50vh;overflow:auto}.pick{display:flex;gap:8px;align-items:center;padding:9px;border-bottom:1px solid var(--line)}.pick:last-child{border-bottom:0}.pick input{width:17px;height:17px}.modal-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:12px}.blocker{position:fixed;z-index:100;inset:0;background:#f6f7f8;display:flex;align-items:center;justify-content:center;padding:24px}.blocker.hide{display:none}.blockcard{max-width:560px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;text-align:center}.blockcard h2{margin-top:0}.error{color:var(--red);white-space:pre-wrap}.toast{position:fixed;z-index:90;left:50%;bottom:22px;transform:translateX(-50%);background:#222;color:#fff;border-radius:8px;padding:9px 14px;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1}@media(max-width:900px){.wrap{grid-template-columns:1fr;padding:0 10px}.top{padding:10px}.top-actions{margin-left:0;width:100%}.top-actions .btn{flex:1}.formgrid{grid-template-columns:1fr}.field.wide{grid-column:auto}}@media(max-width:520px){.page-actions{grid-template-columns:1fr 1fr}}
 </style>
 <style>
 .loginform{text-align:left;margin-top:14px}.loginform label{display:block;font-size:11px;font-weight:800;margin:9px 0 4px}.loginform input[type=text],.loginform input[type=password]{width:100%;min-height:42px;border:1px solid var(--line);border-radius:7px;padding:9px}.loginform .remember{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:500;margin:10px 0}.loginform .remember input{width:16px;height:16px}.loginform .btn{width:100%}.loginhint{font-size:10px;color:var(--muted);margin:8px 0 0}.error{margin-top:9px}.field input:disabled,.field select:disabled,.check input:disabled{background:#edf0f2;color:#687078;cursor:not-allowed}.check:has(input:disabled){background:#edf0f2;color:#687078}.auto-lock-note{display:none;margin-top:8px;padding:8px 10px;border-radius:7px;background:#e8f3ff;color:#15569a;font-size:11px;font-weight:700}.auto-lock-note.show{display:block}.gazoo-state{font-size:11px;margin-top:5px;color:var(--muted)}.gazoo-state.busy{color:var(--orange);font-weight:700}.gazoo-state.ok{color:var(--green);font-weight:700}.gazoo-state.err{color:var(--red);font-weight:700}
@@ -53,6 +53,42 @@
 #excelDrop .drop-card b{display:block;font-size:19px;margin-bottom:6px}
 #excelDrop .drop-card small{color:var(--muted);font-size:12px}
 .dropzone-hint{margin-top:8px;font-size:11px;color:var(--muted)}
+.hours{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:8px}
+.hour{border:1px solid var(--line);background:var(--card);border-radius:6px;font:inherit;font-size:11px;font-weight:700;padding:5px 0;cursor:pointer;color:var(--muted)}
+.hour.on{background:var(--blue);border-color:var(--blue);color:#fff}
+
+.view-tabs{display:flex;gap:4px;background:#eef0f2;border-radius:999px;padding:3px;margin-right:auto;margin-left:14px}
+.view-tab{border:0;background:none;font:inherit;font-size:12px;font-weight:800;color:var(--muted);padding:6px 16px;border-radius:999px;cursor:pointer}
+.view-tab.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.an-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.an-page-pick{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;color:var(--muted)}
+.an-page-pick select{font:inherit;font-size:12px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);min-width:200px}
+.chart{margin:6px 0 4px}
+.chart-title{font-size:12px;font-weight:800;margin:16px 0 8px}
+.bars{display:grid;gap:7px}
+.bar-row{display:grid;grid-template-columns:minmax(80px,132px) 1fr auto;align-items:center;gap:10px;font-size:12px}
+.bar-row .lb{color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{background:#eceef0;border-radius:4px;height:14px;position:relative;overflow:hidden}
+.bar-fill{display:block;height:100%;border-radius:0 4px 4px 0;background:var(--series-1)}
+.bar-row .vl{font-variant-numeric:tabular-nums;color:var(--muted);font-size:11px;white-space:nowrap}
+.split{display:flex;height:16px;border-radius:4px;overflow:hidden;background:#eceef0}
+.split i{display:block;height:100%}
+.split i+i{margin-left:2px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:8px}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:10px;height:10px;border-radius:2px;display:block}
+.spark{display:flex;align-items:flex-end;gap:3px;height:70px}
+.spark div{flex:1;min-width:4px;background:var(--series-1);border-radius:3px 3px 0 0;position:relative}
+.spark-labels{display:flex;gap:3px;margin-top:5px;font-size:9px;color:var(--muted)}
+.spark-labels span{flex:1;min-width:4px;text-align:center;overflow:hidden;white-space:nowrap}
+
+.theme-row{display:flex;align-items:center;gap:8px;margin:10px 0 4px;flex-wrap:wrap}
+.theme-label{font-size:11px;font-weight:800;color:var(--muted)}
+.swatches{display:flex;gap:6px}
+.swatch{width:24px;height:24px;border-radius:6px;border:2px solid transparent;box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}
+.swatch.on{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+#themeCustom{width:30px;height:26px;padding:0;border:1px solid var(--line);border-radius:6px;background:none;cursor:pointer}
+
 .ic{width:1em;height:1em;fill:currentColor;flex:none;vertical-align:-.125em}
 .row-del{flex:none;width:26px;height:26px;border-radius:6px;border:1px solid var(--line);background:var(--card);color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .row-del:hover{border-color:var(--red);color:var(--red);background:#fdf2f2}
@@ -89,6 +125,7 @@
 <body>
 <header class="top">
   <div class="title">中古車カード管理<small>入力は自動保存。最後に「変更をサイトへ反映」だけ押してください。</small></div>
+  <nav class="view-tabs"><button class="view-tab on" id="viewEdit" type="button">編集</button><button class="view-tab" id="viewAnalytics" type="button">分析</button></nav>
   <span class="sync busy" id="syncState">読み込み中…</span>
   <div class="top-actions">
     <button class="btn primary" id="btnPublish">変更をサイトへ反映</button>
@@ -102,6 +139,11 @@
       <label for="pageSelect">いま編集する掲載ページ</label>
       <select id="pageSelect"></select>
       <div class="pageid">CMS用ページID：<code id="pageId">main</code></div>
+      <div class="theme-row">
+        <span class="theme-label">カードの色</span>
+        <div class="swatches" id="themeSwatches"></div>
+        <input type="color" id="themeCustom" value="#e60012" title="好きな色を選ぶ">
+      </div>
       <div class="page-actions">
         <button class="btn" id="btnPageAdd">＋ ページ追加</button>
         <button class="btn" id="btnPageDuplicate">ページ複製</button>
@@ -116,6 +158,12 @@
       <p>支給された特選車Excelを選ぶだけで、内容を確認してサイトへ反映できます。</p><p class="dropzone-hint">画面のどこにでもExcelをドラッグ＆ドロップできます。</p>
       <button class="btn primary full" id="btnExcel">Excelファイルを選ぶ</button>
       <input type="file" id="fileExcel" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+    </div>
+    <div class="importbox" style="margin-top:12px">
+      <b>Gazoo自動更新の時刻</b>
+      <p>選んだ時刻（日本時間）に、Gazooを見に行って価格・写真・売約を更新します。</p>
+      <div class="hours" id="hoursPick"></div>
+      <button class="btn full" id="btnSaveHours" style="margin-top:8px">この時刻に設定する</button>
     </div>
     <h2>このページのクルマ（<span id="carCount">0</span>台）</h2>
     <div id="carList"></div>
@@ -158,8 +206,13 @@
   </section>
 
   <section class="panel analytics-panel">
-    <h2>分析</h2>
-    <p class="tip">掲載中のデータから集計します。売却日数は、掲載を始めてから売約になるまでの日数です。</p>
+    <div class="an-head">
+      <div>
+        <h2>分析</h2>
+        <p class="tip">掲載中のデータから集計します。売却日数は、掲載を始めてから売約になるまでの日数です。</p>
+      </div>
+      <label class="an-page-pick">対象<select id="anPage"></select></label>
+    </div>
     <div class="an-tabs">
       <button class="an-tab on" data-an="summary" type="button">サマリー</button>
       <button class="an-tab" data-an="pages" type="button">ページ別</button>
@@ -205,7 +258,7 @@ var STORES=['福岡西店','博多南店','福岡インター店','小倉東店'
 var PHONES={'福岡西店':'092-894-8639','博多南店':'092-581-3131','福岡インター店':'092-938-1422','小倉東店':'093-472-1234','八幡店':'093-621-5352','飯塚店':'0948-82-2594','久留米インター店':'0942-44-6144'};
 var BADGES=['修無','整付','リ済込','車検整備付','ロングラン保証','ハイブリッド保証','あんしん診断'];
 var SLOTS=[['修無'],['ロングラン保証'],['整付'],['ハイブリッド保証'],['リ済込','車検整備付'],['あんしん診断']];
-var EMBED_VERSION='20260901-2';
+var EMBED_VERSION='20260901-3';
 var state={version:2,cars:[],pages:[]},revision=null,selectedUid=null,currentPageId='main',boot=null,dirty=false,saveTimer=null,savePromise=null,saveAgain=false,gazooTimer=null,gazooSeq=0,excelPreview=null;
 var auth={name:'担当者',key:''};
 var addMode=null,addRows=[],addBusy=false,addSeq=0,addTimer=null;
@@ -213,7 +266,7 @@ var F={};
 
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function clone(v){return JSON.parse(JSON.stringify(v))}
-function gas(name,args){return new Promise(function(resolve,reject){var r=google.script.run.withSuccessHandler(resolve).withFailureHandler(function(e){reject(new Error((e&&e.message)||String(e)))}),a=args||[];if(name==='getBootstrap')r.getBootstrap(auth);else if(name==='saveDraft')r.saveDraft(auth,a[0],a[1]);else if(name==='publishCurrent')r.publishCurrent(auth,a[0]);else if(name==='pullPublished')r.pullPublished(auth);else if(name==='uploadCarImage')r.uploadCarImage(auth,a[0],a[1]);else if(name==='runGazooNow')r.runGazooNow(auth);else if(name==='getPublishedStatus')r.getPublishedStatus(auth);else if(name==='importGazooCar')r.importGazooCar(auth,a[0]);else if(name==='previewExcelImport')r.previewExcelImport(auth,a[0],a[1]);else if(name==='getClickStats')r.getClickStats(auth);else reject(new Error('未対応の操作です。'))})}
+function gas(name,args){return new Promise(function(resolve,reject){var r=google.script.run.withSuccessHandler(resolve).withFailureHandler(function(e){reject(new Error((e&&e.message)||String(e)))}),a=args||[];if(name==='getBootstrap')r.getBootstrap(auth);else if(name==='saveDraft')r.saveDraft(auth,a[0],a[1]);else if(name==='publishCurrent')r.publishCurrent(auth,a[0]);else if(name==='pullPublished')r.pullPublished(auth);else if(name==='uploadCarImage')r.uploadCarImage(auth,a[0],a[1]);else if(name==='runGazooNow')r.runGazooNow(auth);else if(name==='getPublishedStatus')r.getPublishedStatus(auth);else if(name==='importGazooCar')r.importGazooCar(auth,a[0]);else if(name==='previewExcelImport')r.previewExcelImport(auth,a[0],a[1]);else if(name==='getClickStats')r.getClickStats(auth);else if(name==='saveSettings')r.saveSettings(auth,a[0]);else reject(new Error('未対応の操作です。'))})}
 function showToast(s){var t=document.getElementById('toast');t.textContent=s;t.classList.add('show');clearTimeout(showToast.t);showToast.t=setTimeout(function(){t.classList.remove('show')},2600)}
 function syncStatus(text,kind){var s=document.getElementById('syncState');s.textContent=text;s.className='sync '+(kind||'')}
 function page(){return state.pages.filter(function(p){return p.id===currentPageId})[0]||state.pages[0]}
@@ -238,11 +291,49 @@ function saveNow(){
 }
 async function flushSave(){clearTimeout(saveTimer);if(dirty)await saveNow();if(savePromise)await savePromise;if(dirty)await saveNow();return revision}
 
-function renderAll(){renderPages();renderList();renderEditor();renderPagePreview();renderCmsCode();renderAnalytics()}
+function renderAll(){renderPages();renderThemePicker();applyTheme();renderList();renderEditor();renderPagePreview();renderCmsCode();renderAnalytics()}
 function renderPages(){var s=document.getElementById('pageSelect');s.innerHTML=state.pages.map(function(p){return'<option value="'+esc(p.id)+'">'+esc(p.name)+'</option>'}).join('');if(!state.pages.some(function(p){return p.id===currentPageId}))currentPageId=state.pages[0]?state.pages[0].id:'main';s.value=currentPageId;document.getElementById('pageId').textContent=page()?page().id:'';document.getElementById('btnPageDelete').disabled=state.pages.length<=1}
-function renderList(){var list=document.getElementById('carList'),cars=pageCars();document.getElementById('carCount').textContent=cars.length;if(!cars.length){list.innerHTML='<div class="empty">このページにはまだクルマがありません。<br><button class="btn primary" id="btnAddEmpty" style="margin-top:10px">＋ 最初のクルマを追加</button></div>';document.getElementById('btnAddEmpty').onclick=openAddModal;return}list.innerHTML=cars.map(function(c){var im=imgSrc(c.image);return'<div class="car-row'+(c.uid===selectedUid?' active':'')+'" draggable="true" data-uid="'+esc(c.uid)+'"><span class="drag"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></span><span class="thumb">'+(im?'<img src="'+esc(im)+'" alt="">':'写真')+'</span><span class="car-meta"><span class="car-name">'+esc(c.name||'（車名未入力）')+'</span><span class="car-sub">'+esc(c.store||'')+' '+esc(c.id||'')+'</span></span><span class="auto-pill'+(c.autoUpdate===false?' manual':'')+'">'+(c.autoUpdate===false?'手動':'自動')+'</span>'+(priceLooksWrong(c)?'<span class="warn-pill">価格要確認</span>':isPending(c)?'<span class="wait-pill">掲載待ち</span>':needsInput(c)?'<span class="todo-pill">要入力</span>':'')+(c.soldout?'<span class="sold-pill">売約</span>':'')+'<button class="row-del" type="button" data-del="'+esc(c.uid)+'" title="このクルマを削除" aria-label="このクルマを削除">'+DELETE_ICON+'</button></div>'}).join('');var dragUid=null;list.querySelectorAll('.row-del').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();removeCar(b.dataset.del)})});
+function renderList(){var list=document.getElementById('carList'),cars=pageCars();document.getElementById('carCount').textContent=cars.length;if(!cars.length){list.innerHTML='<div class="empty">このページにはまだクルマがありません。<br><button class="btn primary" id="btnAddEmpty" style="margin-top:10px">＋ 最初のクルマを追加</button></div>';document.getElementById('btnAddEmpty').onclick=openAddModal;return}list.innerHTML=cars.map(function(c){var im=imgSrc(c.image);return'<div class="car-row'+(c.uid===selectedUid?' active':'')+'" draggable="true" data-uid="'+esc(c.uid)+'"><span class="drag"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></span><span class="thumb">'+(im?'<img src="'+esc(im)+'" alt="">':'写真')+'</span><span class="car-meta"><span class="car-name">'+esc(c.name||'（車名未入力）')+'</span><span class="car-sub">'+esc(c.store||'')+' '+esc(c.id||'')+'</span></span><span class="auto-pill'+(c.autoUpdate===false?' manual':'')+'">'+(c.autoUpdate===false?'手動':'自動')+'</span>'+(priceLooksWrong(c)?'<span class="warn-pill">価格要確認</span>':isPending(c)?'<span class="wait-pill">掲載待ち</span>':needsInput(c)?'<span class="todo-pill">要入力</span>':'')+(c.soldout?'<span class="sold-pill">売約</span>':'')+'<button class="row-del" type="button" data-del="'+esc(c.uid)+'" title="このクルマを削除" aria-label="このクルマを削除">'+DELETE_ICON+'</button></div>'}).join('');var dragUid=null;bindListDrop(list,function(){return dragUid},function(v){dragUid=v});list.querySelectorAll('.row-del').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();removeCar(b.dataset.del)})});
   list.querySelectorAll('.car-row').forEach(function(row){row.addEventListener('click',function(){select(row.dataset.uid)});row.addEventListener('dragstart',function(e){dragUid=row.dataset.uid;row.classList.add('dragging');e.dataTransfer.effectAllowed='move'});row.addEventListener('dragover',function(e){e.preventDefault();if(row.dataset.uid===dragUid)return;var box=row.getBoundingClientRect(),after=e.clientY>box.top+box.height/2;row.classList.toggle('drop-after',after);row.classList.toggle('drop-before',!after)});row.addEventListener('dragleave',function(){row.classList.remove('drop-before','drop-after')});row.addEventListener('drop',function(e){e.preventDefault();var after=row.classList.contains('drop-after');row.classList.remove('drop-before','drop-after');var to=row.dataset.uid,p=page(),a=p.carUids.indexOf(dragUid),b=p.carUids.indexOf(to);if(a<0||b<0||a===b)return;p.carUids.splice(a,1);var at=p.carUids.indexOf(to)+(after?1:0);p.carUids.splice(at,0,dragUid);markDirty();renderList();renderPagePreview()});row.addEventListener('dragend',function(){row.classList.remove('dragging');list.querySelectorAll('.car-row').forEach(function(r){r.classList.remove('drop-before','drop-after')})})})}
 function select(uidv){selectedUid=uidv;renderList();renderEditor()}
+// 並び替えは行の上だけでなく一覧のどこでも受け止める。
+// カーソルに一番近い行を探して、その手前か後ろかを決めるので判定が緩い。
+function clearDropMarks(list){list.querySelectorAll('.car-row').forEach(function(r){r.classList.remove('drop-before','drop-after')})}
+function nearestRow(list,y){
+  var rows=[].slice.call(list.querySelectorAll('.car-row')),best=null,bestDist=Infinity,after=false;
+  rows.forEach(function(r){
+    var b=r.getBoundingClientRect(),mid=b.top+b.height/2,d=Math.abs(y-mid);
+    if(d<bestDist){bestDist=d;best=r;after=y>mid}
+  });
+  return best?{row:best,after:after}:null;
+}
+function bindListDrop(list,getDrag,setDrag){
+  list.addEventListener('dragover',function(e){
+    if(!getDrag())return;
+    e.preventDefault();e.dataTransfer.dropEffect='move';
+    var hit=nearestRow(list,e.clientY);
+    clearDropMarks(list);
+    if(!hit||hit.row.dataset.uid===getDrag())return;
+    hit.row.classList.add(hit.after?'drop-after':'drop-before');
+  });
+  list.addEventListener('dragleave',function(e){if(!list.contains(e.relatedTarget))clearDropMarks(list)});
+  list.addEventListener('drop',function(e){
+    var dragUid=getDrag();if(!dragUid)return;
+    e.preventDefault();
+    var hit=nearestRow(list,e.clientY);
+    clearDropMarks(list);
+    if(!hit){setDrag(null);return}
+    var to=hit.row.dataset.uid,p=page(),a=p.carUids.indexOf(dragUid);
+    if(a<0||to===dragUid){setDrag(null);return}
+    p.carUids.splice(a,1);
+    var at=p.carUids.indexOf(to);
+    if(at<0)at=p.carUids.length;else if(hit.after)at+=1;
+    p.carUids.splice(at,0,dragUid);
+    setDrag(null);
+    markDirty();renderList();renderPagePreview();
+  });
+}
+
 function renderEditor(){var c=selected();document.getElementById('editorEmpty').style.display=c?'none':'';document.getElementById('editor').style.display=c?'':'none';if(!c)return;F.fMode.value=c.autoUpdate===false?'manual':'auto';F.fAutoImage.checked=c.autoImageUpdate!==false;F.fStore.value=STORES.indexOf(c.store)>=0?c.store:STORES[0];F.fName.value=c.name||'';F.fGazoo.value=c.gazooUrl||'';F.fId.value=c.id||'';F.fStock.value=c.stock||'';F.fTotal.value=c.priceTotal==null?'':c.priceTotal;F.fVehicle.value=c.priceVehicle==null?'':c.priceVehicle;var s=c.specs||{};F.fYear.value=s.year||'';F.fKm.value=s.km||'';F.fShaken.value=s.shaken||'';F.fFuel.value=s.fuel||'';F.fMission.value=s.mission||'';F.fColor.value=s.color||'';F.fSold.checked=!!c.soldout;document.querySelectorAll('#badges input').forEach(function(cb){cb.checked=(c.badges||[]).indexOf(cb.value)>=0});var photo=imgSrc(c.image);document.getElementById('photoPreview').innerHTML=photo?'<img src="'+esc(photo)+'" alt="写真">':'写真なし';setAutoLocks(c);if(c.gazooStatus==='ok'&&c.lastGazooCheck)setGazooState('Gazoo取得済み','ok');else setGazooState('自動更新では、URLを貼ると車両情報を自動入力します。','');renderFee();renderPreview()}
 function setAutoLocks(c){var auto=!!c&&c.autoUpdate!==false,photoAuto=auto&&c.autoImageUpdate!==false;['fStore','fName','fId','fTotal','fVehicle','fYear','fKm','fShaken','fFuel','fMission','fColor','fSold'].forEach(function(id){if(F[id])F[id].disabled=auto});document.querySelectorAll('#badges input').forEach(function(cb){cb.disabled=auto});F.fAutoImage.disabled=!auto;document.getElementById('btnPhoto').disabled=photoAuto;document.getElementById('btnPhotoDelete').disabled=photoAuto;document.getElementById('autoLockNote').classList.toggle('show',auto);document.getElementById('pendingNote').classList.toggle('show',isPending(c))}
 function applyForm(){var c=selected();if(!c)return;c.autoUpdate=F.fMode.value!=='manual';c.autoImageUpdate=!!F.fAutoImage.checked;c.store=F.fStore.value;c.name=F.fName.value;c.gazooUrl=F.fGazoo.value;c.id=F.fId.value;c.stock=F.fStock.value;c.priceTotal=F.fTotal.value===''?null:Number(F.fTotal.value);c.priceVehicle=F.fVehicle.value===''?null:Number(F.fVehicle.value);c.specs={year:F.fYear.value,km:F.fKm.value,shaken:F.fShaken.value,fuel:F.fFuel.value,mission:F.fMission.value,color:F.fColor.value};c.soldout=F.fSold.checked;c.badges=[];document.querySelectorAll('#badges input:checked').forEach(function(cb){c.badges.push(cb.value)});setAutoLocks(c);markDirty();renderFee();renderPreview();renderList();renderPagePreview()}
@@ -304,17 +395,65 @@ function avg(list){var v=list.filter(function(x){return x!=null&&isFinite(x)});r
 function pct(a,b){return b?Math.round(a/b*1000)/10:0}
 function fmt(v,unit){return v==null?'−':v+(unit||'')}
 
-// 集計の元になる一覧。ページ内の掲載順も持たせる
+// 集計の元になる一覧。ページ内の掲載順も持たせる。
+// anPageId が空なら全ページ（総合）、指定があればそのページだけ。
+var anPageId='';
 function anCars(){
-  var out=[],seen={};
+  var out=[];
   state.pages.forEach(function(p){
+    if(anPageId&&p.id!==anPageId)return;
     (p.carUids||[]).forEach(function(u,i){
       var c=byUid(u);if(!c)return;
       out.push({car:c,pageId:p.id,pageName:p.name,order:i+1});
-      seen[u]=1;
     });
   });
   return out;
+}
+function anScopeName(){
+  if(!anPageId)return'総合（すべての掲載ページ）';
+  var p=state.pages.filter(function(x){return x.id===anPageId})[0];
+  return p?p.name:'総合';
+}
+function renderAnPageSelect(){
+  var sel=document.getElementById('anPage');if(!sel)return;
+  sel.innerHTML='<option value="">総合（すべて）</option>'+state.pages.map(function(p){
+    return'<option value="'+esc(p.id)+'"'+(anPageId===p.id?' selected':'')+'>'+esc(p.name)+'</option>';
+  }).join('');
+  sel.onchange=function(){anPageId=sel.value;renderAnalytics()};
+}
+
+/* ---- グラフ部品。単系列は凡例なし、値は必ず数字でも出す ---- */
+function barChart(title,rows,unit){
+  if(!rows.length)return'';
+  var max=Math.max.apply(null,rows.map(function(r){return r.value}).concat([1]));
+  return'<div class="chart">'+(title?'<div class="chart-title">'+esc(title)+'</div>':'')
+   +'<div class="bars">'+rows.map(function(r){
+      var w=Math.max(r.value>0?2:0,Math.round(r.value/max*100));
+      return'<div class="bar-row"><span class="lb" title="'+esc(r.label)+'">'+esc(r.label)+'</span>'
+        +'<span class="bar-track"><i class="bar-fill" style="width:'+w+'%'+(r.color?';background:'+r.color:'')+'"></i></span>'
+        +'<span class="vl">'+esc(r.value+(unit||''))+(r.sub?'　'+esc(r.sub):'')+'</span></div>';
+    }).join('')+'</div></div>';
+}
+function splitBar(title,parts){
+  var total=parts.reduce(function(a,b){return a+b.value},0);
+  if(!total)return'';
+  return'<div class="chart">'+(title?'<div class="chart-title">'+esc(title)+'</div>':'')
+   +'<div class="split">'+parts.map(function(p){
+      return'<i style="width:'+(p.value/total*100)+'%;background:'+p.color+'" title="'+esc(p.label+' '+p.value)+'"></i>';
+    }).join('')+'</div>'
+   +'<div class="legend">'+parts.map(function(p){
+      return'<span><i style="background:'+p.color+'"></i>'+esc(p.label)+' '+p.value+'台（'+pct(p.value,total)+'%）</span>';
+    }).join('')+'</div></div>';
+}
+function columnChart(title,rows,unit){
+  if(!rows.length)return'';
+  var max=Math.max.apply(null,rows.map(function(r){return r.value}).concat([1]));
+  return'<div class="chart"><div class="chart-title">'+esc(title)+'</div>'
+   +'<div class="spark">'+rows.map(function(r){
+      return'<div style="height:'+Math.max(3,Math.round(r.value/max*100))+'%" title="'+esc(r.label+' '+r.value+(unit||''))+'"></div>';
+    }).join('')+'</div>'
+   +'<div class="spark-labels">'+rows.map(function(r){return'<span>'+esc(r.short||r.label)+'</span>'}).join('')+'</div>'
+   +'<p class="an-note">最大 '+max+(unit||'')+'（'+esc(rows.filter(function(r){return r.value===max})[0].label)+'）</p></div>';
 }
 function anStats(rows){
   var cars=rows.map(function(r){return r.car});
@@ -352,11 +491,17 @@ function anSummary(){
   var byPage={};
   rows.forEach(function(r){(byPage[r.pageId]=byPage[r.pageId]||{name:r.pageName,rows:[]}).rows.push(r)});
   var list=Object.keys(byPage).map(function(id){var g=byPage[id],st=anStats(g.rows);return{name:g.name,st:st}});
-  var maxTotal=Math.max.apply(null,list.map(function(x){return x.st.total}).concat([1]));
-  html+='<h3 style="font-size:13px;margin:6px 0 8px">ページごとの内訳</h3>';
+  html+=splitBar('売約と売れ残り',[
+    {label:'売約済み',value:s.sold,color:'var(--series-1)'},
+    {label:'売れ残り',value:s.rest,color:'var(--series-2)'}
+  ]);
+  html+=barChart('掲載ページごとの台数',list.map(function(x){
+    return{label:x.name,value:x.st.total,sub:'売約'+x.st.sold+'台'};
+  }),'台');
+  html+='<h3 style="font-size:13px;margin:16px 0 8px">ページごとの内訳</h3>';
   html+=anTableHtml(
     [{label:'掲載ページ'},{label:'台数',num:true},{label:'売約',num:true},{label:'売約率',num:true},{label:'構成'},{label:'平均価格',num:true},{label:'平均売却日数',num:true}],
-    list.map(function(x){return[esc(x.name),x.st.total,x.st.sold,x.st.rate+'%',anBarHtml(x.st.total,maxTotal),fmt(x.st.price,'万円'),fmt(x.st.speed,'日')]})
+    list.map(function(x){return[esc(x.name),x.st.total,x.st.sold,x.st.rate+'%',anBarHtml(x.st.total,Math.max.apply(null,list.map(function(y){return y.st.total}).concat([1]))),fmt(x.st.price,'万円'),fmt(x.st.speed,'日')]})
   );
   if(unknown)html+='<p class="an-note">※ '+unknown+'台は掲載開始日が記録されていないため、売却日数の集計から除いています。今後追加・取込した車から記録されます。</p>';
   return html;
@@ -415,6 +560,18 @@ function anRest(){
    +'<div class="an-card"><div class="k">平均価格</div><div class="v">'+fmt(st.price)+'</div><div class="s">万円</div></div>'
    +'<div class="an-card"><div class="k">平均掲載日数</div><div class="v">'+fmt(avg(rows.map(function(r){return liveDays(r.car)})))+'</div><div class="s">日</div></div>'
    +'</div>'
+   +splitBar('全体に対する売れ残り',[
+      {label:'売約済み',value:all.length-rows.length,color:'var(--series-1)'},
+      {label:'売れ残り',value:rows.length,color:'var(--series-2)'}
+    ])
+   +barChart('店舗ごとの売れ残り台数',(function(){
+      var g={};all.forEach(function(r){if(!r.car.soldout){var k=r.car.store||'店舗なし';g[k]=(g[k]||0)+1}});
+      return Object.keys(g).map(function(k){return{label:k,value:g[k],color:'var(--series-2)'}}).sort(function(a,b){return b.value-a.value});
+    })(),'台')
+   +barChart('タイプごとの売れ残り台数',(function(){
+      var g={};all.forEach(function(r){if(!r.car.soldout){var k=bodyTypeOf(r.car);g[k]=(g[k]||0)+1}});
+      return Object.keys(g).map(function(k){return{label:k,value:g[k],color:'var(--series-2)'}}).sort(function(a,b){return b.value-a.value});
+    })(),'台')
    +restBreakdown('店舗',all,function(c){return c.store||'店舗なし'})
    +restBreakdown('タイプ',all,bodyTypeOf)
    +restBreakdown('価格帯',all,priceBandOf)
@@ -434,7 +591,9 @@ function anModel(){
   var maxT=Math.max.apply(null,types.map(function(x){return x.st.total}).concat([1]));
   var maxM=Math.max.apply(null,models.map(function(x){return x.st.total}).concat([1]));
   var maxF=Math.max.apply(null,fuels.map(function(x){return x.st.total}).concat([1]));
-  return'<h3 style="font-size:13px;margin:6px 0 8px">タイプ別（SUV・セダンなど）</h3>'
+  return barChart('タイプ別の台数',types.map(function(x){return{label:x.key,value:x.st.total,sub:'売約率'+x.st.rate+'%'}}),'台')
+   +barChart('車種別の台数（上位10）',models.slice(0,10).map(function(x){return{label:x.key,value:x.st.total,sub:'売約率'+x.st.rate+'%'}}),'台')
+   +'<h3 style="font-size:13px;margin:16px 0 8px">タイプ別（SUV・セダンなど）</h3>'
    +anTableHtml([{label:'タイプ'},{label:'台数',num:true},{label:'売約',num:true},{label:'売約率',num:true},{label:'構成'},{label:'平均価格',num:true},{label:'平均売却日数',num:true}],
      types.map(function(x){return[esc(x.key),x.st.total,x.st.sold,x.st.rate+'%',anBarHtml(x.st.total,maxT),fmt(x.st.price,'万円'),fmt(x.st.speed,'日')]}))
    +'<h3 style="font-size:13px;margin:16px 0 8px">車種別</h3>'
@@ -453,7 +612,8 @@ function anPrice(){
   }).filter(function(x){return x.st.total});
   var max=Math.max.apply(null,bands.map(function(x){return x.st.total}).concat([1]));
   var noPrice=anCars().length-rows.length;
-  return anTableHtml([{label:'価格帯'},{label:'台数',num:true},{label:'売約',num:true},{label:'売約率',num:true},{label:'構成'},{label:'平均売却日数',num:true}],
+  return barChart('価格帯ごとの台数',bands.map(function(x){return{label:x.label,value:x.st.total,sub:'売約率'+x.st.rate+'%'}}),'台')
+   +anTableHtml([{label:'価格帯'},{label:'台数',num:true},{label:'売約',num:true},{label:'売約率',num:true},{label:'構成'},{label:'平均売却日数',num:true}],
      bands.map(function(x){return[esc(x.label),x.st.total,x.st.sold,x.st.rate+'%',anBarHtml(x.st.total,max),fmt(x.st.speed,'日')]}))
    +'<p class="an-note">支払総額がまだ取れていない車は、車両価格で集計しています。</p>'
    +(noPrice?'<p class="an-note">※ 価格が未入力の'+noPrice+'台は含めていません。</p>':'');
@@ -497,7 +657,11 @@ function anTime(){
        list.map(function(x){var st=anStats(x.rows);return[esc(x.key),x.rows.length,anBarHtml(x.rows.length,max),fmt(st.price,'万円'),fmt(st.speed,'日')]}));
   }
   var pad=function(n){return('0'+n).slice(-2)};
-  return block('月別',group(function(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'}))
+  var daily=group(function(d){return d.getFullYear()+'/'+pad(d.getMonth()+1)+'/'+pad(d.getDate())}).slice(0,30).reverse();
+  return columnChart('日別の売約件数（直近30日）',daily.map(function(x){
+      return{label:x.key,short:x.key.slice(5),value:x.rows.length};
+    }),'件')
+   +block('月別',group(function(d){return d.getFullYear()+'年'+(d.getMonth()+1)+'月'}))
    +block('週別',group(weekKey))
    +block('日別',group(function(d){return d.getFullYear()+'/'+pad(d.getMonth()+1)+'/'+pad(d.getDate())}));
 }
@@ -550,7 +714,13 @@ function anClick(){
    +'<div class="an-card"><div class="k">記録された日数</div><div class="v">'+Object.keys(idx.byDay).length+'</div><div class="s">日</div></div>'
    +'<div class="an-card"><div class="k">クリックのあった車</div><div class="v">'+Object.keys(idx.byCar).length+'</div><div class="s">台</div></div>'
    +'</div>'
-   +'<h3 style="font-size:13px;margin:6px 0 8px">ページ別</h3>'
+   +barChart('車ごとのクリック数（上位10）',list.slice(0,10).filter(function(x){return x.c.total>0}).map(function(x){
+      return{label:x.r.car.name||'（車名なし）',value:x.c.total,sub:'詳しく'+x.c.d+'・電話'+x.c.p};
+    }),'回')
+   +columnChart('日別のクリック数',Object.keys(idx.byDay).sort().map(function(d){
+      return{label:d,short:d.slice(5),value:idx.byDay[d]};
+    }),'回')
+   +'<h3 style="font-size:13px;margin:16px 0 8px">ページ別</h3>'
    +anTableHtml([{label:'掲載ページ'},{label:'クリック',num:true},{label:'構成'}],pageRows)
    +'<h3 style="font-size:13px;margin:16px 0 8px">車ごと（多い順）</h3>'
    +anTableHtml([{label:'車名'},{label:'掲載ページ'},{label:'順',num:true},{label:'詳しくは',num:true},{label:'電話',num:true},{label:'合計',num:true},{label:'構成'},{label:'状態'}],
@@ -573,6 +743,29 @@ function renderAnalytics(){
 function newCar(over){var c={uid:uid(),listedAt:new Date().toISOString(),store:STORES[0],name:'',gazooUrl:'',id:'',stock:'',priceTotal:null,priceVehicle:null,image:'',badges:['修無','整付','ロングラン保証','あんしん診断'],specs:{year:'',km:'',shaken:'',fuel:'',mission:'',color:''},soldout:false,autoUpdate:true,autoImageUpdate:true};Object.keys(over||{}).forEach(function(k){c[k]=over[k]});return c}
 function needsInput(c){return !String(c.name||'').trim()||c.priceTotal==null}
 function isPending(c){return !!c&&c.autoUpdate===false&&c.gazooPending===true}
+// カードの色。CMS側 ucar-cards.js の THEMES と同じ値にする
+var THEMES={red:{name:'赤',accent:'#e60012',phone:'#2077c8'},blue:{name:'青',accent:'#1462b4',phone:'#0f8a6a'},black:{name:'ブラック',accent:'#222629',phone:'#2077c8'},orange:{name:'オレンジ',accent:'#e2650f',phone:'#2077c8'},green:{name:'緑',accent:'#127a45',phone:'#2077c8'}};
+function themeOf(v){var t=String(v||'red').trim();if(/^#[0-9a-f]{6}$/i.test(t))return{accent:t,phone:THEMES.red.phone};return THEMES[t]||THEMES.red}
+function applyTheme(){
+  var t=themeOf((page()||{}).theme);
+  document.querySelectorAll('.preview-stage,.page-preview-grid').forEach(function(el){
+    el.style.setProperty('--utc-accent',t.accent);el.style.setProperty('--utc-phone',t.phone);
+  });
+}
+function renderThemePicker(){
+  var box=document.getElementById('themeSwatches');if(!box)return;
+  var cur=String((page()||{}).theme||'red');
+  box.innerHTML=Object.keys(THEMES).map(function(k){
+    return'<button type="button" class="swatch'+(cur===k?' on':'')+'" data-theme="'+k+'" title="'+esc(THEMES[k].name)+'" aria-label="'+esc(THEMES[k].name)+'" style="background:'+THEMES[k].accent+'"></button>';
+  }).join('');
+  box.querySelectorAll('.swatch').forEach(function(b){b.onclick=function(){setTheme(b.dataset.theme)}});
+  var custom=document.getElementById('themeCustom');
+  if(custom){
+    custom.value=/^#[0-9a-f]{6}$/i.test(cur)?cur:themeOf(cur).accent;
+    custom.oninput=function(){setTheme(custom.value)};
+  }
+}
+function setTheme(v){var p=page();if(!p)return;p.theme=v;markDirty();renderThemePicker();applyTheme();renderPreview();renderPagePreview()}
 // 支払総額が車両価格を下回るのは読み取り違いの可能性が高い
 function priceLooksWrong(c){return c.priceTotal!=null&&c.priceVehicle!=null&&Number(c.priceTotal)<Number(c.priceVehicle)}
 function setAddState(text,kind){var el=document.getElementById('addState');el.textContent=text;el.className='gazoo-state '+(kind||'')}
@@ -711,6 +904,51 @@ function duplicateSelected(){
   showToast('クルマを複製しました');
 }
 
+/* ===== 画面の切り替え（編集 / 分析） ===== */
+var currentView='edit';
+function setView(v){
+  currentView=v;
+  document.getElementById('viewEdit').classList.toggle('on',v==='edit');
+  document.getElementById('viewAnalytics').classList.toggle('on',v==='analytics');
+  document.querySelectorAll('main.wrap > .panel').forEach(function(el){
+    var isAn=el.classList.contains('analytics-panel');
+    el.style.display=(v==='analytics')===isAn?'':'none';
+  });
+  if(v==='analytics'){renderAnPageSelect();renderAnalytics()}
+  try{localStorage.setItem('ucarView',v)}catch(e){}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ===== Gazoo自動更新の時刻 ===== */
+var updateHours=[6,20];
+function renderHours(){
+  var box=document.getElementById('hoursPick');if(!box)return;
+  var html='';
+  for(var h=0;h<24;h++){
+    html+='<button type="button" class="hour'+(updateHours.indexOf(h)>=0?' on':'')+'" data-h="'+h+'">'+h+'時</button>';
+  }
+  box.innerHTML=html;
+  box.querySelectorAll('.hour').forEach(function(b){
+    b.onclick=function(){
+      var h=Number(b.dataset.h),at=updateHours.indexOf(h);
+      if(at>=0)updateHours.splice(at,1);else updateHours.push(h);
+      updateHours.sort(function(x,y){return x-y});
+      renderHours();
+    };
+  });
+}
+async function saveHours(){
+  if(!updateHours.length){showToast('少なくとも1つの時刻を選んでください。');return}
+  var btn=document.getElementById('btnSaveHours');
+  btn.disabled=true;btn.textContent='保存中…';
+  try{
+    var r=await gas('saveSettings',[{updateHours:updateHours}]);
+    updateHours=r.updateHours||updateHours;renderHours();
+    showToast('自動更新の時刻を保存しました（'+updateHours.join('時, ')+'時）');
+  }catch(e){alert(e.message)}
+  finally{btn.disabled=false;btn.textContent='この時刻に設定する'}
+}
+
 function bind(){
   document.getElementById('pageSelect').addEventListener('change',function(){currentPageId=this.value;localStorage.setItem('ucarWebPage',currentPageId);selectedUid=null;renderAll()});
   document.getElementById('btnPageAdd').onclick=function(){var n=prompt('新しい掲載ページ名\n例：ミニバン／イベント在庫／ハリアー中古車');if(!n||!n.trim())return;var id=nextPageId();state.pages.push({id:id,name:n.trim(),carUids:[]});currentPageId=id;selectedUid=null;markDirty();renderAll()};
@@ -732,10 +970,10 @@ function bind(){
   document.getElementById('btnDelete').onclick=function(){var c=selected();if(!c||!confirm('「'+(c.name||'このクルマ')+'」を全ページから削除しますか？'))return;state.cars=state.cars.filter(function(x){return x.uid!==c.uid});state.pages.forEach(function(p){p.carUids=p.carUids.filter(function(u){return u!==c.uid})});selectedUid=null;markDirty();renderAll()};
   document.getElementById('btnUp').onclick=function(){moveSelected(-1)};document.getElementById('btnDown').onclick=function(){moveSelected(1)};
   document.getElementById('btnPhoto').onclick=function(){document.getElementById('filePhoto').click()};document.getElementById('filePhoto').addEventListener('change',uploadPhoto);document.getElementById('btnPhotoDelete').onclick=function(){var c=selected();if(!c)return;c.image='';c.autoImageUpdate=false;markDirty();renderEditor();renderPagePreview()};
-  document.getElementById('btnExcel').onclick=function(){document.getElementById('fileExcel').click()};bindExcelDrop();document.querySelectorAll('.an-tab').forEach(function(b){b.onclick=function(){anTab=b.dataset.an;renderAnalytics()}});document.getElementById('fileExcel').addEventListener('change',chooseExcel);document.getElementById('excelCancel').onclick=closeExcel;document.getElementById('excelApply').onclick=applyExcel;
+  document.getElementById('btnExcel').onclick=function(){document.getElementById('fileExcel').click()};bindExcelDrop();renderHours();document.getElementById('btnSaveHours').onclick=saveHours;document.getElementById('viewEdit').onclick=function(){setView('edit')};document.getElementById('viewAnalytics').onclick=function(){setView('analytics')};document.querySelectorAll('.an-tab').forEach(function(b){b.onclick=function(){anTab=b.dataset.an;renderAnalytics()}});document.getElementById('fileExcel').addEventListener('change',chooseExcel);document.getElementById('excelCancel').onclick=closeExcel;document.getElementById('excelApply').onclick=applyExcel;
   document.getElementById('previewPc').onclick=function(){setPreviewDevice('pc')};document.getElementById('previewSp').onclick=function(){setPreviewDevice('sp')};document.getElementById('btnCopyCms').onclick=copyCmsCode;
   document.getElementById('btnPublish').onclick=function(){publish(false)};document.getElementById('btnPull').onclick=pullPublished;document.getElementById('btnGazoo').onclick=runGazoo;
-  document.getElementById('btnJumpAnalytics').onclick=function(){document.getElementById('topMore').removeAttribute('open');document.querySelector('.analytics-panel').scrollIntoView({behavior:'smooth',block:'start'})};document.getElementById('btnLogout').onclick=function(){localStorage.removeItem('ucarEditorKey');auth.key='';location.reload()};
+  document.getElementById('btnJumpAnalytics').onclick=function(){document.getElementById('topMore').removeAttribute('open');setView('analytics')};document.getElementById('btnLogout').onclick=function(){localStorage.removeItem('ucarEditorKey');auth.key='';location.reload()};
   window.addEventListener('beforeunload',function(e){if(dirty||savePromise){e.preventDefault();e.returnValue=''}});
 }
 function setPreviewDevice(mode){var shell=document.getElementById('pagePreviewShell');shell.className='page-preview-shell '+(mode==='sp'?'sp':'pc');document.getElementById('previewPc').classList.toggle('active',mode!=='sp');document.getElementById('previewSp').classList.toggle('active',mode==='sp')}
@@ -785,10 +1023,10 @@ async function publish(fromExcel){var b=document.getElementById('btnPublish');b.
 async function pullPublished(){if(!confirm('GitHubで公開中の最新データを読み込み、共有下書きを置き換えます。よろしいですか？'))return;try{syncStatus('読込中…','busy');var r=await gas('pullPublished',[]);revision=r.revision;state=r.data;dirty=false;selectedUid=null;if(!state.pages.some(function(p){return p.id===currentPageId}))currentPageId=state.pages[0].id;syncStatus('公開データを読込済み','ok');renderAll()}catch(e){syncStatus('読込エラー','err');showToast(e.message)}}
 async function runGazoo(){if(!confirm('Gazooから価格・画像・売約状況の更新を今すぐ開始しますか？\n「手動管理」の車は更新されません。'))return;try{syncStatus('Gazoo更新を開始中…','busy');var r=await gas('runGazooNow',[]);syncStatus('Gazoo更新を実行中','busy');alert(r.message+'\n\n通常1〜2分後に「その他」→「公開中の内容を読み直す」で結果を確認できます。')}catch(e){syncStatus('Gazoo開始エラー','err');showToast(e.message)}}
 
-function applyBootstrap(r){boot=r;state=r.data;revision=r.revision;var saved=localStorage.getItem('ucarWebPage');currentPageId=saved&&state.pages.some(function(p){return p.id===saved})?saved:(state.pages[0]?state.pages[0].id:'main');var first=pageCars()[0];selectedUid=first?first.uid:null;document.getElementById('blocker').classList.add('hide');syncStatus('下書き保存済み','ok');renderAll()}
+function applyBootstrap(r){if(r.settings&&r.settings.updateHours)updateHours=r.settings.updateHours.slice();renderHours();boot=r;state=r.data;revision=r.revision;var saved=localStorage.getItem('ucarWebPage');currentPageId=saved&&state.pages.some(function(p){return p.id===saved})?saved:(state.pages[0]?state.pages[0].id:'main');var first=pageCars()[0];selectedUid=first?first.uid:null;document.getElementById('blocker').classList.add('hide');syncStatus('下書き保存済み','ok');renderAll()}
 function showLogin(message){document.getElementById('blocker').classList.remove('hide');document.getElementById('loginBox').style.display='block';document.getElementById('blockMsg').textContent='管理パスワードを入力してください。';document.getElementById('blockErr').textContent=message||'';document.getElementById('loginBtn').disabled=false;document.getElementById('loginBtn').textContent='管理画面を開く';syncStatus('ログイン待ち','busy')}
 async function login(){var key=document.getElementById('editorKey').value,btn=document.getElementById('loginBtn');if(key.length<16){showLogin('管理パスワードは16文字以上です。');return}auth={name:'担当者',key:key};btn.disabled=true;btn.textContent='確認中…';document.getElementById('blockErr').textContent='';try{var r=await gas('getBootstrap',[]);if(document.getElementById('rememberKey').checked)localStorage.setItem('ucarEditorKey',key);else localStorage.removeItem('ucarEditorKey');applyBootstrap(r)}catch(e){auth.key='';showLogin(e.message.replace(/^ACCESS_DENIED:\s*/,''))}}
-async function start(){initForm();bind();document.getElementById('loginBtn').onclick=login;document.getElementById('editorKey').addEventListener('keydown',function(e){if(e.key==='Enter')login()});auth.key=localStorage.getItem('ucarEditorKey')||'';document.getElementById('editorKey').value=auth.key;if(!auth.key){showLogin('');return}document.getElementById('blockMsg').textContent='保存済みの管理パスワードを確認しています…';document.getElementById('loginBox').style.display='none';try{applyBootstrap(await gas('getBootstrap',[]))}catch(e){localStorage.removeItem('ucarEditorKey');auth.key='';showLogin(e.message.replace(/^ACCESS_DENIED:\s*/,''))}}
+async function start(){initForm();bind();try{setView(localStorage.getItem('ucarView')==='analytics'?'analytics':'edit')}catch(e){setView('edit')}document.getElementById('loginBtn').onclick=login;document.getElementById('editorKey').addEventListener('keydown',function(e){if(e.key==='Enter')login()});auth.key=localStorage.getItem('ucarEditorKey')||'';document.getElementById('editorKey').value=auth.key;if(!auth.key){showLogin('');return}document.getElementById('blockMsg').textContent='保存済みの管理パスワードを確認しています…';document.getElementById('loginBox').style.display='none';try{applyBootstrap(await gas('getBootstrap',[]))}catch(e){localStorage.removeItem('ucarEditorKey');auth.key='';showLogin(e.message.replace(/^ACCESS_DENIED:\s*/,''))}}
 start();
 </script>
 </body>

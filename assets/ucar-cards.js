@@ -11,6 +11,20 @@
   var BADGE_SLOT_GROUPS = [["修無"], ["ロングラン保証"], ["整付"], ["ハイブリッド保証"], ["リ済込", "車検整備付"], ["あんしん診断"]];
   // 受話器の絵文字（☎）は古く見えるため、線の細い今どきのアイコンを埋め込む
   var PHONE_ICON = '<svg class="utc-btn-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>';
+  // カードの色。ページごとに選べる。custom は #rrggbb をそのまま使う。
+  var THEMES = {
+    red:    { accent: "#e60012", phone: "#2077c8" },
+    blue:   { accent: "#1462b4", phone: "#0f8a6a" },
+    black:  { accent: "#222629", phone: "#2077c8" },
+    orange: { accent: "#e2650f", phone: "#2077c8" },
+    green:  { accent: "#127a45", phone: "#2077c8" }
+  };
+  function themeOf(value) {
+    var v = String(value || "red").trim();
+    if (/^#[0-9a-f]{6}$/i.test(v)) return { accent: v, phone: THEMES.red.phone };
+    return THEMES[v] || THEMES.red;
+  }
+
   var PHONE_BY_STORE = {
     "福岡西店": "092-894-8639",
     "博多南店": "092-581-3131",
@@ -31,7 +45,7 @@
       // 中身が入りきらず、スマホでボタンが切れてしまう。
       // ※カード自身の padding / border-radius に cqw は使えない（外側の基準になるため）。
       ".event-ucar-cards{display:flex;flex-wrap:wrap;justify-content:space-between;margin:10px auto 0;padding:0 5%;}",
-      ".event-ucar-cards .utc-card{width:49%;aspect-ratio:780/714;margin-bottom:1.2%;background:#e60012;border-radius:14px;padding:6px;box-sizing:border-box;position:relative;font-family:inherit;overflow:hidden;container-type:inline-size;}",
+      ".event-ucar-cards .utc-card{width:49%;aspect-ratio:780/714;margin-bottom:1.2%;background:var(--utc-accent,#e60012);border-radius:14px;padding:6px;box-sizing:border-box;position:relative;font-family:inherit;overflow:hidden;container-type:inline-size;}",
       ".event-ucar-cards .utc-card-main{display:block;height:100%;color:#222;}",
       ".event-ucar-cards .utc-head{display:flex;height:9.1cqw;box-sizing:border-box;justify-content:space-between;align-items:center;color:#fff;padding:0.8cqw 2.1cqw 1.2cqw;font-weight:bold;}",
       ".event-ucar-cards .utc-head small{font-size:2.8cqw;font-weight:normal;margin-right:1.2cqw;}",
@@ -43,12 +57,12 @@
       ".event-ucar-cards .utc-info{flex:1;min-width:0;}.event-ucar-cards .utc-badges{margin:0 0 1.4cqw;padding:0;list-style:none;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.8fr);gap:0.6cqw 0.8cqw;}",
       ".event-ucar-cards .utc-badges li{min-width:0;font-size:2.6cqw;line-height:1.4;padding:0.4cqw 1cqw;font-weight:bold;text-align:center;white-space:nowrap;background:#888;color:#fff;}.event-ucar-cards .utc-badges li.is-off{visibility:hidden;}",
       ".event-ucar-cards .utc-badges li.b-longrun{background:#1a2f80;}.event-ucar-cards .utc-badges li.b-hv{background:#1e9cd7;}.event-ucar-cards .utc-badges li.b-anshin{background:#21b8b3;color:#fff;}",
-      ".event-ucar-cards .utc-price{text-align:right;}.event-ucar-cards .utc-price-label{display:block;color:#e60012;font-weight:bold;font-size:3.3cqw;}",
-      ".event-ucar-cards .utc-price-main{color:#e60012;font-weight:900;font-size:10.4cqw;line-height:1;}.event-ucar-cards .utc-price-main small{font-size:6.2cqw;}.event-ucar-cards .utc-price-main .utc-unit{font-size:4.3cqw;margin-left:0.4cqw;font-weight:700;}",
+      ".event-ucar-cards .utc-price{text-align:right;}.event-ucar-cards .utc-price-label{display:block;color:var(--utc-accent,#e60012);font-weight:bold;font-size:3.3cqw;}",
+      ".event-ucar-cards .utc-price-main{color:var(--utc-accent,#e60012);font-weight:900;font-size:10.4cqw;line-height:1;}.event-ucar-cards .utc-price-main small{font-size:6.2cqw;}.event-ucar-cards .utc-price-main .utc-unit{font-size:4.3cqw;margin-left:0.4cqw;font-weight:700;}",
       ".event-ucar-cards .utc-price-sub{display:block;font-size:2.9cqw;color:#333;margin-top:0.8cqw;line-height:1.5;}.event-ucar-cards .utc-name{font-size:4.7cqw;font-weight:bold;margin:1.6cqw 0 0.6cqw;}.event-ucar-cards .utc-specs{font-size:2.9cqw;margin:0 0 1.6cqw;line-height:1.7;}",
-      ".event-ucar-cards .utc-btns{display:flex;gap:1.4cqw;margin-top:auto;}.event-ucar-cards .utc-btn{display:flex;align-items:center;justify-content:center;min-width:0;background:#e60012;color:#fff;text-align:center;text-decoration:none;font-weight:bold;font-size:4cqw;border-radius:999px;padding:2.1cqw 1.6cqw;position:relative;line-height:1.2;}",
+      ".event-ucar-cards .utc-btns{display:flex;gap:1.4cqw;margin-top:auto;}.event-ucar-cards .utc-btn{display:flex;align-items:center;justify-content:center;min-width:0;background:var(--utc-accent,#e60012);color:#fff;text-align:center;text-decoration:none;font-weight:bold;font-size:4cqw;border-radius:999px;padding:2.1cqw 1.6cqw;position:relative;line-height:1.2;}",
       ".event-ucar-cards .utc-btn-icon{width:1.15em;height:1.15em;margin-right:.35em;flex:none;fill:currentColor;}",
-      ".event-ucar-cards .utc-detail-btn{flex:1.35;}.event-ucar-cards .utc-phone-btn{flex:1;background:#2077c8;}.event-ucar-cards .utc-detail-btn::after{content:'▶';position:absolute;right:2.1cqw;font-size:2.3cqw;top:50%;transform:translateY(-50%);}",
+      ".event-ucar-cards .utc-detail-btn{flex:1.35;}.event-ucar-cards .utc-phone-btn{flex:1;background:var(--utc-phone,#2077c8);}.event-ucar-cards .utc-detail-btn::after{content:'▶';position:absolute;right:2.1cqw;font-size:2.3cqw;top:50%;transform:translateY(-50%);}",
       ".event-ucar-cards .utc-soldout-img{position:absolute;z-index:5;width:58%;max-width:270px;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;}.event-ucar-cards .utc-card.soldout a{pointer-events:none;cursor:default;opacity:.65;}",
       // スマホは1列。文字はカード幅に連動するので、ここで大きさを指定し直す必要はない。
       "@media screen and (max-width:767px){.event-ucar-cards{display:block;padding:0 4%;}.event-ucar-cards .utc-card{width:100%;margin-bottom:12px;}}"
@@ -108,6 +122,12 @@
       + '<div class="utc-inner"><div class="utc-body"><div class="utc-photo"><div class="ph">' + image + "</div>" + (car.stock ? '<span class="utc-stock">' + esc(car.stock) + "</span>" : "") + "</div>"
       + '<div class="utc-info"><ul class="utc-badges">' + badges + "</ul>" + priceBlock + "</div></div>"
       + '<h3 class="utc-name">' + esc(car.name || "") + '</h3><p class="utc-specs">' + specText + '</p><div class="utc-btns">' + detailButton + phoneButton + "</div></div></div>" + sold + "</div>";
+  }
+
+  function pageThemeOf(data, pageId) {
+    var pages = (data && data.pages) || [];
+    var found = pages.filter(function (p) { return p && p.id === pageId; })[0];
+    return themeOf(found && found.theme);
   }
 
   function carsForPage(data, pageId) {
@@ -172,6 +192,9 @@
     fetch(base + "data/cars.json?t=" + Date.now())
       .then(function (response) { if (!response.ok) throw new Error("HTTP " + response.status); return response.json(); })
       .then(function (data) {
+        var theme = pageThemeOf(data, pageId);
+        box.style.setProperty("--utc-accent", theme.accent);
+        box.style.setProperty("--utc-phone", theme.phone);
         box.innerHTML = carsForPage(data, pageId).map(function (car, index) { return card(car, index, pageId, base); }).join("");
         box.setAttribute("data-ucar-ready", "1");
       })

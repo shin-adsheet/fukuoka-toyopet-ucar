@@ -18,6 +18,7 @@ const APP = Object.freeze({
   defaultRepo: 'fukuoka-toyopet-ucar',
   defaultBranch: 'main',
   dataPath: 'data/cars.json',
+  settingsPath: 'data/settings.json',
   workflowPath: 'update-gazoo.yml',
   draftMetaKey: 'UCAR_DRAFT_META',
   draftChunkPrefix: 'UCAR_DRAFT_',
@@ -165,6 +166,46 @@ function getClickStats(auth) {
   return { ok: true, days: store.days || {}, updatedAt: store.updatedAt || null };
 }
 
+/* ===== 全体の設定（Gazoo自動更新の時刻など） ===== */
+function readSettings_() {
+  try {
+    const cfg = getConfig_();
+    const res = githubFetch_('/contents/' + APP.settingsPath + '?ref=' + encodeURIComponent(cfg.branch), 'get');
+    if (res.getResponseCode() !== 200) return { version: 1, updateHours: [6, 20] };
+    const j = JSON.parse(res.getContentText());
+    const json = Utilities.newBlob(Utilities.base64Decode(String(j.content || '').replace(/\s/g, ''))).getDataAsString('UTF-8');
+    const data = JSON.parse(json);
+    return { version: 1, updateHours: normalizeHours_(data.updateHours) };
+  } catch (err) {
+    return { version: 1, updateHours: [6, 20] };
+  }
+}
+
+function normalizeHours_(list) {
+  const seen = {}, out = [];
+  (Array.isArray(list) ? list : []).forEach(function (h) {
+    const n = Number(h);
+    if (!isFinite(n) || n < 0 || n > 23 || n !== Math.floor(n) || seen[n]) return;
+    seen[n] = true;
+    out.push(n);
+  });
+  out.sort(function (a, b) { return a - b; });
+  return out.length ? out : [6, 20];
+}
+
+function saveSettings(auth, settings) {
+  requireEditor_(auth);
+  const hours = normalizeHours_(settings && settings.updateHours);
+  const data = {
+    version: 1,
+    updateHours: hours,
+    note: 'updateHours は日本時間。Gazoo自動更新を動かす時刻を管理画面から変更できます。',
+    updatedAt: new Date().toISOString(),
+  };
+  putJsonToGitHub_(APP.settingsPath, data, 'Gazoo自動更新の時刻を変更');
+  return { ok: true, updateHours: hours };
+}
+
 function doGet() {
   return HtmlService.createHtmlOutputFromFile('index')
     .setTitle('中古車カード管理 | 福岡トヨペット')
@@ -203,6 +244,7 @@ function getBootstrap(auth) {
     repo: cfg.repo,
     branch: cfg.branch,
     logUrl: webAppUrl_(),
+    settings: readSettings_(),
     revision: draft.revision,
     updatedAt: draft.updatedAt,
     updatedBy: draft.updatedBy,

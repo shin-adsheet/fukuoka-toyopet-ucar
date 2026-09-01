@@ -8,6 +8,8 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 const DATA_FILE = "data/cars.json";
+const SETTINGS_FILE = "data/settings.json";
+const DEFAULT_UPDATE_HOURS = [6, 20]; // 日本時間。管理画面から変更できる
 const IMAGE_DIR = "images";
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) ucar-card-updater/1.1";
 const WAIT_MS = 3000; // ページとページの間に3秒待つ（相手に負荷をかけないため）
@@ -265,7 +267,35 @@ async function applyGazooData(car, html) {
   return changed;
 }
 
+// 日本時間の「時」を取り出す
+export function jstHour(now = new Date()) {
+  return Number(new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Tokyo", hour: "2-digit", hour12: false }).format(now));
+}
+
+// 設定された時刻かどうか。手動実行のときは時刻を問わず動かす。
+export function shouldRunNow(hours, hour, eventName) {
+  if (eventName === "workflow_dispatch") return true;
+  const list = Array.isArray(hours) && hours.length ? hours : DEFAULT_UPDATE_HOURS;
+  return list.indexOf(hour) >= 0;
+}
+
+async function readUpdateHours() {
+  try {
+    const s = JSON.parse(await readFile(SETTINGS_FILE, "utf8"));
+    const hours = (s.updateHours || []).map(Number).filter(function (h) { return Number.isInteger(h) && h >= 0 && h <= 23; });
+    return hours.length ? hours : DEFAULT_UPDATE_HOURS;
+  } catch {
+    return DEFAULT_UPDATE_HOURS;
+  }
+}
+
 export async function main() {
+  const hours = await readUpdateHours();
+  const hour = jstHour();
+  if (!shouldRunNow(hours, hour, process.env.EVENT_NAME)) {
+    console.log(`いまは更新時刻ではありません（日本時間${hour}時 / 設定：${hours.join("時, ")}時）`);
+    return;
+  }
   const data = JSON.parse(await readFile(DATA_FILE, "utf8"));
   let changed = false;
 
