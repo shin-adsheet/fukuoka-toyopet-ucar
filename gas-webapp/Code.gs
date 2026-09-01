@@ -296,12 +296,17 @@ function parseSpecialCarsSheet_(xml, shared, fileName) {
     gazooUrl: colBy(function (h) { return h.indexOf('GAZOOリンク先') >= 0; }),
   };
 
+  // 掲載ページ名はD2セルに入る決まり。空のときだけ、見出しより上の行から拾う。
   let pageName = '';
-  for (let i = 0; i < headerIndex; i++) {
-    const values = Object.keys(rows[i].cells).map(function (k) { return cleanExcelText_(rows[i].cells[k]); }).filter(Boolean);
-    const special = values.filter(function (v) { return /特選車|商談会|フェア/.test(v); })[0];
-    if (special) { pageName = special; break; }
-    if (!pageName && values.length) pageName = values[0];
+  const d2Row = rows.filter(function (r) { return r.number === 2; })[0];
+  if (d2Row) pageName = cleanExcelText_(d2Row.cells['D']);
+  if (!pageName) {
+    for (let i = 0; i < headerIndex; i++) {
+      const values = Object.keys(rows[i].cells).map(function (k) { return cleanExcelText_(rows[i].cells[k]); }).filter(Boolean);
+      const special = values.filter(function (v) { return /特選車|商談会|フェア/.test(v); })[0];
+      if (special) { pageName = special; break; }
+      if (!pageName && values.length) pageName = values[0];
+    }
   }
   if (!pageName) pageName = String(fileName || '特選車').replace(/\.xlsx$/i, '');
 

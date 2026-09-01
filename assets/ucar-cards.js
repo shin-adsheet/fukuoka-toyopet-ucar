@@ -44,8 +44,7 @@
       ".event-ucar-cards .utc-badges li{min-width:0;font-size:2.6cqw;line-height:1.4;padding:0.4cqw 1cqw;font-weight:bold;text-align:center;white-space:nowrap;background:#888;color:#fff;}.event-ucar-cards .utc-badges li.is-off{visibility:hidden;}",
       ".event-ucar-cards .utc-badges li.b-longrun{background:#1a2f80;}.event-ucar-cards .utc-badges li.b-hv{background:#1e9cd7;}.event-ucar-cards .utc-badges li.b-anshin{background:#21b8b3;color:#fff;}",
       ".event-ucar-cards .utc-price{text-align:right;}.event-ucar-cards .utc-price-label{display:block;color:#e60012;font-weight:bold;font-size:3.3cqw;}",
-      // 価格は太さを最大にしたうえで、同じ色の輪郭を足してさらに太く見せる
-      ".event-ucar-cards .utc-price-main{color:#e60012;font-weight:900;font-size:10.4cqw;line-height:1;-webkit-text-stroke:0.028em #e60012;}.event-ucar-cards .utc-price-main small{font-size:6.2cqw;}.event-ucar-cards .utc-price-main .utc-unit{font-size:4.3cqw;margin-left:0.4cqw;font-weight:700;}",
+      ".event-ucar-cards .utc-price-main{color:#e60012;font-weight:900;font-size:10.4cqw;line-height:1;}.event-ucar-cards .utc-price-main small{font-size:6.2cqw;}.event-ucar-cards .utc-price-main .utc-unit{font-size:4.3cqw;margin-left:0.4cqw;font-weight:700;}",
       ".event-ucar-cards .utc-price-sub{display:block;font-size:2.9cqw;color:#333;margin-top:0.8cqw;line-height:1.5;}.event-ucar-cards .utc-name{font-size:4.7cqw;font-weight:bold;margin:1.6cqw 0 0.6cqw;}.event-ucar-cards .utc-specs{font-size:2.9cqw;margin:0 0 1.6cqw;line-height:1.7;}",
       ".event-ucar-cards .utc-btns{display:flex;gap:1.4cqw;margin-top:auto;}.event-ucar-cards .utc-btn{display:flex;align-items:center;justify-content:center;min-width:0;background:#e60012;color:#fff;text-align:center;text-decoration:none;font-weight:bold;font-size:4cqw;border-radius:999px;padding:2.1cqw 1.6cqw;position:relative;line-height:1.2;}",
       ".event-ucar-cards .utc-btn-icon{width:1.15em;height:1.15em;margin-right:.35em;flex:none;fill:currentColor;}",
