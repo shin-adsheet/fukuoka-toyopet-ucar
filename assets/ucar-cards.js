@@ -36,8 +36,13 @@
   };
 
   function addStyle() {
-    if (document.getElementById(STYLE_ID)) return;
-    var style = document.createElement("style");
+    var style = document.getElementById(STYLE_ID);
+    if (style) {
+      // CMS側のCSSがあとから読み込まれても負けないよう、常に最後尾へ置き直す
+      document.head.appendChild(style);
+      return;
+    }
+    style = document.createElement("style");
     style.id = STYLE_ID;
     style.textContent = [
       // カードは 780:714 の比率で固定。中の文字と余白はカード幅（cqw）に比例させ、
@@ -58,7 +63,7 @@
       ".event-ucar-cards .utc-badges li{min-width:0;font-size:2.6cqw;line-height:1.4;padding:0.4cqw 1cqw;font-weight:bold;text-align:center;white-space:nowrap;background:#888;color:#fff;}.event-ucar-cards .utc-badges li.is-off{visibility:hidden;}",
       ".event-ucar-cards .utc-badges li.b-longrun{background:#1a2f80;}.event-ucar-cards .utc-badges li.b-hv{background:#1e9cd7;}.event-ucar-cards .utc-badges li.b-anshin{background:#21b8b3;color:#fff;}",
       ".event-ucar-cards .utc-price{text-align:right;}.event-ucar-cards .utc-price-label{display:block;color:var(--utc-accent,#e60012);font-weight:bold;font-size:3.3cqw;}",
-      ".event-ucar-cards .utc-price-main{color:var(--utc-accent,#e60012);font-weight:900;font-size:10.4cqw;line-height:1;}.event-ucar-cards .utc-price-main small{font-size:6.2cqw;}.event-ucar-cards .utc-price-main .utc-unit{font-size:4.3cqw;margin-left:0.4cqw;font-weight:700;}",
+      ".event-ucar-cards .utc-price-main{color:var(--utc-accent,#e60012);font-weight:900;font-size:10.4cqw;line-height:1;-webkit-text-stroke:0.03em currentColor;paint-order:stroke fill;}.event-ucar-cards .utc-price-main small{font-size:6.2cqw;}.event-ucar-cards .utc-price-main .utc-unit{font-size:4.3cqw;margin-left:0.4cqw;font-weight:700;}",
       ".event-ucar-cards .utc-price-sub{display:block;font-size:2.9cqw;color:#333;margin-top:0.8cqw;line-height:1.5;}.event-ucar-cards .utc-name{font-size:4.7cqw;font-weight:bold;margin:1.6cqw 0 0.6cqw;}.event-ucar-cards .utc-specs{font-size:2.9cqw;margin:0 0 1.6cqw;line-height:1.7;}",
       ".event-ucar-cards .utc-btns{display:flex;gap:1.4cqw;margin-top:auto;}.event-ucar-cards .utc-btn{display:flex;align-items:center;justify-content:center;min-width:0;background:var(--utc-accent,#e60012);color:#fff;text-align:center;text-decoration:none;font-weight:bold;font-size:4cqw;border-radius:999px;padding:2.1cqw 1.6cqw;position:relative;line-height:1.2;}",
       ".event-ucar-cards .utc-btn-icon{width:1.15em;height:1.15em;margin-right:.35em;flex:none;fill:currentColor;}",
@@ -66,7 +71,9 @@
       ".event-ucar-cards .utc-soldout-img{position:absolute;z-index:5;width:58%;max-width:270px;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;}.event-ucar-cards .utc-card.soldout a{pointer-events:none;cursor:default;opacity:.65;}",
       // スマホは1列。文字はカード幅に連動するので、ここで大きさを指定し直す必要はない。
       "@media screen and (max-width:767px){.event-ucar-cards{display:block;padding:0 4%;}.event-ucar-cards .utc-card{width:100%;margin-bottom:12px;}}"
-    ].join("");
+    ].join("")
+      // CMSページ側のCSSに負けないよう、クラスを重ねて詳細度を上げる
+      .replace(/\.event-ucar-cards/g, ".event-ucar-cards.event-ucar-cards");
     document.head.appendChild(style);
   }
 
@@ -201,6 +208,9 @@
       .catch(function () { box.textContent = ""; })
       .finally(function () { box.removeAttribute("data-ucar-loading"); });
   }
+
+  // どの版が動いているか確認できるようにする（ブラウザのコンソールで確認可能）
+  window.FukuokaToyopetUcarVersion = "20260901-4";
 
   window.FukuokaToyopetUcarRenderAll = function () {
     addStyle();
