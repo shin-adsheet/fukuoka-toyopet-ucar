@@ -82,6 +82,8 @@
   }
 
   var SITE_ORIGIN = "https://fukuoka-toyopet.jp";
+  // ページ表示を数えるときの車ID代わり。実在する車と区別するための決め打ち。
+  var PV_UID = "_pv";
 
   function imageSource(value, base) {
     if (!value) return "";
@@ -190,11 +192,43 @@
     });
   }
 
+  // どのカードまで見られたかを数える。画面に半分以上入った状態が1秒続いたら
+  // 「見られた」とみなし、1回の閲覧につき1カード1回だけ送る。
+  function watchViews(box, pageId, logUrl) {
+    if (!logUrl || !window.IntersectionObserver) return;
+    var timers = {};
+    var seen = {};
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var uid = entry.target.getAttribute("data-uid");
+        if (!uid || seen[uid]) return;
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          if (timers[uid]) return;
+          timers[uid] = setTimeout(function () {
+            seen[uid] = 1;
+            io.unobserve(entry.target);
+            sendClick(logUrl, pageId, uid, "i");
+          }, 1000);
+        } else if (timers[uid]) {
+          clearTimeout(timers[uid]);
+          timers[uid] = null;
+        }
+      });
+    }, { threshold: [0, 0.5, 1] });
+    Array.prototype.forEach.call(box.querySelectorAll(".utc-card[data-uid]"), function (el) { io.observe(el); });
+  }
+
   function renderBox(box) {
     if (!box || box.getAttribute("data-ucar-loading") === "1") return;
     var base = box.getAttribute("data-ucar-base") || "https://raw.githubusercontent.com/shin-adsheet/fukuoka-toyopet-ucar/main/";
     var pageId = box.getAttribute("data-ucar-page") || "main";
+    var logUrl = box.getAttribute("data-ucar-log") || "";
     bindClickLog(box, pageId);
+    // ページが表示された回数。到達率やクリック率の分母になる。
+    if (logUrl && box.getAttribute("data-ucar-pv") !== "1") {
+      box.setAttribute("data-ucar-pv", "1");
+      sendClick(logUrl, pageId, PV_UID, "v");
+    }
     box.setAttribute("data-ucar-loading", "1");
     fetch(base + "data/cars.json?t=" + Date.now())
       .then(function (response) { if (!response.ok) throw new Error("HTTP " + response.status); return response.json(); })
@@ -204,13 +238,14 @@
         box.style.setProperty("--utc-phone", theme.phone);
         box.innerHTML = carsForPage(data, pageId).map(function (car, index) { return card(car, index, pageId, base); }).join("");
         box.setAttribute("data-ucar-ready", "1");
+        watchViews(box, pageId, logUrl);
       })
       .catch(function () { box.textContent = ""; })
       .finally(function () { box.removeAttribute("data-ucar-loading"); });
   }
 
   // どの版が動いているか確認できるようにする（ブラウザのコンソールで確認可能）
-  window.FukuokaToyopetUcarVersion = "20260901-4";
+  window.FukuokaToyopetUcarVersion = "20260902-1";
 
   window.FukuokaToyopetUcarRenderAll = function () {
     addStyle();

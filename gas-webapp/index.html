@@ -220,7 +220,7 @@
       <button class="an-tab" data-an="rest" type="button">売れ残り</button>
       <button class="an-tab" data-an="model" type="button">車種・タイプ</button>
       <button class="an-tab" data-an="price" type="button">価格帯</button>
-      <button class="an-tab" data-an="click" type="button">クリック数</button><button class="an-tab" data-an="order" type="button">掲載順ヒートマップ</button>
+      <button class="an-tab" data-an="click" type="button">アクセス解析</button><button class="an-tab" data-an="order" type="button">掲載順ヒートマップ</button>
       <button class="an-tab" data-an="time" type="button">期間推移</button>
     </div>
     <div id="anBody"></div>
@@ -258,7 +258,7 @@ var STORES=['福岡西店','博多南店','福岡インター店','小倉東店'
 var PHONES={'福岡西店':'092-894-8639','博多南店':'092-581-3131','福岡インター店':'092-938-1422','小倉東店':'093-472-1234','八幡店':'093-621-5352','飯塚店':'0948-82-2594','久留米インター店':'0942-44-6144'};
 var BADGES=['修無','整付','リ済込','車検整備付','ロングラン保証','ハイブリッド保証','あんしん診断'];
 var SLOTS=[['修無'],['ロングラン保証'],['整付'],['ハイブリッド保証'],['リ済込','車検整備付'],['あんしん診断']];
-var EMBED_VERSION='20260901-4';
+var EMBED_VERSION='20260902-1';
 var state={version:2,cars:[],pages:[]},revision=null,selectedUid=null,currentPageId='main',boot=null,dirty=false,saveTimer=null,savePromise=null,saveAgain=false,gazooTimer=null,gazooSeq=0,excelPreview=null;
 var auth={name:'担当者',key:''};
 var addMode=null,addRows=[],addBusy=false,addSeq=0,addTimer=null;
@@ -667,7 +667,7 @@ function anTime(){
 }
 /* クリック数。GitHubに保存した分＋まだ書き出していない分をGAS側で合算して受け取る */
 var clickData=null,clickState='idle';
-var CLICK_KIND={d:'詳しくはこちら',p:'電話で確認'};
+var CLICK_KIND={v:'ページ表示',i:'カード表示',d:'Gazoo遷移',p:'電話'};
 var CHECK_ICON='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>',CROSS_ICON='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>',DELETE_ICON='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
 async function loadClicks(force){
   if(clickState==='loading')return;
@@ -677,59 +677,115 @@ async function loadClicks(force){
   catch(e){clickData=null;clickState='error:'+e.message}
   renderAnalytics();
 }
-// { uid: {d:n, p:n, total:n} } と日別合計を作る
-function clickIndex(filterPage){
-  var byCar={},byDay={},byPage={},total=0;
+// 計測結果を使いやすい形にまとめる。
+// 車ごと：i=表示 d=Gazoo遷移 p=電話、ページごと：v=ページ表示
+function clickIndex(){
+  var byCar={},byDay={},byPage={},pv=0,views=0,gazoo=0,phone=0;
   var days=(clickData&&clickData.days)||{};
   Object.keys(days).forEach(function(day){
     Object.keys(days[day]).forEach(function(page){
-      if(filterPage&&page!==filterPage)return;
+      if(anPageId&&page!==anPageId)return;
+      var d=byDay[day]=byDay[day]||{pv:0,i:0,d:0,p:0};
+      var pg=byPage[page]=byPage[page]||{pv:0,i:0,d:0,p:0};
       Object.keys(days[day][page]).forEach(function(k){
         var at=k.lastIndexOf('|');if(at<0)return;
         var uid=k.slice(0,at),kind=k.slice(at+1),n=Number(days[day][page][k])||0;
-        var c=byCar[uid]=byCar[uid]||{d:0,p:0,total:0};
-        if(kind==='d')c.d+=n;else if(kind==='p')c.p+=n;
-        c.total+=n;
-        byDay[day]=(byDay[day]||0)+n;
-        byPage[page]=(byPage[page]||0)+n;
-        total+=n;
+        if(kind==='v'){pv+=n;d.pv+=n;pg.pv+=n;return}
+        if(kind!=='i'&&kind!=='d'&&kind!=='p')return;
+        var c=byCar[uid]=byCar[uid]||{i:0,d:0,p:0};
+        c[kind]+=n;d[kind]+=n;pg[kind]+=n;
+        if(kind==='i')views+=n;else if(kind==='d')gazoo+=n;else phone+=n;
       });
     });
   });
-  return{byCar:byCar,byDay:byDay,byPage:byPage,total:total};
+  return{byCar:byCar,byDay:byDay,byPage:byPage,pv:pv,views:views,gazoo:gazoo,phone:phone,clicks:gazoo+phone};
 }
 function anClick(){
-  if(clickState==='loading')return'<div class="an-empty">クリック数を読み込んでいます…</div>';
-  if(String(clickState).indexOf('error')===0)return'<div class="an-empty">クリック数を読み込めませんでした：'+esc(clickState.slice(6))+'</div>';
-  if(clickState==='idle'){loadClicks();return'<div class="an-empty">クリック数を読み込んでいます…</div>'}
+  if(clickState==='loading')return'<div class="an-empty">計測データを読み込んでいます…</div>';
+  if(String(clickState).indexOf('error')===0)return'<div class="an-empty">計測データを読み込めませんでした：'+esc(clickState.slice(6))+'</div>';
+  if(clickState==='idle'){loadClicks();return'<div class="an-empty">計測データを読み込んでいます…</div>'}
   var idx=clickIndex(),rows=anCars();
-  if(!idx.total)return'<div class="an-empty">まだクリックが記録されていません。<br>CMSへ貼るコードを最新のものに貼り替えると、その後のクリックから記録が始まります。</div>';
-  var list=rows.map(function(r){var c=idx.byCar[r.car.uid]||{d:0,p:0,total:0};return{r:r,c:c}})
-    .sort(function(a,b){return b.c.total-a.c.total});
-  var max=list.length?list[0].c.total:0;
-  var pages={};rows.forEach(function(r){pages[r.pageId]=r.pageName});
-  var pageRows=Object.keys(idx.byPage).map(function(id){return[esc(pages[id]||id),idx.byPage[id],anBarHtml(idx.byPage[id],Math.max.apply(null,Object.keys(idx.byPage).map(function(k){return idx.byPage[k]}).concat([1])))]});
-  return'<div class="an-cards">'
-   +'<div class="an-card"><div class="k">クリック合計</div><div class="v">'+idx.total+'</div><div class="s">回</div></div>'
-   +'<div class="an-card"><div class="k">記録された日数</div><div class="v">'+Object.keys(idx.byDay).length+'</div><div class="s">日</div></div>'
-   +'<div class="an-card"><div class="k">クリックのあった車</div><div class="v">'+Object.keys(idx.byCar).length+'</div><div class="s">台</div></div>'
-   +'</div>'
-   +barChart('車ごとのクリック数（上位10）',list.slice(0,10).filter(function(x){return x.c.total>0}).map(function(x){
-      return{label:x.r.car.name||'（車名なし）',value:x.c.total,sub:'詳しく'+x.c.d+'・電話'+x.c.p};
+  if(!idx.pv&&!idx.views&&!idx.clicks)
+    return'<div class="an-empty">まだ計測データがありません。<br>CMSへ貼るコードを最新のものに貼り替えると、その後の表示・クリックから記録が始まります。</div>';
+
+  // 車ごとの指標。クリック率は「見られた回数」に対する割合
+  var list=rows.map(function(r){
+    var c=idx.byCar[r.car.uid]||{i:0,d:0,p:0};
+    var clicks=c.d+c.p;
+    return{r:r,c:c,clicks:clicks,ctr:c.i?Math.round(clicks/c.i*1000)/10:null};
+  });
+  var maxClicks=Math.max.apply(null,list.map(function(x){return x.clicks}).concat([1]));
+  var maxViews=Math.max.apply(null,list.map(function(x){return x.c.i}).concat([1]));
+
+  var html='<div class="an-cards">'
+   +'<div class="an-card"><div class="k">ページ表示</div><div class="v">'+idx.pv+'</div><div class="s">回</div></div>'
+   +'<div class="an-card"><div class="k">カード表示</div><div class="v">'+idx.views+'</div><div class="s">回</div></div>'
+   +'<div class="an-card"><div class="k">Gazoo遷移</div><div class="v">'+idx.gazoo+'</div><div class="s">回</div></div>'
+   +'<div class="an-card"><div class="k">電話</div><div class="v">'+idx.phone+'</div><div class="s">回</div></div>'
+   +'<div class="an-card"><div class="k">クリック率</div><div class="v">'+(idx.views?Math.round(idx.clicks/idx.views*1000)/10:'−')+'</div><div class="s">%（クリック÷カード表示）</div></div>'
+   +'</div>';
+
+  html+=splitBar('クリックの内訳',[
+    {label:'Gazoo遷移',value:idx.gazoo,color:'var(--series-1)'},
+    {label:'電話',value:idx.phone,color:'var(--series-3)'}
+  ]);
+
+  // スクロール到達率：その掲載順のカードが見られた回数 ÷ ページ表示回数
+  if(idx.pv){
+    var byOrder={};
+    rows.forEach(function(r){
+      var c=idx.byCar[r.car.uid]||{i:0};
+      byOrder[r.order]=(byOrder[r.order]||0)+c.i;
+    });
+    var orders=Object.keys(byOrder).map(Number).sort(function(a,b){return a-b});
+    html+=columnChart('スクロール到達率（掲載順ごと）',orders.map(function(o){
+      return{label:o+'番目',short:String(o),value:Math.min(100,Math.round(byOrder[o]/idx.pv*100))};
+    }),'%');
+    html+='<p class="an-note">ページを開いた人のうち、その順番のカードが画面に入った割合です。下がるところが離脱の目安になります。</p>';
+  }
+
+  html+=barChart('Gazoo遷移が多い車（上位10）',list.slice().sort(function(a,b){return b.c.d-a.c.d}).slice(0,10)
+    .filter(function(x){return x.c.d>0}).map(function(x){
+      return{label:x.r.car.name||'（車名なし）',value:x.c.d,sub:'表示'+x.c.i+'回'};
+    }),'回');
+  html+=barChart('電話が多い車（上位10）',list.slice().sort(function(a,b){return b.c.p-a.c.p}).slice(0,10)
+    .filter(function(x){return x.c.p>0}).map(function(x){
+      return{label:x.r.car.name||'（車名なし）',value:x.c.p,sub:'表示'+x.c.i+'回',color:'var(--series-3)'};
+    }),'回');
+
+  // 見られているのに動かない車＝訴求か価格の見直し候補
+  var cold=list.filter(function(x){return !x.r.car.soldout&&x.c.i>=10&&x.ctr!=null}).sort(function(a,b){return a.ctr-b.ctr}).slice(0,10);
+  var hot=list.filter(function(x){return !x.r.car.soldout&&x.clicks>0}).sort(function(a,b){return b.clicks-a.clicks}).slice(0,10);
+
+  html+='<h3 style="font-size:13px;margin:16px 0 8px">反応が良いのに売れていない車</h3>'
+   +anTableHtml([{label:'車名'},{label:'掲載ページ'},{label:'順',num:true},{label:'表示',num:true},{label:'Gazoo',num:true},{label:'電話',num:true},{label:'クリック率',num:true}],
+     hot.map(function(x){return[esc(x.r.car.name||''),esc(x.r.pageName),x.r.order,x.c.i,x.c.d,x.c.p,x.ctr==null?'−':x.ctr+'%']}))
+   +'<p class="an-note">問い合わせは来ているので、在庫や価格の確認をする価値があります。</p>';
+
+  html+='<h3 style="font-size:13px;margin:16px 0 8px">見られているのに反応が薄い車</h3>'
+   +anTableHtml([{label:'車名'},{label:'掲載ページ'},{label:'順',num:true},{label:'表示',num:true},{label:'クリック',num:true},{label:'クリック率',num:true},{label:'価格',num:true}],
+     cold.map(function(x){return[esc(x.r.car.name||''),esc(x.r.pageName),x.r.order,x.c.i,x.clicks,x.ctr+'%',fmt(priceOf(x.r.car),'万円')]}))
+   +'<p class="an-note">写真・価格・装備の見直しや、掲載順を上げる検討の材料になります（表示10回以上の車のみ）。</p>';
+
+  html+='<h3 style="font-size:13px;margin:16px 0 8px">車ごとの一覧（クリックが多い順）</h3>'
+   +anTableHtml([{label:'車名'},{label:'順',num:true},{label:'表示',num:true},{label:'Gazoo',num:true},{label:'電話',num:true},{label:'クリック率',num:true},{label:'構成'},{label:'状態'}],
+     list.slice().sort(function(a,b){return b.clicks-a.clicks}).map(function(x){
+       return[esc(x.r.car.name||''),x.r.order,x.c.i,x.c.d,x.c.p,x.ctr==null?'−':x.ctr+'%',anBarHtml(x.clicks,maxClicks),x.r.car.soldout?'売約':'掲載中'];
+     }));
+
+  var dayKeys=Object.keys(idx.byDay).sort();
+  html+=columnChart('日別のクリック数',dayKeys.map(function(d){
+      return{label:d,short:d.slice(5),value:idx.byDay[d].d+idx.byDay[d].p};
     }),'回')
-   +columnChart('日別のクリック数',Object.keys(idx.byDay).sort().map(function(d){
-      return{label:d,short:d.slice(5),value:idx.byDay[d]};
-    }),'回')
-   +'<h3 style="font-size:13px;margin:16px 0 8px">ページ別</h3>'
-   +anTableHtml([{label:'掲載ページ'},{label:'クリック',num:true},{label:'構成'}],pageRows)
-   +'<h3 style="font-size:13px;margin:16px 0 8px">車ごと（多い順）</h3>'
-   +anTableHtml([{label:'車名'},{label:'掲載ページ'},{label:'順',num:true},{label:'詳しくは',num:true},{label:'電話',num:true},{label:'合計',num:true},{label:'構成'},{label:'状態'}],
-     list.map(function(x){return[esc(x.r.car.name||''),esc(x.r.pageName),x.r.order,x.c.d,x.c.p,x.c.total,anBarHtml(x.c.total,max),x.r.car.soldout?'売約':'掲載中']}))
-   +'<h3 style="font-size:13px;margin:16px 0 8px">日別</h3>'
-   +anTableHtml([{label:'日付'},{label:'クリック',num:true},{label:'構成'}],
-     Object.keys(idx.byDay).sort().reverse().map(function(d){return[esc(d),idx.byDay[d],anBarHtml(idx.byDay[d],Math.max.apply(null,Object.keys(idx.byDay).map(function(k){return idx.byDay[k]}).concat([1])))]}))
-   +'<p class="an-note">クリック数はGitHubの data/clicks.json に保存されます。「変更をサイトへ反映」を押したときにまとめて書き出されます。'
+   +anTableHtml([{label:'日付'},{label:'ページ表示',num:true},{label:'カード表示',num:true},{label:'Gazoo',num:true},{label:'電話',num:true},{label:'クリック率',num:true}],
+     dayKeys.slice().reverse().map(function(d){
+       var x=idx.byDay[d],cl=x.d+x.p;
+       return[esc(d),x.pv,x.i,x.d,x.p,x.i?(Math.round(cl/x.i*1000)/10)+'%':'−'];
+     }));
+
+  html+='<p class="an-note">計測結果はGitHubの data/clicks.json に保存されます。「変更をサイトへ反映」を押したときにまとめて書き出されます。'
    +(clickData&&clickData.updatedAt?'<br>最後に保存した日時：'+esc(new Date(clickData.updatedAt).toLocaleString('ja-JP')):'')+'</p>';
+  return html;
 }
 function renderAnalytics(){
   var box=document.getElementById('anBody');

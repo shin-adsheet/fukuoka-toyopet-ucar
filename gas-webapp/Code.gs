@@ -38,8 +38,11 @@ const CLICK = Object.freeze({
   path: 'data/clicks.json',
   prefix: 'CLK_',
   sep: '__',
-  maxKeysPerBucket: 400,
-  kinds: { d: '詳しくはこちら', p: '電話で確認' },
+  maxKeysPerBucket: 800,
+  // v=ページ表示（到達率・クリック率の分母） i=カードが見られた回数
+  // d=Gazooへ遷移 p=電話で確認
+  kinds: { v: 'ページ表示', i: 'カード表示', d: 'Gazoo遷移', p: '電話' },
+  pvUid: '_pv',
 });
 
 function doPost(e) {
@@ -74,7 +77,10 @@ function recordClick_(body) {
 
   // 実在しないページ・車の水増しを弾く。GitHubへの問い合わせはロックの外で済ませる。
   const valid = validTargets_();
-  if (!valid.pages[page] || !valid.uids[uid]) return;
+  if (!valid.pages[page]) return;
+  // ページ表示は車に紐づかないので、決め打ちのIDだけ許す
+  if (kind === 'v') { if (uid !== CLICK.pvUid) return; }
+  else if (!valid.uids[uid]) return;
 
   const day = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd');
   const key = CLICK.prefix + day + CLICK.sep + page;
