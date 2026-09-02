@@ -7,7 +7,8 @@
 import { readFile } from "node:fs/promises";
 
 const ADMIN = "gas-webapp/index.html";
-const LOADER = "assets/ucar-cards.js";
+const LOADER = "assets/ucar-cards.core.js";
+const BOOT = "assets/ucar-cards.js";
 const EMBED_TEMPLATE = "gas-webapp/CMS貼り付け用コード.html";
 
 // `var NAME={...}` / `var NAME=[...]` の中身をそのまま切り出す
@@ -41,6 +42,7 @@ function compare(label, a, b, errors) {
 const admin = await readFile(ADMIN, "utf8");
 const loader = await readFile(LOADER, "utf8");
 const template = await readFile(EMBED_TEMPLATE, "utf8");
+const boot = await readFile(BOOT, "utf8");
 const errors = [];
 
 compare(
@@ -65,6 +67,13 @@ else if (embedVersion !== templateVersion) {
   errors.push(`埋め込み版数が一致しません\n  ${ADMIN}: ${embedVersion}\n  ${EMBED_TEMPLATE}: ${templateVersion}`);
 } else {
   console.log(`OK  埋め込み版数（EMBED_VERSION = ${embedVersion}）`);
+}
+
+// 読み込み役（ucar-cards.js）が本体を正しく指しているか
+if (boot.indexOf('"ucar-cards.core.js?t="') < 0) {
+  errors.push(`${BOOT} が ${LOADER} を読み込んでいません`);
+} else {
+  console.log("OK  読み込み役が本体を指している");
 }
 
 if (errors.length) {
