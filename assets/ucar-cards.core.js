@@ -139,14 +139,19 @@
     return themeOf(found && found.theme);
   }
 
+  // 管理画面で「非公開」にしたクルマはサイトに出さない
+  function published(cars) {
+    return cars.filter(function (car) { return car && car.hidden !== true; });
+  }
+
   function carsForPage(data, pageId) {
     var all = data && Array.isArray(data.cars) ? data.cars : [];
-    if (!data || !Array.isArray(data.pages) || !data.pages.length) return all;
+    if (!data || !Array.isArray(data.pages) || !data.pages.length) return published(all);
     var selectedPage = data.pages.filter(function (page) { return page && page.id === pageId; })[0];
     if (!selectedPage) return [];
     var byUid = {};
     all.forEach(function (car) { if (car && car.uid) byUid[car.uid] = car; });
-    return (selectedPage.carUids || []).map(function (uid) { return byUid[uid]; }).filter(Boolean);
+    return published((selectedPage.carUids || []).map(function (uid) { return byUid[uid]; }));
   }
 
   // どのカードのどのボタンが押されたかを管理画面へ知らせる。
@@ -245,7 +250,7 @@
   }
 
   // どの版が動いているか確認できるようにする（ブラウザのコンソールで確認可能）
-  window.FukuokaToyopetUcarVersion = "20260902-2";
+  window.FukuokaToyopetUcarVersion = "20260907-1";
 
   window.FukuokaToyopetUcarRenderAll = function () {
     addStyle();

@@ -1007,6 +1007,8 @@ function normalizeModel_(input) {
     if (c.soldout !== true) delete c.soldoutAt;
     // 自動更新に切り替わった車に「掲載待ち」の印を残さない
     if (c.autoUpdate === true) delete c.gazooPending;
+    // 非公開のときだけ印を残す。公開が既定なので、公開なら項目ごと消す
+    if (c.hidden === true) c.hidden = true; else delete c.hidden;
   });
   const valid = {};
   d.cars.forEach(function (c) { valid[c.uid] = true; });
