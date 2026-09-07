@@ -2,7 +2,18 @@
 // Gazoo解析部分の動作確認。ネットにはつながず、手元のHTML断片で確かめる。
 // 実行： node scripts/test-parser.mjs
 // =============================================================
-import { pickMainImage, pickPrices, parseGazoo, looksGone, shouldRecheckSoldout, isPending } from "./update-from-gazoo.mjs";
+import {
+  pickMainImage,
+  pickPrices,
+  parseGazoo,
+  looksGone,
+  shouldRecheckSoldout,
+  isPending,
+  jstHour,
+  normalizeHours,
+  lastScheduledTime,
+  shouldRunNow,
+} from "./update-from-gazoo.mjs";
 
 let failed = 0;
 
@@ -97,6 +108,58 @@ check(
   "soldoutAt がなければ lastGazooCheck を使う",
   shouldRecheckSoldout({ lastGazooCheck: "2026-08-01T00:00:00Z" }, now),
   false
+);
+
+// --- 自動更新を動かす時刻の判定 ---
+// GitHubの定期実行は最大数時間ずれるため、「予定時刻ちょうど」ではなく
+// 「予定時刻を過ぎてまだ動かしていないか」で判定する。
+const jst = (s) => new Date(Date.parse(s + "+09:00"));
+
+check("日本時間の時を取り出す", jstHour(jst("2026-09-07T06:30:00")), 6);
+check("時刻の並び替えと重複除去", normalizeHours([20, 6, 20, 99, "x"]), [6, 20]);
+check("空なら既定値", normalizeHours([]), [6, 20]);
+
+check(
+  "13時なら直近の予定は今日6時",
+  new Date(lastScheduledTime([6, 20], jst("2026-09-07T13:00:00"))).toISOString(),
+  jst("2026-09-07T06:00:00").toISOString()
+);
+check(
+  "3時なら直近の予定は前日20時",
+  new Date(lastScheduledTime([6, 20], jst("2026-09-07T03:00:00"))).toISOString(),
+  jst("2026-09-06T20:00:00").toISOString()
+);
+
+check(
+  "予定時刻を過ぎていて未実行なら動かす",
+  shouldRunNow([6, 20], jst("2026-09-07T07:50:00"), jst("2026-09-06T20:05:00").toISOString(), "schedule"),
+  true
+);
+check(
+  "同じ予定分をすでに実行済みなら動かさない",
+  shouldRunNow([6, 20], jst("2026-09-07T09:30:00"), jst("2026-09-07T06:40:00").toISOString(), "schedule"),
+  false
+);
+check(
+  "次の予定時刻が来たらまた動かす",
+  shouldRunNow([6, 20], jst("2026-09-07T22:10:00"), jst("2026-09-07T06:40:00").toISOString(), "schedule"),
+  true
+);
+check(
+  "記録がなければ動かす",
+  shouldRunNow([6, 20], jst("2026-09-07T09:30:00"), "", "schedule"),
+  true
+);
+check(
+  "手動実行はいつでも動かす",
+  shouldRunNow([6, 20], jst("2026-09-07T09:30:00"), jst("2026-09-07T09:00:00").toISOString(), "workflow_dispatch"),
+  true
+);
+// 以前の不具合の再現：6時ちょうどに起動しなくても取りこぼさない
+check(
+  "6時に起動できず7時50分になっても動かす",
+  shouldRunNow([6, 20], jst("2026-09-07T07:50:00"), jst("2026-09-06T20:00:00").toISOString(), "schedule"),
+  true
 );
 
 if (failed) {

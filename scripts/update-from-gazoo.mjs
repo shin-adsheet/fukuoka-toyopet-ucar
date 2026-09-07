@@ -9,6 +9,7 @@ import path from "node:path";
 
 const DATA_FILE = "data/cars.json";
 const SETTINGS_FILE = "data/settings.json";
+const STATE_FILE = "data/update-state.json"; // 最後に自動更新を動かした時刻（このプログラムだけが書く）
 const DEFAULT_UPDATE_HOURS = [6, 20]; // 日本時間。管理画面から変更できる
 const IMAGE_DIR = "images";
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) ucar-card-updater/1.1";
@@ -267,37 +268,102 @@ async function applyGazooData(car, html) {
   return changed;
 }
 
-// 日本時間の「時」を取り出す
-export function jstHour(now = new Date()) {
-  return Number(new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Tokyo", hour: "2-digit", hour12: false }).format(now));
+const JST_OFFSET_MS = 9 * 60 * 60 * 1000; // 日本時間。サマータイムがないので固定でよい
+
+// 日本時間での年・月・日・時
+function jstParts(now = new Date()) {
+  const t = new Date(now.getTime() + JST_OFFSET_MS);
+  return { y: t.getUTCFullYear(), m: t.getUTCMonth(), d: t.getUTCDate(), h: t.getUTCHours() };
 }
 
-// 設定された時刻かどうか。手動実行のときは時刻を問わず動かす。
-export function shouldRunNow(hours, hour, eventName) {
+// 日本時間の「時」を取り出す
+export function jstHour(now = new Date()) {
+  return jstParts(now).h;
+}
+
+export function normalizeHours(hours) {
+  const list = (Array.isArray(hours) ? hours : [])
+    .map(Number)
+    .filter((h) => Number.isInteger(h) && h >= 0 && h <= 23);
+  const uniq = Array.from(new Set(list)).sort((a, b) => a - b);
+  return uniq.length ? uniq : DEFAULT_UPDATE_HOURS.slice();
+}
+
+// 「いま以前でいちばん近い予定時刻」を返す（日本時間）。
+// 例：設定が6時と20時で、いまが13時なら、今日の6時を返す。
+export function lastScheduledTime(hours, now = new Date()) {
+  const list = normalizeHours(hours);
+  const p = jstParts(now);
+  const at = (parts, hour) => Date.UTC(parts.y, parts.m, parts.d, hour, 0, 0) - JST_OFFSET_MS;
+  const t = now.getTime();
+  let best = null;
+  for (const h of list) {
+    const slot = at(p, h);
+    if (slot <= t && (best === null || slot > best)) best = slot;
+  }
+  if (best === null) {
+    // 今日はまだ最初の予定時刻が来ていないので、前日の最後の予定時刻を使う
+    best = at(jstParts(new Date(t - 24 * 60 * 60 * 1000)), list[list.length - 1]);
+  }
+  return best;
+}
+
+// 動かすべきかどうか。手動実行のときは時刻を問わず動かす。
+//
+// GitHubの定期実行は「毎時」と書いても実際には1〜5時間ずれて動く（混雑時は飛ばされる）。
+// 以前は「いまが6時か20時ちょうどか」で判定していたため、ほぼ一度も条件に当たらず、
+// 売約済みの反映が動いていなかった。予定時刻を過ぎてまだ実行していなければ動かす
+// （遅れて起動しても取りこぼさない）方式に変更する。
+export function shouldRunNow(hours, now, lastRunAt, eventName) {
   if (eventName === "workflow_dispatch") return true;
-  const list = Array.isArray(hours) && hours.length ? hours : DEFAULT_UPDATE_HOURS;
-  return list.indexOf(hour) >= 0;
+  const slot = lastScheduledTime(hours, now);
+  const last = Date.parse(String(lastRunAt || ""));
+  return !Number.isFinite(last) || last < slot;
 }
 
 async function readUpdateHours() {
   try {
     const s = JSON.parse(await readFile(SETTINGS_FILE, "utf8"));
-    const hours = (s.updateHours || []).map(Number).filter(function (h) { return Number.isInteger(h) && h >= 0 && h <= 23; });
-    return hours.length ? hours : DEFAULT_UPDATE_HOURS;
+    return normalizeHours(s.updateHours);
   } catch {
-    return DEFAULT_UPDATE_HOURS;
+    return DEFAULT_UPDATE_HOURS.slice();
   }
+}
+
+// 最後に実行した時刻。これがあるおかげで、遅れて起動しても二重に動かない。
+async function readLastRunAt() {
+  try {
+    return JSON.parse(await readFile(STATE_FILE, "utf8")).lastRunAt || "";
+  } catch {
+    return "";
+  }
+}
+
+function jstText(ms) {
+  const t = new Date(ms + JST_OFFSET_MS);
+  const p = (n) => String(n).padStart(2, "0");
+  return `${t.getUTCFullYear()}/${p(t.getUTCMonth() + 1)}/${p(t.getUTCDate())} ${p(t.getUTCHours())}:${p(t.getUTCMinutes())}`;
 }
 
 export async function main() {
   const hours = await readUpdateHours();
-  const hour = jstHour();
-  if (!shouldRunNow(hours, hour, process.env.EVENT_NAME)) {
-    console.log(`いまは更新時刻ではありません（日本時間${hour}時 / 設定：${hours.join("時, ")}時）`);
+  const now = new Date();
+  const lastRunAt = await readLastRunAt();
+  if (!shouldRunNow(hours, now, lastRunAt, process.env.EVENT_NAME)) {
+    console.log(
+      `まだ次の更新時刻ではありません（日本時間 いま${jstText(now.getTime())} / ` +
+        `設定：${hours.join("時, ")}時 / 前回：${lastRunAt ? jstText(Date.parse(lastRunAt)) : "なし"}）`
+    );
     return;
   }
+  console.log(
+    `更新を開始します（日本時間 いま${jstText(now.getTime())} / ` +
+      `予定：${jstText(lastScheduledTime(hours, now))} / 前回：${lastRunAt ? jstText(Date.parse(lastRunAt)) : "なし"}）`
+  );
   const data = JSON.parse(await readFile(DATA_FILE, "utf8"));
   let changed = false;
+  let checked = 0;  // 実際にGazooを見に行けた台数
+  let failed = 0;
 
   for (const car of data.cars || []) {
     if (!car.gazooUrl) continue;
@@ -312,6 +378,7 @@ export async function main() {
     try {
       const res = await fetch(car.gazooUrl, { headers: { "user-agent": UA }, redirect: "follow" });
       const html = await res.text();
+      checked++;
       const unavailable = looksGone(res.status, html, res.url);
       const now = new Date().toISOString();
 
@@ -358,6 +425,7 @@ export async function main() {
         console.log(`確認できませんでした（HTTP ${res.status}）: ${car.name}`);
       }
     } catch (e) {
+      failed++;
       console.log(`エラー: ${car.name} ${e.message}`);
     }
     await sleep(WAIT_MS);
@@ -370,6 +438,16 @@ export async function main() {
   } else {
     console.log("変更はありませんでした");
   }
+
+  // 実行できたことを記録する。これがないと、起動のたびに走り続けてしまう。
+  // ただし一台もGazooを見に行けなかったとき（通信不良など）は記録しない。
+  // 記録してしまうと、次の予定時刻まで丸ごと1回分を取りこぼすため。
+  if (checked > 0 || failed === 0) {
+    await writeFile(STATE_FILE, JSON.stringify({ lastRunAt: new Date().toISOString() }, null, 2) + "\n");
+  } else {
+    console.log(`::warning::Gazooに一度もつながらなかったため、次の起動でやり直します（失敗${failed}件）`);
+  }
+  console.log(`確認できた台数: ${checked} / 失敗: ${failed}`);
 }
 
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1]);
