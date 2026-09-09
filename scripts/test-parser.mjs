@@ -9,6 +9,7 @@ import {
   looksGone,
   shouldRecheckSoldout,
   isPending,
+  parseCert,
   jstHour,
   normalizeHours,
   lastScheduledTime,
@@ -108,6 +109,44 @@ check(
   "soldoutAt がなければ lastGazooCheck を使う",
   shouldRecheckSoldout({ lastGazooCheck: "2026-08-01T00:00:00Z" }, now),
   false
+);
+
+// --- 認定中古車 / 認定中古車ライトの見分け ---
+// 実際のGazooのHTMLから写した形。装備表には必ず「先進ライト」があるので、
+// 本文全体から「ライト」を探すとすべてライト判定になってしまう点に注意。
+const EQUIP = '<table class="equip"><tr><th>先進ライト</th><td>○</td></tr></table>';
+const certPage = (icon) =>
+  '<div class="head"><span class="icon confirm">実車確認可能</span></div> <h2 class="pb-0"> ' +
+  icon +
+  ' <span><span class="name_wrap"><span class="merker_name">トヨタ</span><span class="car_name">カローラクロス</span></span></span> </h2>' +
+  EQUIP;
+
+check(
+  "認定中古車のアイコン",
+  parseCert(certPage('<img src="/U-Car/resource/img/icon/icon_car.jpg" alt="トヨタ認定中古車アイコン" />')),
+  "standard"
+);
+check(
+  "認定中古車ライトのアイコン",
+  parseCert(certPage('<img src="/U-Car/resource/img/icon/icon_car_light.jpg?v=20260309" alt="トヨタ認定中古車ライトアイコン">')),
+  "light"
+);
+check("アイコンがなければ判定しない", parseCert(certPage("")), "");
+check("売約済みページなど見出しがなければ判定しない", parseCert("<html>" + EQUIP + "</html>"), "");
+// 「先進ライト」だけでライト判定にならないこと
+check(
+  "装備の先進ライトに引っ張られない",
+  parseCert(certPage('<img src="/U-Car/resource/img/icon/icon_car.jpg" alt="トヨタ認定中古車アイコン" />')),
+  "standard"
+);
+// ページ下部にライトのバナーがあっても、見出しのアイコンを優先する
+check(
+  "下部のライトバナーに引っ張られない",
+  parseCert(
+    certPage('<img src="/U-Car/resource/img/icon/icon_car.jpg" alt="トヨタ認定中古車アイコン" />') +
+      '<p><img src="/U-Car/resource/img/banners/banner_charm_04.png" alt="トヨタ認定中古車ライト"></p>'
+  ),
+  "standard"
 );
 
 // --- 自動更新を動かす時刻の判定 ---

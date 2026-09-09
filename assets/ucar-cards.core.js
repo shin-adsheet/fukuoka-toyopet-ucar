@@ -59,6 +59,10 @@
       ".event-ucar-cards .utc-body{display:flex;gap:2.1cqw;}.event-ucar-cards .utc-photo{width:52%;position:relative;flex:none;}",
       ".event-ucar-cards .utc-photo .ph{width:100%;aspect-ratio:4/3;background:#eee;overflow:hidden;}.event-ucar-cards .utc-photo img{width:100%;height:100%;object-fit:contain;display:block;}",
       ".event-ucar-cards .utc-stock{position:absolute;top:0.8cqw;right:0.8cqw;background:#fff;border:1px solid #333;font-size:2.8cqw;padding:0 1.2cqw;font-weight:bold;}",
+      // 写真の左上に付く認定区分のラベル。Gazooの見出しアイコンから自動で決まる。
+      ".event-ucar-cards .utc-cert{position:absolute;top:0;left:0;z-index:4;display:flex;align-items:center;background:#c8161d;padding:0.35cqw 0.45cqw;}",
+      ".event-ucar-cards .utc-cert.light{background:#0e7a45;}",
+      ".event-ucar-cards .utc-cert span{background:#fff;color:#1a1a1a;font-weight:bold;font-size:1.7cqw;line-height:1.35;padding:0.1cqw 0.55cqw;white-space:nowrap;}",
       ".event-ucar-cards .utc-info{flex:1;min-width:0;}.event-ucar-cards .utc-badges{margin:0 0 1.4cqw;padding:0;list-style:none;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.8fr);gap:0.6cqw 0.8cqw;}",
       ".event-ucar-cards .utc-badges li{min-width:0;font-size:2.6cqw;line-height:1.4;padding:0.4cqw 1cqw;font-weight:bold;text-align:center;white-space:nowrap;background:#888;color:#fff;}.event-ucar-cards .utc-badges li.is-off{visibility:hidden;}",
       ".event-ucar-cards .utc-badges li.b-longrun{background:#1a2f80;}.event-ucar-cards .utc-badges li.b-hv{background:#1e9cd7;}.event-ucar-cards .utc-badges li.b-anshin{background:#21b8b3;color:#fff;}",
@@ -128,7 +132,7 @@
     var phoneButton = phone ? '<a class="utc-btn utc-phone-btn" href="tel:' + esc(phone.replace(/[^0-9+]/g, "")) + '" aria-label="' + esc((car.store || "") + "へ電話で確認する") + '">' + PHONE_ICON + "確認する</a>" : "";
     return '<div class="utc-card' + (car.soldout ? " soldout" : "") + '" data-uid="' + esc(car.uid || "") + '"><div class="utc-card-main">'
       + '<div class="utc-head"><span class="utc-store"><small>トヨタ認定中古車</small>' + esc(car.store || "") + '</span><span class="utc-id">' + esc(car.id || "") + "</span></div>"
-      + '<div class="utc-inner"><div class="utc-body"><div class="utc-photo"><div class="ph">' + image + "</div>" + (car.stock ? '<span class="utc-stock">' + esc(car.stock) + "</span>" : "") + "</div>"
+      + '<div class="utc-inner"><div class="utc-body"><div class="utc-photo"><div class="ph">' + image + "</div>" + certTag(car) + (car.stock ? '<span class="utc-stock">' + esc(car.stock) + "</span>" : "") + "</div>"
       + '<div class="utc-info"><ul class="utc-badges">' + badges + "</ul>" + priceBlock + "</div></div>"
       + '<h3 class="utc-name">' + esc(car.name || "") + '</h3><p class="utc-specs">' + specText + '</p><div class="utc-btns">' + detailButton + phoneButton + "</div></div></div>" + sold + "</div>";
   }
@@ -142,6 +146,13 @@
   // 管理画面で「非公開」にしたクルマはサイトに出さない
   function published(cars) {
     return cars.filter(function (car) { return car && car.hidden !== true; });
+  }
+
+  var CERT_LABEL = { standard: "認定中古車", light: "認定中古車ライト" };
+  function certTag(car) {
+    var label = CERT_LABEL[car && car.cert];
+    if (!label) return "";
+    return '<span class="utc-cert' + (car.cert === "light" ? " light" : "") + '"><span>' + esc(label) + "</span></span>";
   }
 
   function carsForPage(data, pageId) {
@@ -250,7 +261,7 @@
   }
 
   // どの版が動いているか確認できるようにする（ブラウザのコンソールで確認可能）
-  window.FukuokaToyopetUcarVersion = "20260907-1";
+  window.FukuokaToyopetUcarVersion = "20260909-1";
 
   window.FukuokaToyopetUcarRenderAll = function () {
     addStyle();

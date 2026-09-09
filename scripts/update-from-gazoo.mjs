@@ -143,6 +143,21 @@ function parseBadges(text) {
   return badges;
 }
 
+// トヨタ認定中古車か、認定中古車ライトか、どちらでもないか。
+// 車名の見出しに付く小さなアイコンで見分ける。
+//   認定中古車     : icon_car.jpg       alt="トヨタ認定中古車アイコン"
+//   認定中古車ライト: icon_car_light.jpg alt="トヨタ認定中古車ライトアイコン"
+// 「ライト」という言葉は装備表の「先進ライト」にも必ず出てくるので、
+// 本文全体から探すと必ずライト判定になってしまう。アイコンだけを見る。
+export function parseCert(html) {
+  const src = String(html || "");
+  const head = (src.match(/<h2[^>]*class="[^"]*pb-0[^"]*"[\s\S]{0,400}?<\/h2>/) || [""])[0];
+  const area = head || src;
+  if (/icon_car_light\.jpg|トヨタ認定中古車ライトアイコン/.test(area)) return "light";
+  if (/icon_car\.jpg|トヨタ認定中古車アイコン/.test(area)) return "standard";
+  return "";
+}
+
 export function parseGazoo(html) {
   // タグを取り除いて文字だけにしてから探す。NFKCで半角カナ等も揃える。
   const text = compactText(html);
@@ -153,6 +168,7 @@ export function parseGazoo(html) {
     imageUrl: pickMainImage(html),
     specs: parseSpecs(text),
     badges: parseBadges(text),
+    cert: parseCert(html),
   };
 }
 
@@ -250,6 +266,13 @@ async function applyGazooData(car, html) {
       car.specs[key] = p.specs[key];
       changed = true;
     }
+  }
+
+  // 認定区分（認定中古車／認定中古車ライト）。読み取れなかったときは今の値を残す。
+  if (p.cert && p.cert !== car.cert) {
+    console.log(`認定区分を更新: ${car.name} ${car.cert || "（未設定）"} → ${p.cert}`);
+    car.cert = p.cert;
+    changed = true;
   }
 
   // 保証・整備等は1つでもGazooで検出できた場合だけ同期する。

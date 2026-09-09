@@ -686,7 +686,22 @@ function parseGazooImport_(html, url) {
     gazooImageUrl: gazooMainImage_(html) || '',
     specs: gazooSpecs_(text),
     badges: gazooBadges_(text),
+    cert: gazooCert_(html),
   };
+}
+
+// トヨタ認定中古車か、認定中古車ライトか、どちらでもないか。
+// 車名の見出しに付く小さなアイコンで見分ける。
+//   認定中古車     : icon_car.jpg       alt="トヨタ認定中古車アイコン"
+//   認定中古車ライト: icon_car_light.jpg alt="トヨタ認定中古車ライトアイコン"
+// 「ライト」は装備表の「先進ライト」にも必ず出てくるので、本文全体では判定しない。
+function gazooCert_(html) {
+  const src = String(html || '');
+  const head = (src.match(/<h2[^>]*class=["'][^"']*\bpb-0\b[^"']*["'][\s\S]{0,400}?<\/h2>/i) || [''])[0];
+  const area = head || src;
+  if (/icon_car_light\.jpg|トヨタ認定中古車ライトアイコン/.test(area)) return 'light';
+  if (/icon_car\.jpg|トヨタ認定中古車アイコン/.test(area)) return 'standard';
+  return '';
 }
 
 function gazooPrices_(html) {
@@ -964,7 +979,7 @@ function mergeAutomatedFields_(draft, published) {
   const out = JSON.parse(JSON.stringify(normalizeModel_(draft)));
   const byUid = {};
   published.cars.forEach(function (c) { if (c.uid) byUid[c.uid] = c; });
-  const fields = ['name', 'store', 'id', 'priceTotal', 'priceVehicle', 'image', 'gazooImageUrl', 'soldout', 'soldoutAt', 'lastGazooCheck', 'gazooStatus', 'specs', 'badges'];
+  const fields = ['name', 'store', 'id', 'priceTotal', 'priceVehicle', 'image', 'gazooImageUrl', 'soldout', 'soldoutAt', 'lastGazooCheck', 'gazooStatus', 'specs', 'badges', 'cert'];
   // 掲載開始日は分析に使う。先に記録された方を正とし、上書きしない。
   out.cars.forEach(function (c) {
     // URL直入力やExcel取込の直後は、画面で取得した新しい値を優先する。
@@ -1009,6 +1024,8 @@ function normalizeModel_(input) {
     if (c.autoUpdate === true) delete c.gazooPending;
     // 非公開のときだけ印を残す。公開が既定なので、公開なら項目ごと消す
     if (c.hidden === true) c.hidden = true; else delete c.hidden;
+    // 認定区分は「認定中古車」「認定中古車ライト」「なし」の3つだけ
+    if (c.cert !== 'standard' && c.cert !== 'light') delete c.cert;
   });
   const valid = {};
   d.cars.forEach(function (c) { valid[c.uid] = true; });
