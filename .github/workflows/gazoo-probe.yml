@@ -1,0 +1,14 @@
+# 認定中古車／認定中古車ライトの見分け方を調べるための一時的なワークフロー。
+# 調査が済んだら削除します。
+name: Gazoo調査（一時）
+on:
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node scripts/probe-gazoo.mjs
