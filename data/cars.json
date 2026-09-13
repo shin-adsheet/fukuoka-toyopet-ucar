@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": "2026-09-12T11:56:00.594Z",
+  "updatedAt": "2026-09-13T14:49:27.846Z",
   "pages": [
     {
       "id": "main",
@@ -94,7 +94,7 @@
       "name": "アルファード HEV Z",
       "autoUpdate": true,
       "priceVehicle": 561,
-      "lastGazooCheck": "2026-09-12T11:53:27.659Z",
+      "lastGazooCheck": "2026-09-13T14:46:58.911Z",
       "cert": "standard"
     },
     {
@@ -131,14 +131,14 @@
     },
     {
       "autoUpdate": true,
-      "lastGazooCheck": "2026-09-12T11:53:31.144Z",
+      "lastGazooCheck": "2026-09-13T14:47:02.323Z",
       "priceVehicle": 345.7,
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8332906/83329062026060213033001_L.jpg",
       "id": "8332906",
       "stock": "110",
       "uid": "car-8332906",
-      "soldout": false,
+      "soldout": true,
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018332906&Sdlr=18101",
       "store": "小倉東店",
       "autoImageUpdate": true,
@@ -160,7 +160,8 @@
         "ロングラン保証"
       ],
       "image": "images/gazoo-8332906.jpg",
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:47:02.323Z"
     },
     {
       "specs": {
@@ -304,7 +305,7 @@
       "image": "images/gazoo-8353041.jpg",
       "priceVehicle": 298,
       "soldout": false,
-      "lastGazooCheck": "2026-09-12T11:53:34.411Z",
+      "lastGazooCheck": "2026-09-13T14:47:05.534Z",
       "badges": [
         "修無",
         "整付",
@@ -392,7 +393,7 @@
     {
       "gazooStatus": "soldout",
       "stock": "",
-      "lastGazooCheck": "2026-09-12T11:53:37.916Z",
+      "lastGazooCheck": "2026-09-13T14:47:08.879Z",
       "autoImageUpdate": true,
       "priceVehicle": 332.8,
       "priceTotal": 347.1,
@@ -454,7 +455,7 @@
       "stock": "",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018376121&Sdlr=18101",
       "gazooStatus": "soldout",
-      "lastGazooCheck": "2026-09-12T11:53:41.293Z",
+      "lastGazooCheck": "2026-09-13T14:47:12.163Z",
       "soldoutAt": "2026-09-07T04:02:45.918Z"
     },
     {
@@ -475,7 +476,7 @@
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8365383/83653832026070116270401_L.jpg",
       "image": "images/gazoo-8365383.jpg",
       "autoImageUpdate": true,
-      "lastGazooCheck": "2026-09-12T11:53:44.687Z",
+      "lastGazooCheck": "2026-09-13T14:47:15.363Z",
       "gazooStatus": "ok",
       "uid": "car-mtatrcf1-j82u",
       "priceTotal": 266.3,
@@ -495,7 +496,7 @@
       "soldout": false,
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018365383&Sdlr=18101&_gl=1*1h1eo7u*_ga*NzY0NDUyNzQ4LjE3NjUzMzQ5MjI.*_ga_BLSGKL3LFQ*czE3ODc3OTI5MTYkbzYyJGcxJHQxNzg3NzkyOTI3JGo0OSRsMCRoMA..&_ga=2.74936530.1794428898.1787790087-764452748.1765334922&_gac=1.262924926.1787280851.CjwKCAjwj7HTBhBiEiwA8s35OpSYdtrpTXLuTOceihk5IyqfJgmXwzUSQBH9czqCFaNB-khynEDNaBoC7rUQAvD_BwE",
       "autoUpdate": true,
-      "lastGazooCheck": "2026-09-12T11:53:48.043Z",
+      "lastGazooCheck": "2026-09-13T14:47:18.655Z",
       "stock": "111",
       "id": "8365383",
       "name": "カローラクロスHEV Z",
@@ -553,7 +554,7 @@
       "gazooStatus": "soldout",
       "store": "久留米インター店",
       "soldout": true,
-      "lastGazooCheck": "2026-09-12T11:53:51.527Z",
+      "lastGazooCheck": "2026-09-13T14:47:22.042Z",
       "id": "8346842",
       "autoUpdate": true,
       "image": "https://gazoo.com/U-Car/carImg/18101/8346842/83468422026041713504901_L.jpg",
@@ -561,7 +562,7 @@
     },
     {
       "id": "8365383",
-      "lastGazooCheck": "2026-09-12T11:53:54.828Z",
+      "lastGazooCheck": "2026-09-13T14:47:25.256Z",
       "stock": "",
       "priceVehicle": 253,
       "priceTotal": 266.3,
@@ -606,7 +607,7 @@
       "soldout": false,
       "gazooStatus": "ok",
       "stock": "",
-      "lastGazooCheck": "2026-09-12T11:53:58.236Z",
+      "lastGazooCheck": "2026-09-13T14:47:28.454Z",
       "store": "久留米インター店",
       "uid": "car-mtax5mz5-j7wi",
       "priceVehicle": 167,
@@ -656,12 +657,12 @@
       "id": "8376164",
       "priceTotal": 97.7,
       "stock": "363",
-      "lastGazooCheck": "2026-09-12T11:54:01.716Z",
+      "lastGazooCheck": "2026-09-13T14:47:31.832Z",
       "priceVehicle": 84.8,
       "soldoutAt": "2026-09-07T04:03:05.679Z"
     },
     {
-      "lastGazooCheck": "2026-09-12T11:54:05.243Z",
+      "lastGazooCheck": "2026-09-13T14:47:35.117Z",
       "id": "8375702",
       "autoUpdate": true,
       "badges": [
@@ -711,7 +712,7 @@
       "image": "images/gazoo-8375753.jpg",
       "priceVehicle": 121.5,
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8375753/83757532026080914565001_L.jpg",
-      "lastGazooCheck": "2026-09-12T11:54:08.658Z",
+      "lastGazooCheck": "2026-09-13T14:47:38.423Z",
       "autoUpdate": true,
       "badges": [
         "修無",
@@ -739,9 +740,9 @@
         "ハイブリッド保証"
       ],
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018375273&Sdlr=18101",
-      "lastGazooCheck": "2026-09-12T11:54:12.000Z",
+      "lastGazooCheck": "2026-09-13T14:47:41.731Z",
       "uid": "car-mthzip9m-94u",
-      "soldout": false,
+      "soldout": true,
       "priceTotal": 142.2,
       "specs": {
         "mission": "CVT",
@@ -758,8 +759,9 @@
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8375273/83752732026080915082101_L.jpg",
       "stock": "936",
       "name": "プリウス Sツーリングセレクション",
-      "gazooStatus": "ok",
-      "cert": "light"
+      "gazooStatus": "soldout",
+      "cert": "light",
+      "soldoutAt": "2026-09-13T14:47:41.731Z"
     },
     {
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8332931/83329312026021814364901_L.jpg",
@@ -777,13 +779,13 @@
       "store": "小倉東店",
       "stock": "492",
       "priceVehicle": 139.7,
-      "soldout": false,
-      "lastGazooCheck": "2026-09-12T11:54:15.394Z",
+      "soldout": true,
+      "lastGazooCheck": "2026-09-13T14:47:45.068Z",
       "priceTotal": 148,
       "id": "8332931",
       "autoImageUpdate": true,
       "uid": "car-mthzip9m-h4s0",
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "badges": [
         "修無",
         "整付",
@@ -792,7 +794,8 @@
         "ロングラン保証"
       ],
       "name": "ヤリス G",
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:47:45.068Z"
     },
     {
       "badges": [
@@ -803,7 +806,7 @@
         "ロングラン保証"
       ],
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8376351/83763512026082211112701_L.jpg",
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "image": "images/gazoo-8376351.jpg",
       "name": "カローラセダン WxB",
       "priceVehicle": 172.5,
@@ -818,26 +821,27 @@
         "color": "プラチナホワイトパールマイカ"
       },
       "priceTotal": 181.9,
-      "lastGazooCheck": "2026-09-12T11:54:18.631Z",
+      "lastGazooCheck": "2026-09-13T14:47:48.401Z",
       "stock": "818",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018376351&Sdlr=18101",
       "id": "8376351",
-      "soldout": false,
+      "soldout": true,
       "uid": "car-mthzip9m-8l1n",
       "autoImageUpdate": true,
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:47:48.401Z"
     },
     {
       "id": "8359162",
       "name": "ヤリスクロスHEV Z",
-      "lastGazooCheck": "2026-09-12T11:54:22.043Z",
+      "lastGazooCheck": "2026-09-13T14:47:51.761Z",
       "uid": "car-mthzip9m-a8hi",
       "priceTotal": 200.2,
       "image": "images/gazoo-8359162.jpg",
       "autoImageUpdate": true,
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "store": "小倉東店",
-      "soldout": false,
+      "soldout": true,
       "specs": {
         "mission": "CVT",
         "km": "3万km",
@@ -859,7 +863,8 @@
       ],
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018359162&Sdlr=18101",
       "autoUpdate": true,
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:47:51.761Z"
     },
     {
       "priceTotal": 212.8,
@@ -872,9 +877,9 @@
         "km": "1.5万km"
       },
       "priceVehicle": 199.8,
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "store": "福岡インター店",
-      "soldout": false,
+      "soldout": true,
       "uid": "car-mthzip9n-bwnk",
       "image": "images/gazoo-8363127.jpg",
       "name": "シエンタ G",
@@ -887,20 +892,21 @@
         "ロングラン保証"
       ],
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8363127/83631272026061916461101_L.jpg",
-      "lastGazooCheck": "2026-09-12T11:54:25.369Z",
+      "lastGazooCheck": "2026-09-13T14:47:55.034Z",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018363127&Sdlr=18101",
       "id": "8363127",
       "stock": "573",
       "autoUpdate": true,
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:47:55.034Z"
     },
     {
       "autoImageUpdate": true,
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8363852/83638522026062416432201_L.jpg",
       "autoUpdate": true,
       "image": "images/gazoo-8363852.jpg",
-      "soldout": false,
+      "soldout": true,
       "name": "C-HRHEV S GRスポーツ",
       "store": "福岡西店",
       "priceVehicle": 203.2,
@@ -922,11 +928,12 @@
         "ハイブリッド保証"
       ],
       "stock": "879",
-      "lastGazooCheck": "2026-09-12T11:54:28.650Z",
+      "lastGazooCheck": "2026-09-13T14:47:58.315Z",
       "id": "8363852",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018363852&Sdlr=18101",
       "priceTotal": 216.3,
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:47:58.315Z"
     },
     {
       "uid": "car-mthzip9n-7rj5",
@@ -935,7 +942,7 @@
       "stock": "246",
       "autoImageUpdate": true,
       "id": "8375150",
-      "lastGazooCheck": "2026-09-12T11:54:32.181Z",
+      "lastGazooCheck": "2026-09-13T14:48:01.661Z",
       "image": "images/gazoo-8375150.jpg",
       "badges": [
         "修無",
@@ -967,7 +974,7 @@
       "gazooStatus": "soldout",
       "priceTotal": 241.8,
       "priceVehicle": 228.5,
-      "lastGazooCheck": "2026-09-12T11:54:35.714Z",
+      "lastGazooCheck": "2026-09-13T14:48:04.968Z",
       "specs": {
         "color": "スーパーホワイト2",
         "fuel": "ハイブリッド",
@@ -1020,7 +1027,7 @@
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8376369/83763692026081917011101_L.jpg",
       "name": "プリウス Z",
       "priceVehicle": 229.8,
-      "lastGazooCheck": "2026-09-12T11:54:39.099Z",
+      "lastGazooCheck": "2026-09-13T14:48:08.304Z",
       "autoImageUpdate": true,
       "id": "8376369",
       "stock": "058",
@@ -1044,10 +1051,10 @@
         "km": "5.4万km",
         "fuel": "ハイブリッド"
       },
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/7010581/70105812026082016595101_L.jpg",
-      "soldout": false,
-      "lastGazooCheck": "2026-09-12T11:54:42.409Z",
+      "soldout": true,
+      "lastGazooCheck": "2026-09-13T14:48:11.598Z",
       "priceVehicle": 237.7,
       "image": "images/gazoo-7010581.jpg",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181017010581&Sdlr=18101",
@@ -1062,7 +1069,8 @@
         "ハイブリッド保証"
       ],
       "stock": "701",
-      "cert": "light"
+      "cert": "light",
+      "soldoutAt": "2026-09-13T14:48:11.598Z"
     },
     {
       "store": "博多南店",
@@ -1078,7 +1086,7 @@
       "autoUpdate": true,
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018366975&Sdlr=18101",
       "image": "images/gazoo-8366975.jpg",
-      "lastGazooCheck": "2026-09-12T11:54:45.826Z",
+      "lastGazooCheck": "2026-09-13T14:48:14.901Z",
       "autoImageUpdate": true,
       "badges": [
         "修無",
@@ -1113,11 +1121,11 @@
         "ハイブリッド保証"
       ],
       "name": "ハリアーHEV Z",
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "autoImageUpdate": true,
-      "lastGazooCheck": "2026-09-12T11:54:49.097Z",
+      "lastGazooCheck": "2026-09-13T14:48:18.185Z",
       "image": "images/gazoo-8376105.jpg",
-      "soldout": false,
+      "soldout": true,
       "priceVehicle": 267.5,
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018376105&Sdlr=18101",
       "specs": {
@@ -1131,12 +1139,13 @@
       "id": "8376105",
       "autoUpdate": true,
       "store": "福岡インター店",
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:48:18.185Z"
     },
     {
       "store": "福岡インター店",
       "id": "8376539",
-      "lastGazooCheck": "2026-09-12T11:54:52.588Z",
+      "lastGazooCheck": "2026-09-13T14:48:21.462Z",
       "name": "RAV4 G",
       "priceTotal": 282.2,
       "specs": {
@@ -1181,12 +1190,12 @@
         "km": "5.3万km"
       },
       "name": "ハリアー Zレザーパッケージ",
-      "soldout": false,
+      "soldout": true,
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8330997/83309972026042216422801_L.jpg",
       "store": "八幡店",
       "id": "8330997",
       "stock": "781",
-      "lastGazooCheck": "2026-09-12T11:54:55.859Z",
+      "lastGazooCheck": "2026-09-13T14:48:24.777Z",
       "autoUpdate": true,
       "badges": [
         "修無",
@@ -1195,16 +1204,17 @@
         "車検整備付",
         "ロングラン保証"
       ],
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "priceVehicle": 274.3,
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:48:24.777Z"
     },
     {
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8356775/83567752026060217205901_L.jpg",
       "stock": "310",
       "autoUpdate": true,
       "name": "ノア G",
-      "soldout": false,
+      "soldout": true,
       "image": "images/gazoo-8356775.jpg",
       "autoImageUpdate": true,
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018356775&Sdlr=18101",
@@ -1219,7 +1229,7 @@
         "shaken": "車検整備付",
         "year": "2024年式"
       },
-      "lastGazooCheck": "2026-09-12T11:54:59.170Z",
+      "lastGazooCheck": "2026-09-13T14:48:28.067Z",
       "badges": [
         "修無",
         "整付",
@@ -1229,15 +1239,16 @@
       ],
       "store": "博多南店",
       "priceTotal": 289.3,
-      "gazooStatus": "ok",
-      "cert": "standard"
+      "gazooStatus": "soldout",
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:48:28.067Z"
     },
     {
       "autoUpdate": true,
-      "lastGazooCheck": "2026-09-12T11:55:02.511Z",
+      "lastGazooCheck": "2026-09-13T14:48:31.439Z",
       "id": "8348446",
       "image": "images/gazoo-8348446.jpg",
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "store": "飯塚店",
       "specs": {
         "km": "3万km",
@@ -1248,7 +1259,7 @@
         "color": "アティチュードブラックマイカ"
       },
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018348446&Sdlr=18101",
-      "soldout": false,
+      "soldout": true,
       "name": "カローラクロスHEV Z",
       "autoImageUpdate": true,
       "stock": "868",
@@ -1264,7 +1275,8 @@
       "priceTotal": 289.3,
       "priceVehicle": 279.8,
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8348446/83484462026042418033201_L.jpg",
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:48:31.439Z"
     },
     {
       "specs": {
@@ -1289,20 +1301,21 @@
       "id": "8363178",
       "name": "ハリアー Z",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018363178&Sdlr=18101",
-      "gazooStatus": "ok",
-      "lastGazooCheck": "2026-09-12T11:55:05.817Z",
+      "gazooStatus": "soldout",
+      "lastGazooCheck": "2026-09-13T14:48:34.822Z",
       "stock": "329",
       "uid": "car-mthzip9n-e7lz",
       "autoImageUpdate": true,
-      "soldout": false,
+      "soldout": true,
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8363178/83631782026062016400901_L.jpg",
       "autoUpdate": true,
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:48:34.822Z"
     },
     {
       "priceTotal": 332.8,
       "name": "アルファード S Cパッケージ",
-      "lastGazooCheck": "2026-09-12T11:55:09.360Z",
+      "lastGazooCheck": "2026-09-13T14:48:38.140Z",
       "image": "images/gazoo-8375095.jpg",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018375095&Sdlr=18101",
       "store": "久留米インター店",
@@ -1359,7 +1372,7 @@
         "color": "スパークリングブラックパールCS",
         "year": "2021年式"
       },
-      "lastGazooCheck": "2026-09-12T11:55:12.743Z",
+      "lastGazooCheck": "2026-09-13T14:48:41.608Z",
       "stock": "602",
       "gazooStatus": "soldout",
       "priceTotal": 334.6,
@@ -1369,7 +1382,7 @@
       "autoUpdate": true,
       "image": "images/gazoo-8356104.jpg",
       "autoImageUpdate": true,
-      "soldout": false,
+      "soldout": true,
       "specs": {
         "color": "アティチュードブラックマイカ",
         "shaken": "車検 2027年7月",
@@ -1379,7 +1392,7 @@
         "year": "2024年式"
       },
       "uid": "car-mthzip9n-50dp",
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "store": "博多南店",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8356104/83561042026053016154101_L.jpg",
       "id": "8356104",
@@ -1394,15 +1407,16 @@
         "ロングラン保証",
         "ハイブリッド保証"
       ],
-      "lastGazooCheck": "2026-09-12T11:55:16.070Z",
+      "lastGazooCheck": "2026-09-13T14:48:44.927Z",
       "priceTotal": 330.7,
       "name": "プリウスPHEV Z",
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:48:44.927Z"
     },
     {
       "image": "images/gazoo-8348179.jpg",
       "priceVehicle": 332.8,
-      "lastGazooCheck": "2026-09-12T11:55:19.500Z",
+      "lastGazooCheck": "2026-09-13T14:48:48.253Z",
       "specs": {
         "mission": "CVT",
         "year": "2023年式",
@@ -1452,7 +1466,7 @@
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018375737&Sdlr=18101",
       "priceVehicle": 335.2,
       "autoImageUpdate": true,
-      "lastGazooCheck": "2026-09-12T11:55:22.888Z",
+      "lastGazooCheck": "2026-09-13T14:48:51.569Z",
       "name": "アルファード S Cパッケージ",
       "uid": "car-mthzip9n-fjty",
       "stock": "015",
@@ -1467,9 +1481,9 @@
       "soldoutAt": "2026-09-07T04:04:25.280Z"
     },
     {
-      "lastGazooCheck": "2026-09-12T11:55:26.267Z",
+      "lastGazooCheck": "2026-09-13T14:48:54.938Z",
       "stock": "110",
-      "soldout": false,
+      "soldout": true,
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8332906/83329062026060213033001_L.jpg",
       "autoUpdate": true,
       "badges": [
@@ -1479,7 +1493,7 @@
         "車検整備付",
         "ロングラン保証"
       ],
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "specs": {
         "color": "ホワイトパールクリスタルシャイン",
         "shaken": "車検 2027年4月",
@@ -1497,7 +1511,8 @@
       "autoImageUpdate": true,
       "uid": "car-mthzip9n-hm3g",
       "name": "アルファード Sタイプゴールド2",
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:48:54.938Z"
     },
     {
       "name": "クラウンHEVクロスオーバーGADレサ",
@@ -1528,7 +1543,7 @@
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8374935/83749352026082117053501_L.jpg",
       "priceVehicle": 358.9,
       "gazooStatus": "soldout",
-      "lastGazooCheck": "2026-09-12T11:55:29.763Z",
+      "lastGazooCheck": "2026-09-13T14:48:58.321Z",
       "autoImageUpdate": true,
       "stock": "518",
       "cert": "standard",
@@ -1560,7 +1575,7 @@
         "fuel": "ハイブリッド",
         "color": "プレシャスメタル"
       },
-      "lastGazooCheck": "2026-09-12T11:55:33.145Z",
+      "lastGazooCheck": "2026-09-13T14:49:01.667Z",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8376334/83763342026082218233101_L.jpg",
       "gazooStatus": "soldout",
       "image": "images/gazoo-8376334.jpg",
@@ -1572,14 +1587,14 @@
       "stock": "673",
       "priceTotal": 412.2,
       "autoImageUpdate": true,
-      "lastGazooCheck": "2026-09-12T11:55:36.500Z",
+      "lastGazooCheck": "2026-09-13T14:49:05.016Z",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018344521&Sdlr=18101",
       "uid": "car-mthzip9n-ik14",
       "priceVehicle": 401.5,
       "name": "ランクルプラドTXLマットブラック",
       "image": "images/gazoo-8344521.jpg",
-      "soldout": false,
-      "gazooStatus": "ok",
+      "soldout": true,
+      "gazooStatus": "soldout",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8344521/83445212026052213141201_L.jpg",
       "autoUpdate": true,
       "badges": [
@@ -1599,7 +1614,8 @@
       },
       "id": "8344521",
       "store": "八幡店",
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:49:05.016Z"
     },
     {
       "id": "8375460",
@@ -1619,7 +1635,7 @@
       "name": "クラウンHEV スポーツZ",
       "image": "images/gazoo-8375460.jpg",
       "uid": "car-mthzip9n-jfak",
-      "lastGazooCheck": "2026-09-12T11:55:39.986Z",
+      "lastGazooCheck": "2026-09-13T14:49:08.345Z",
       "specs": {
         "mission": "CVT",
         "year": "2023年式",
@@ -1636,9 +1652,9 @@
       "soldoutAt": "2026-09-07T04:04:42.034Z"
     },
     {
-      "soldout": false,
+      "soldout": true,
       "autoUpdate": true,
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "priceVehicle": 543.5,
       "stock": "495",
       "name": "アルファードHEV Z",
@@ -1661,18 +1677,19 @@
       },
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018375052&Sdlr=18101",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8375052/83750522026080714312401_L.jpg",
-      "lastGazooCheck": "2026-09-12T11:55:43.541Z",
+      "lastGazooCheck": "2026-09-13T14:49:11.636Z",
       "store": "博多南店",
       "uid": "car-mthzip9n-hycj",
       "autoImageUpdate": true,
       "image": "images/gazoo-8375052.jpg",
       "priceTotal": 559.5,
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:49:11.636Z"
     },
     {
       "autoUpdate": true,
       "gazooStatus": "soldout",
-      "lastGazooCheck": "2026-09-12T11:55:47.126Z",
+      "lastGazooCheck": "2026-09-13T14:49:14.949Z",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/7010557/70105572026080711232601_L.jpg",
       "uid": "car-mthzip9n-17v1",
       "stock": "744",
@@ -1704,7 +1721,7 @@
       "soldoutAt": "2026-09-07T04:04:48.756Z"
     },
     {
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "badges": [
         "修無",
         "整付",
@@ -1721,9 +1738,9 @@
       "autoImageUpdate": true,
       "priceVehicle": 569.8,
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018325764&Sdlr=18101",
-      "lastGazooCheck": "2026-09-12T11:55:50.481Z",
+      "lastGazooCheck": "2026-09-13T14:49:18.245Z",
       "image": "images/gazoo-8325764.jpg",
-      "soldout": false,
+      "soldout": true,
       "store": "小倉東店",
       "specs": {
         "color": "アバンギャルドブロンズM",
@@ -1734,7 +1751,8 @@
         "year": "2025年式"
       },
       "priceTotal": 580.7,
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:49:18.245Z"
     },
     {
       "priceVehicle": 589.8,
@@ -1767,12 +1785,12 @@
       "soldout": true,
       "uid": "car-mthzip9n-5e0i",
       "autoUpdate": true,
-      "lastGazooCheck": "2026-09-12T11:55:54.220Z",
+      "lastGazooCheck": "2026-09-13T14:49:21.549Z",
       "soldoutAt": "2026-09-07T04:04:55.375Z"
     },
     {
       "stock": "578",
-      "lastGazooCheck": "2026-09-12T11:55:57.591Z",
+      "lastGazooCheck": "2026-09-13T14:49:24.844Z",
       "badges": [
         "修無",
         "整付",
@@ -1783,7 +1801,7 @@
       "priceTotal": 700.8,
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018373637&Sdlr=18101",
       "priceVehicle": 689.8,
-      "soldout": false,
+      "soldout": true,
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8373637/83736372026080717235201_L.jpg",
       "image": "images/gazoo-8373637.jpg",
       "id": "8373637",
@@ -1799,9 +1817,10 @@
       },
       "name": "ヴェルファイア Zプレミア",
       "autoUpdate": true,
-      "gazooStatus": "ok",
+      "gazooStatus": "soldout",
       "store": "八幡店",
-      "cert": "standard"
+      "cert": "standard",
+      "soldoutAt": "2026-09-13T14:49:24.844Z"
     }
   ]
 }
