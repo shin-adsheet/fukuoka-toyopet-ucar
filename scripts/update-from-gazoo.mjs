@@ -158,6 +158,25 @@ export function parseCert(html) {
   return "";
 }
 
+// 掲載先の店舗名。Id="shopNm" の隠しフィールドに「福岡トヨペットトヨタ認定中古車 ○○店」の
+// 形で入っている（車名見出しより確実で、売約済み画面でも読み取れることが多い）。
+// 電話ボタンの番号は店舗名から引くため、ここがズレると違う店舗の電話番号が出てしまう。
+const STORES = ["福岡西店", "博多南店", "福岡インター店", "小倉東店", "八幡店", "飯塚店", "久留米インター店"];
+export function parseStore(html) {
+  const raw = (String(html || "").match(/id=["']shopNm["']\s+value=["']([^"']*)["']/) || [])[1];
+  if (!raw) return "";
+  const store = raw
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'")
+    .normalize("NFKC")
+    .replace(/^福岡トヨペット\s*/, "")
+    .replace(/^トヨタ認定中古車\s*/, "")
+    .trim();
+  // 知らない店舗名が返ってきたら、誤読み取りの可能性が高いので採用しない
+  return STORES.indexOf(store) >= 0 ? store : "";
+}
+
 export function parseGazoo(html) {
   // タグを取り除いて文字だけにしてから探す。NFKCで半角カナ等も揃える。
   const text = compactText(html);
@@ -169,6 +188,7 @@ export function parseGazoo(html) {
     specs: parseSpecs(text),
     badges: parseBadges(text),
     cert: parseCert(html),
+    store: parseStore(html),
   };
 }
 
@@ -266,6 +286,14 @@ async function applyGazooData(car, html) {
       car.specs[key] = p.specs[key];
       changed = true;
     }
+  }
+
+  // 店舗名。店舗をまたいで車両が移動することがあり、ズレたままだと
+  // 電話ボタンで違う店舗の番号にかかってしまう。読み取れなかったときは今の値を残す。
+  if (p.store && p.store !== car.store) {
+    console.log(`店舗を更新: ${car.name} ${car.store || "（未設定）"} → ${p.store}`);
+    car.store = p.store;
+    changed = true;
   }
 
   // 認定区分（認定中古車／認定中古車ライト）。読み取れなかったときは今の値を残す。

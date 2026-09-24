@@ -9,6 +9,7 @@ import { readFile } from "node:fs/promises";
 const ADMIN = "gas-webapp/index.html";
 const LOADER = "assets/ucar-cards.core.js";
 const BOOT = "assets/ucar-cards.js";
+const CRAWLER = "scripts/update-from-gazoo.mjs";
 const EMBED_TEMPLATE = "gas-webapp/CMS貼り付け用コード.html";
 
 // `var NAME={...}` / `var NAME=[...]` の中身をそのまま切り出す
@@ -43,6 +44,7 @@ const admin = await readFile(ADMIN, "utf8");
 const loader = await readFile(LOADER, "utf8");
 const template = await readFile(EMBED_TEMPLATE, "utf8");
 const boot = await readFile(BOOT, "utf8");
+const crawler = await readFile(CRAWLER, "utf8");
 const errors = [];
 
 compare(
@@ -56,6 +58,15 @@ compare(
   "オプション枠の並び（SLOTS / BADGE_SLOT_GROUPS）",
   evaluate(pickLiteral(admin, "var SLOTS=", "[", "]")),
   evaluate(pickLiteral(loader, "var BADGE_SLOT_GROUPS =", "[", "]")),
+  errors
+);
+
+// 店舗名が自動更新（Node）と管理画面（GAS/admin）でズレると、電話番号のリストにない
+// 店舗名を書き込んでしまい、自動更新が店舗名を同期しなくなる
+compare(
+  "店舗名の一覧（PHONESのキー / STORES）",
+  Object.keys(evaluate(pickLiteral(admin, "var PHONES=", "{", "}"))).sort(),
+  evaluate(pickLiteral(crawler, "const STORES = ", "[", "]")).slice().sort(),
   errors
 );
 

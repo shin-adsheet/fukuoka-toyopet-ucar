@@ -10,6 +10,7 @@ import {
   shouldRecheckSoldout,
   isPending,
   parseCert,
+  parseStore,
   jstHour,
   normalizeHours,
   lastScheduledTime,
@@ -147,6 +148,25 @@ check(
       '<p><img src="/U-Car/resource/img/banners/banner_charm_04.png" alt="トヨタ認定中古車ライト"></p>'
   ),
   "standard"
+);
+
+// --- 店舗名の読み取り ---
+// 実際のGazooのHTMLで確認した形（全角スペース区切り、半角スペース区切りの両方がある）
+check(
+  "shopNmから店舗名を取り出す（全角スペース）",
+  parseStore('<input type="hidden" id="shopNm" value="福岡トヨペットトヨタ認定中古車　福岡インター店" />'),
+  "福岡インター店"
+);
+check(
+  "shopNmから店舗名を取り出す（半角スペース）",
+  parseStore('<input type="hidden" id="shopNm" value="福岡トヨペットトヨタ認定中古車 小倉東店" />'),
+  "小倉東店"
+);
+check("shopNmが無ければ空", parseStore("<html></html>"), "");
+check(
+  "知らない店舗名は採用しない（誤読み取り対策）",
+  parseStore('<input type="hidden" id="shopNm" value="福岡トヨペットトヨタ認定中古車　どこかの店" />'),
+  ""
 );
 
 // --- 自動更新を動かす時刻の判定 ---
