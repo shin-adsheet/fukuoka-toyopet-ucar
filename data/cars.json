@@ -2736,7 +2736,6 @@
       "store": "福岡西店",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018381583&Sdlr=18101",
       "image": "images/gazoo-8381583.jpg",
-      "syncPendingAt": "2026-10-01T04:24:00.589Z",
       "autoUpdate": true,
       "listedAt": "2026-10-01T04:24:00.589Z",
       "uid": "car-mup14uod-bqnq",
@@ -2751,7 +2750,6 @@
       "priceTotal": 113.1,
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8381583/83815832026090913514401_L.jpg",
       "lastGazooCheck": "2026-10-02T01:46:57.403Z",
-      "syncPending": true,
       "priceVehicle": 101.7,
       "id": "8381583",
       "cert": "standard"
@@ -2764,7 +2762,6 @@
       "uid": "car-mup14uod-3eg1",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8384825/83848252026092517093201_L.jpg",
       "gazooStatus": "ok",
-      "syncPendingAt": "2026-10-01T04:24:00.589Z",
       "specs": {
         "color": "パールホワイト3",
         "km": "2.2万km",
@@ -2789,7 +2786,6 @@
       "soldout": false,
       "priceTotal": 134.5,
       "stock": "769",
-      "syncPending": true,
       "store": "博多南店",
       "cert": "standard"
     },
@@ -2812,13 +2808,11 @@
       "autoImageUpdate": true,
       "gazooStatus": "ok",
       "store": "福岡インター店",
-      "syncPendingAt": "2026-10-01T04:24:00.589Z",
       "priceVehicle": 164.8,
       "priceTotal": 177.4,
       "stock": "559",
       "soldout": false,
       "autoUpdate": true,
-      "syncPending": true,
       "name": "シエンタHEVファンベースGセーフティ",
       "image": "images/gazoo-8383781.jpg",
       "specs": {
@@ -2835,7 +2829,6 @@
       "soldout": false,
       "listedAt": "2026-10-01T04:24:00.589Z",
       "priceVehicle": 152.5,
-      "syncPendingAt": "2026-10-01T04:24:00.589Z",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018380943&Sdlr=18101",
       "gazooStatus": "ok",
       "autoUpdate": true,
@@ -2865,7 +2858,6 @@
       },
       "image": "images/gazoo-8380943.jpg",
       "id": "8380943",
-      "syncPending": true,
       "cert": "standard"
     },
     {
@@ -2877,8 +2869,6 @@
         "ロングラン保証",
         "あんしん診断"
       ],
-      "syncPendingAt": "2026-10-01T04:24:00.589Z",
-      "syncPending": true,
       "name": "ルーミー カスタムG-T",
       "priceTotal": 182.8,
       "soldout": false,
@@ -2908,14 +2898,12 @@
     {
       "name": "アクア G",
       "lastGazooCheck": "2026-10-02T01:47:13.766Z",
-      "syncPending": true,
       "autoImageUpdate": true,
       "priceVehicle": 157.8,
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8382091/83820912026091111241801_L.jpg",
       "uid": "car-mup14uod-7fi4",
       "id": "8382091",
       "stock": "338",
-      "syncPendingAt": "2026-10-01T04:24:00.589Z",
       "listedAt": "2026-10-01T04:24:00.589Z",
       "gazooStatus": "ok",
       "store": "八幡店",
@@ -2945,7 +2933,6 @@
     },
     {
       "uid": "car-mup14uod-g2dd",
-      "syncPending": true,
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8384337/83843372026092517125501_L.jpg",
       "name": "ライズHEV Z",
       "autoImageUpdate": true,
@@ -2958,7 +2945,6 @@
         "ハイブリッド保証",
         "あんしん診断"
       ],
-      "syncPendingAt": "2026-10-01T04:24:00.589Z",
       "lastGazooCheck": "2026-10-02T01:47:17.046Z",
       "specs": {
         "color": "ファイアークォーツレッドメタリック",
@@ -2998,9 +2984,7 @@
       "id": "8382067",
       "name": "アクア Z",
       "priceTotal": 192.7,
-      "syncPendingAt": "2026-10-01T04:24:00.589Z",
       "autoImageUpdate": true,
-      "syncPending": true,
       "stock": "472",
       "store": "八幡店",
       "gazooStatus": "ok",
@@ -3039,10 +3023,8 @@
       "id": "8383438",
       "name": "カローラツーリングHEV WxB",
       "store": "飯塚店",
-      "syncPendingAt": "2026-10-01T04:24:00.589Z",
       "soldout": false,
       "listedAt": "2026-10-01T04:24:00.589Z",
-      "syncPending": true,
       "stock": "870",
       "badges": [
         "修無",
@@ -3076,8 +3058,6 @@
       "autoUpdate": true,
       "lastGazooCheck": "2026-10-02T01:47:26.767Z",
       "id": "8382164",
-      "syncPending": true,
-      "syncPendingAt": "2026-10-01T04:24:00.589Z",
       "priceTotal": 207.2,
       "autoImageUpdate": true,
       "soldout": false,
@@ -3097,5 +3077,5 @@
     }
   ],
   "version": 2,
-  "updatedAt": "2026-10-02T01:47:29.768Z"
+  "updatedAt": "2026-10-02T01:49:34.555Z"
 }
