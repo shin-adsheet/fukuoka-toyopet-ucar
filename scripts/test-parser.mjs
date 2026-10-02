@@ -11,6 +11,7 @@ import {
   isPending,
   parseCert,
   parseStore,
+  hasAnshin,
   jstHour,
   normalizeHours,
   lastScheduledTime,
@@ -149,6 +150,17 @@ check(
   ),
   "standard"
 );
+
+// --- あんしん診断（本文には無く、画像のaltとファイル名にだけ出る）---
+const ANSHIN_LI = '<li class="supportcar02 relief" ><img src="/U-Car/resource/img/VehicleInfo/icon_supportcar_s_relief.png" class="pc" alt="サポカーS(あんしん診断)"></li>';
+check("あんしん診断の画像があれば検出", hasAnshin(ANSHIN_LI), true);
+check("parseGazooのバッジに入る", parseGazoo("<div>修復歴 なし</div>" + ANSHIN_LI).badges.includes("あんしん診断"), true);
+check(
+  "トヨタのあんしんマーク（全車共通）には反応しない",
+  hasAnshin('<img src="/U-Car/resource/img/VehicleInfo/relief_mark.jpg" alt="トヨタのあんしんマーク 安心がみえるトヨタの安心ブランド">'),
+  false
+);
+check("画像が無ければ付けない", parseGazoo("<div>修復歴 なし</div>").badges.includes("あんしん診断"), false);
 
 // --- 店舗名の読み取り ---
 // 実際のGazooのHTMLで確認した形（全角スペース区切り、半角スペース区切りの両方がある）

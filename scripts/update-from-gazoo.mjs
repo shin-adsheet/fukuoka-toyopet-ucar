@@ -131,6 +131,13 @@ function parseSpecs(text) {
   };
 }
 
+// 「あんしん診断」はGazooでは本文に文字が無く、サポカーS(あんしん診断)の画像の
+// alt属性とファイル名（icon_supportcar_s_relief）にしか出てこない。
+// 本文（タグを除いた文字）だけを見ると必ず取りこぼすため、HTMLのまま見る。
+export function hasAnshin(html) {
+  return /icon_supportcar_s_relief|alt=["'][^"']*あんしん診断/.test(String(html || ""));
+}
+
 function parseBadges(text) {
   const badges = [];
   if (/修復歴\s*[:：]?\s*なし/.test(text)) badges.push("修無");
@@ -177,6 +184,11 @@ export function parseStore(html) {
   return STORES.indexOf(store) >= 0 ? store : "";
 }
 
+function withAnshin(badges, html) {
+  if (hasAnshin(html) && badges.indexOf("あんしん診断") < 0) badges.push("あんしん診断");
+  return badges;
+}
+
 export function parseGazoo(html) {
   // タグを取り除いて文字だけにしてから探す。NFKCで半角カナ等も揃える。
   const text = compactText(html);
@@ -186,7 +198,7 @@ export function parseGazoo(html) {
     priceVehicle: prices.priceVehicle,
     imageUrl: pickMainImage(html),
     specs: parseSpecs(text),
-    badges: parseBadges(text),
+    badges: withAnshin(parseBadges(text), html),
     cert: parseCert(html),
     store: parseStore(html),
   };

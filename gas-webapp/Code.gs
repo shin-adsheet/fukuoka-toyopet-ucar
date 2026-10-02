@@ -685,7 +685,7 @@ function parseGazooImport_(html, url) {
     image: gazooMainImage_(html) || '',
     gazooImageUrl: gazooMainImage_(html) || '',
     specs: gazooSpecs_(text),
-    badges: gazooBadges_(text),
+    badges: gazooBadgesWithAnshin_(gazooBadges_(text), html),
     cert: gazooCert_(html),
   };
 }
@@ -695,6 +695,16 @@ function parseGazooImport_(html, url) {
 //   認定中古車     : icon_car.jpg       alt="トヨタ認定中古車アイコン"
 //   認定中古車ライト: icon_car_light.jpg alt="トヨタ認定中古車ライトアイコン"
 // 「ライト」は装備表の「先進ライト」にも必ず出てくるので、本文全体では判定しない。
+// 「あんしん診断」は本文に文字が無く、サポカーS(あんしん診断)の画像の
+// alt属性とファイル名にしか出てこないため、HTMLのまま見て補う。
+function gazooBadgesWithAnshin_(badges, html) {
+  const out = (badges || []).slice();
+  if (/icon_supportcar_s_relief|alt=["'][^"']*あんしん診断/.test(String(html || '')) && out.indexOf('あんしん診断') < 0) {
+    out.push('あんしん診断');
+  }
+  return out;
+}
+
 function gazooCert_(html) {
   const src = String(html || '');
   const head = (src.match(/<h2[^>]*class=["'][^"']*\bpb-0\b[^"']*["'][\s\S]{0,400}?<\/h2>/i) || [''])[0];
