@@ -93,15 +93,15 @@
       "id": "page-3",
       "name": "ハロウィンフェア",
       "carUids": [
-        "car-mup14uod-bqnq",
-        "car-mup14uod-3eg1",
+        "car-mvfxo25d-6j9m",
+        "car-mvfxo25k-5kza",
         "car-mup14uod-5cdn",
-        "car-mup14uod-fmda",
-        "car-mup14uod-avsx",
+        "car-mvfxo25k-5tfp",
+        "car-mu21lymn-1yt2",
         "car-mup14uod-7fi4",
         "car-mup14uod-g2dd",
-        "car-mup14uod-3trz",
-        "car-mup14uod-l5yk",
+        "car-mvfxo25k-74ny",
+        "car-mvfxo25k-l3bm",
         "car-mup14uod-23o2"
       ]
     }
@@ -2725,76 +2725,6 @@
       "image": "images/gazoo-8376318.jpg"
     },
     {
-      "stock": "230",
-      "autoImageUpdate": true,
-      "badges": [
-        "修無",
-        "整付",
-        "リ済込",
-        "車検整備付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "name": "パッソ モーダ",
-      "gazooStatus": "ok",
-      "soldout": false,
-      "store": "福岡西店",
-      "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018381583&Sdlr=18101",
-      "image": "images/gazoo-8381583.jpg",
-      "autoUpdate": true,
-      "listedAt": "2026-10-01T04:24:00.589Z",
-      "uid": "car-mup14uod-bqnq",
-      "specs": {
-        "fuel": "ガソリン",
-        "color": "ブラックマイカM/キナコメタリック",
-        "km": "5.6万km",
-        "year": "2021年式",
-        "mission": "CVT",
-        "shaken": "車検整備付"
-      },
-      "priceTotal": 113.1,
-      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8381583/83815832026090913514401_L.jpg",
-      "lastGazooCheck": "2026-10-18T22:11:02.734Z",
-      "priceVehicle": 101.7,
-      "id": "8381583",
-      "cert": "standard"
-    },
-    {
-      "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018384825&Sdlr=18101",
-      "listedAt": "2026-10-01T04:24:00.589Z",
-      "priceVehicle": 125.8,
-      "autoImageUpdate": true,
-      "uid": "car-mup14uod-3eg1",
-      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8384825/83848252026092517093201_L.jpg",
-      "gazooStatus": "ok",
-      "specs": {
-        "color": "パールホワイト3",
-        "km": "2.2万km",
-        "shaken": "車検 2028年4月",
-        "year": "2023年式",
-        "fuel": "ガソリン",
-        "mission": "CVT"
-      },
-      "lastGazooCheck": "2026-10-18T22:11:06.075Z",
-      "id": "8384825",
-      "autoUpdate": true,
-      "image": "images/gazoo-8384825.jpg",
-      "badges": [
-        "修無",
-        "整付",
-        "リ済込",
-        "車検整備付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "name": "ルーミー X",
-      "soldout": false,
-      "priceTotal": 134.4,
-      "stock": "769",
-      "store": "飯塚店",
-      "cert": "standard"
-    },
-    {
       "lastGazooCheck": "2026-10-18T22:11:09.396Z",
       "badges": [
         "修無",
@@ -2828,77 +2758,6 @@
         "color": "シルバーM",
         "km": "5.7万km"
       },
-      "cert": "standard"
-    },
-    {
-      "soldout": true,
-      "listedAt": "2026-10-01T04:24:00.589Z",
-      "priceVehicle": 142,
-      "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018380943&Sdlr=18101",
-      "gazooStatus": "soldout",
-      "autoUpdate": true,
-      "priceTotal": 154.6,
-      "uid": "car-mup14uod-fmda",
-      "lastGazooCheck": "2026-10-18T22:11:12.811Z",
-      "store": "福岡西店",
-      "autoImageUpdate": true,
-      "stock": "285",
-      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8380943/83809432026090314140301_L.jpg",
-      "badges": [
-        "修無",
-        "整付",
-        "リ済込",
-        "車検整備付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "name": "シエンタ G セーフティエディション",
-      "specs": {
-        "km": "7.1万km",
-        "fuel": "ガソリン",
-        "mission": "CVT",
-        "shaken": "車検整備付",
-        "year": "2020年式",
-        "color": "ホワイトパールクリスタルシャイン"
-      },
-      "image": "images/gazoo-8380943.jpg",
-      "id": "8380943",
-      "cert": "standard",
-      "soldoutAt": "2026-10-16T15:08:19.760Z"
-    },
-    {
-      "badges": [
-        "修無",
-        "整付",
-        "リ済込",
-        "車検整備付",
-        "ロングラン保証",
-        "あんしん診断"
-      ],
-      "name": "ルーミー カスタムG-T",
-      "priceTotal": 171.1,
-      "soldout": false,
-      "autoUpdate": true,
-      "id": "8378612",
-      "stock": "851",
-      "lastGazooCheck": "2026-10-18T22:11:16.011Z",
-      "gazooStatus": "ok",
-      "priceVehicle": 158.8,
-      "uid": "car-mup14uod-avsx",
-      "store": "八幡店",
-      "specs": {
-        "year": "2023年式",
-        "km": "3.4万km",
-        "color": "ブラックマイカメタリック",
-        "shaken": "車検整備付",
-        "mission": "CVT",
-        "fuel": "ガソリン"
-      },
-      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8378612/83786122026082516580101_L.jpg",
-      "image": "images/gazoo-8378612.jpg",
-      "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018378612&Sdlr=18101",
-      "listedAt": "2026-10-01T04:24:00.589Z",
-      "autoImageUpdate": true,
       "cert": "standard"
     },
     {
@@ -2974,79 +2833,6 @@
       "cert": "light"
     },
     {
-      "specs": {
-        "year": "2023年式",
-        "mission": "CVT",
-        "km": "1.5万km",
-        "color": "エモーショナルレッド2",
-        "shaken": "車検 2028年3月",
-        "fuel": "ハイブリッド"
-      },
-      "lastGazooCheck": "2026-10-18T22:11:25.967Z",
-      "autoUpdate": true,
-      "image": "images/gazoo-8382067.jpg",
-      "soldout": true,
-      "uid": "car-mup14uod-3trz",
-      "id": "8382067",
-      "name": "アクア Z",
-      "priceTotal": 192.7,
-      "autoImageUpdate": true,
-      "stock": "472",
-      "store": "久留米インター店",
-      "gazooStatus": "soldout",
-      "listedAt": "2026-10-01T04:24:00.589Z",
-      "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018382067&Sdlr=18101",
-      "badges": [
-        "修無",
-        "整付",
-        "リ済込",
-        "車検整備付",
-        "ロングラン保証",
-        "ハイブリッド保証",
-        "あんしん診断"
-      ],
-      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8382067/83820672026091517095601_L.jpg",
-      "priceVehicle": 183.7,
-      "cert": "standard",
-      "soldoutAt": "2026-10-10T13:15:14.444Z"
-    },
-    {
-      "autoImageUpdate": true,
-      "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8383438/83834382026092513430401_L.jpg",
-      "priceTotal": 154.9,
-      "autoUpdate": true,
-      "uid": "car-mup14uod-l5yk",
-      "gazooStatus": "ok",
-      "priceVehicle": 142.1,
-      "image": "images/gazoo-8383438.jpg",
-      "specs": {
-        "fuel": "ハイブリッド",
-        "mission": "CVT",
-        "color": "ブラックマイカ",
-        "km": "9.5万km",
-        "year": "2019年式",
-        "shaken": "車検整備付"
-      },
-      "id": "8383438",
-      "name": "カローラツーリングHEV WxB",
-      "store": "飯塚店",
-      "soldout": false,
-      "listedAt": "2026-10-01T04:24:00.589Z",
-      "stock": "870",
-      "badges": [
-        "修無",
-        "整付",
-        "リ済込",
-        "車検整備付",
-        "ロングラン保証",
-        "ハイブリッド保証",
-        "あんしん診断"
-      ],
-      "lastGazooCheck": "2026-10-18T22:11:29.264Z",
-      "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018383438&Sdlr=18101",
-      "cert": "standard"
-    },
-    {
       "gazooStatus": "ok",
       "image": "images/gazoo-8382164.jpg",
       "specs": {
@@ -3081,8 +2867,173 @@
         "あんしん診断"
       ],
       "cert": "standard"
+    },
+    {
+      "id": "8383713",
+      "store": "八幡店",
+      "name": "ヤリス HEV G",
+      "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018383713&Sdlr=18101",
+      "stock": "721",
+      "priceTotal": null,
+      "priceVehicle": 173.8,
+      "image": "",
+      "badges": [
+        "修無",
+        "リ済込",
+        "車検整備付",
+        "ロングラン保証",
+        "あんしん診断",
+        "ハイブリッド保証"
+      ],
+      "specs": {
+        "year": "2024年式",
+        "km": "4万km",
+        "shaken": "車検整備付",
+        "fuel": "ハイブリッド",
+        "mission": "CVT",
+        "color": "グレー"
+      },
+      "comment": "トヨタ人気のコンパクト・ヤリス☆HEV仕様!賢い実力派グレード「G」♪",
+      "soldout": false,
+      "autoUpdate": false,
+      "autoImageUpdate": true,
+      "gazooPending": true,
+      "excelSource": "a18.xlsx",
+      "uid": "car-mvfxo25d-6j9m",
+      "listedAt": "2026-10-20T00:16:44.863Z"
+    },
+    {
+      "id": "8379601",
+      "store": "小倉東店",
+      "name": "ライズ Z",
+      "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018379601&Sdlr=18101",
+      "stock": "019",
+      "priceTotal": null,
+      "priceVehicle": 168.9,
+      "image": "",
+      "badges": [
+        "修無",
+        "リ済込",
+        "車検整備付"
+      ],
+      "specs": {
+        "year": "2022年式",
+        "km": "9.2万km",
+        "shaken": "車検整備付",
+        "fuel": "ガソリン",
+        "mission": "CVT",
+        "color": "グレー"
+      },
+      "comment": "人気のコンパクトSUV☆充実装備のZ!街でもアウトドアでも軽快に走る♪",
+      "soldout": false,
+      "autoUpdate": false,
+      "autoImageUpdate": true,
+      "gazooPending": true,
+      "excelSource": "a18.xlsx",
+      "uid": "car-mvfxo25k-5kza",
+      "listedAt": "2026-10-20T00:16:44.863Z"
+    },
+    {
+      "id": "8381770",
+      "store": "小倉東店",
+      "name": "プリウス Aツーリングセレクション",
+      "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018381770&Sdlr=18101",
+      "stock": "750",
+      "priceTotal": null,
+      "priceVehicle": 153.8,
+      "image": "",
+      "badges": [
+        "修無",
+        "リ済込",
+        "車検整備付",
+        "ロングラン保証",
+        "あんしん診断",
+        "ハイブリッド保証"
+      ],
+      "specs": {
+        "year": "2017年式",
+        "km": "7.7万km",
+        "shaken": "車検整備付",
+        "fuel": "ハイブリッド",
+        "mission": "CVT",
+        "color": "パールマイカ"
+      },
+      "comment": "長距離も日常使いでも経済的!走行安定性もよく安心して乗れる1台♪",
+      "soldout": false,
+      "autoUpdate": false,
+      "autoImageUpdate": true,
+      "gazooPending": true,
+      "excelSource": "a18.xlsx",
+      "uid": "car-mvfxo25k-5tfp",
+      "listedAt": "2026-10-20T00:16:44.863Z"
+    },
+    {
+      "id": "8383292",
+      "store": "久留米インター店",
+      "name": "カローラセダン S",
+      "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018383292&Sdlr=18101",
+      "stock": "582",
+      "priceTotal": null,
+      "priceVehicle": 141.7,
+      "image": "",
+      "badges": [
+        "修無",
+        "リ済込",
+        "車検整備付",
+        "ロングラン保証",
+        "あんしん診断"
+      ],
+      "specs": {
+        "year": "2020年式",
+        "km": "2.1万km",
+        "shaken": "車検整備付",
+        "fuel": "ガソリン",
+        "mission": "CVT",
+        "color": "シルバー"
+      },
+      "comment": "大人気カローラシリーズセダン☆トレンドを追わない、この品格がちょうどいい",
+      "soldout": false,
+      "autoUpdate": false,
+      "autoImageUpdate": true,
+      "gazooPending": true,
+      "excelSource": "a18.xlsx",
+      "uid": "car-mvfxo25k-74ny",
+      "listedAt": "2026-10-20T00:16:44.863Z"
+    },
+    {
+      "id": "8384400",
+      "store": "久留米インター店",
+      "name": "ヤリス HEV Z",
+      "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018384400&Sdlr=18101",
+      "stock": "666",
+      "priceTotal": null,
+      "priceVehicle": 197.8,
+      "image": "",
+      "badges": [
+        "修無",
+        "リ済込",
+        "ロングラン保証",
+        "あんしん診断",
+        "ハイブリッド保証"
+      ],
+      "specs": {
+        "year": "2023年式",
+        "km": "2.3万km",
+        "shaken": "車検 2028年4月",
+        "fuel": "ハイブリッド",
+        "mission": "CVT",
+        "color": "黒"
+      },
+      "comment": "経済性とスポーティなスタイリング、軽快な走りが魅力のコンパクトカー♪",
+      "soldout": false,
+      "autoUpdate": false,
+      "autoImageUpdate": true,
+      "gazooPending": true,
+      "excelSource": "a18.xlsx",
+      "uid": "car-mvfxo25k-l3bm",
+      "listedAt": "2026-10-20T00:16:44.863Z"
     }
   ],
   "version": 2,
-  "updatedAt": "2026-10-18T22:11:35.466Z"
+  "updatedAt": "2026-10-20T00:16:44.863Z"
 }
