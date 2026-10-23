@@ -193,7 +193,7 @@
       "stock": "110",
       "name": "アルファード Sタイプゴールド2",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018332906&Sdlr=18101",
-      "lastGazooCheck": "2026-10-22T21:05:52.897Z",
+      "lastGazooCheck": "2026-10-23T22:49:43.499Z",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8332906/83329062026101317390001_L.jpg",
       "image": "images/gazoo-8332906.jpg",
       "specs": {
@@ -336,7 +336,7 @@
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018353041&Sdlr=18101",
       "uid": "car-8353041",
       "name": "ヴォクシー S-Z",
-      "lastGazooCheck": "2026-10-22T21:05:56.343Z",
+      "lastGazooCheck": "2026-10-23T22:49:47.020Z",
       "priceVehicle": 288,
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8353041/83530412026051916532301_L.jpg",
       "autoImageUpdate": true,
@@ -505,7 +505,7 @@
     {
       "name": "カローラクロスHEV Z",
       "soldout": true,
-      "lastGazooCheck": "2026-10-22T21:05:59.729Z",
+      "lastGazooCheck": "2026-10-23T22:49:50.389Z",
       "image": "images/gazoo-8365383.jpg",
       "specs": {
         "mission": "CVT",
@@ -557,7 +557,7 @@
       "name": "カローラクロスHEV Z",
       "priceTotal": 251,
       "store": "八幡店",
-      "lastGazooCheck": "2026-10-22T21:06:03.136Z",
+      "lastGazooCheck": "2026-10-23T22:49:53.767Z",
       "soldout": true,
       "id": "8365383",
       "autoUpdate": true,
@@ -636,7 +636,7 @@
         "ハイブリッド保証",
         "あんしん診断"
       ],
-      "lastGazooCheck": "2026-10-22T21:06:06.536Z",
+      "lastGazooCheck": "2026-10-23T22:49:57.163Z",
       "stock": "",
       "uid": "car-mtax5mz5-cwfa",
       "store": "八幡店",
@@ -780,7 +780,7 @@
       "image": "images/gazoo-8375753.jpg"
     },
     {
-      "store": "小倉東店",
+      "store": "博多南店",
       "stock": "936",
       "cert": "light",
       "badges": [
@@ -807,7 +807,7 @@
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8375273/83752732026080915082101_L.jpg",
       "autoUpdate": true,
       "uid": "car-mthzip9m-94u",
-      "lastGazooCheck": "2026-10-22T21:06:09.785Z",
+      "lastGazooCheck": "2026-10-23T22:50:00.424Z",
       "gazooStatus": "ok",
       "id": "8375273",
       "soldout": false,
@@ -879,7 +879,7 @@
       "priceVehicle": 167,
       "gazooStatus": "ok",
       "name": "カローラセダン WxB",
-      "lastGazooCheck": "2026-10-22T21:06:13.092Z",
+      "lastGazooCheck": "2026-10-23T22:50:03.821Z",
       "id": "8376351"
     },
     {
@@ -902,7 +902,7 @@
       "cert": "standard",
       "id": "8359162",
       "stock": "633",
-      "lastGazooCheck": "2026-10-22T21:06:16.557Z",
+      "lastGazooCheck": "2026-10-23T22:50:07.295Z",
       "store": "福岡西店",
       "uid": "car-mthzip9m-a8hi",
       "specs": {
@@ -1090,7 +1090,7 @@
     },
     {
       "cert": "light",
-      "lastGazooCheck": "2026-10-22T21:06:19.966Z",
+      "lastGazooCheck": "2026-10-23T22:50:10.678Z",
       "stock": "701",
       "gazooStatus": "soldout",
       "id": "7010581",
@@ -1226,7 +1226,7 @@
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8376539/83765392026082117090201_L.jpg"
     },
     {
-      "lastGazooCheck": "2026-10-22T21:06:23.350Z",
+      "lastGazooCheck": "2026-10-23T22:50:14.077Z",
       "store": "飯塚店",
       "stock": "781",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018330997&Sdlr=18101",
@@ -1333,7 +1333,7 @@
       "autoUpdate": true,
       "stock": "329",
       "uid": "car-mthzip9n-e7lz",
-      "lastGazooCheck": "2026-10-22T21:06:26.769Z",
+      "lastGazooCheck": "2026-10-23T22:50:17.450Z",
       "soldout": true,
       "name": "ハリアー Z",
       "priceTotal": 306.9,
@@ -1432,7 +1432,7 @@
     {
       "uid": "car-mthzip9n-50dp",
       "gazooStatus": "soldout",
-      "lastGazooCheck": "2026-10-22T21:06:30.364Z",
+      "lastGazooCheck": "2026-10-23T22:50:20.820Z",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018356104&Sdlr=18101",
       "name": "プリウスPHEV Z",
       "id": "8356104",
@@ -1544,7 +1544,7 @@
       "soldout": false,
       "stock": "110",
       "name": "アルファード Sタイプゴールド2",
-      "lastGazooCheck": "2026-10-22T21:06:33.609Z",
+      "lastGazooCheck": "2026-10-23T22:50:24.044Z",
       "store": "飯塚店",
       "gazooStatus": "ok",
       "badges": [
@@ -1632,7 +1632,7 @@
       }
     },
     {
-      "lastGazooCheck": "2026-10-22T21:06:37.033Z",
+      "lastGazooCheck": "2026-10-23T22:50:27.529Z",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8344521/83445212026052213141201_L.jpg",
       "name": "ランクルプラドTXLマットブラック",
       "badges": [
@@ -1702,7 +1702,7 @@
     },
     {
       "autoImageUpdate": true,
-      "lastGazooCheck": "2026-10-22T21:06:40.275Z",
+      "lastGazooCheck": "2026-10-23T22:50:30.902Z",
       "name": "アルファードHEV Z",
       "badges": [
         "修無",
@@ -1866,7 +1866,7 @@
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8373637/83736372026080717235201_L.jpg",
       "gazooStatus": "ok",
       "autoImageUpdate": true,
-      "lastGazooCheck": "2026-10-22T21:06:43.515Z",
+      "lastGazooCheck": "2026-10-23T22:50:34.176Z",
       "name": "ヴェルファイア Zプレミア",
       "uid": "car-mthzip9n-hu9m"
     },
@@ -1886,7 +1886,7 @@
       "name": "ライズ Z",
       "priceVehicle": 169.7,
       "gazooStatus": "soldout",
-      "lastGazooCheck": "2026-10-22T21:06:46.936Z",
+      "lastGazooCheck": "2026-10-23T22:50:37.675Z",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8376962/83769622026082017521301_L.jpg",
       "cert": "standard",
       "id": "8376962",
@@ -1961,7 +1961,7 @@
       "id": "8375826",
       "priceTotal": 160.4,
       "priceVehicle": 151,
-      "lastGazooCheck": "2026-10-22T21:06:50.197Z",
+      "lastGazooCheck": "2026-10-23T22:50:40.905Z",
       "autoUpdate": true,
       "badges": [
         "修無",
@@ -2097,7 +2097,7 @@
       "image": "images/gazoo-8376091.jpg",
       "listedAt": "2026-09-15T02:18:36.815Z",
       "uid": "car-mu21lymn-ir90",
-      "lastGazooCheck": "2026-10-22T21:06:53.642Z",
+      "lastGazooCheck": "2026-10-23T22:50:44.370Z",
       "name": "ヤリスHEV Z",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018376091&Sdlr=18101",
       "autoUpdate": true,
@@ -2124,7 +2124,7 @@
     },
     {
       "name": "カローラセダン S",
-      "lastGazooCheck": "2026-10-22T21:06:56.879Z",
+      "lastGazooCheck": "2026-10-23T22:50:47.599Z",
       "badges": [
         "修無",
         "整付",
@@ -2195,7 +2195,7 @@
     },
     {
       "priceTotal": 179.9,
-      "lastGazooCheck": "2026-10-22T21:07:00.122Z",
+      "lastGazooCheck": "2026-10-23T22:50:50.826Z",
       "autoUpdate": true,
       "cert": "standard",
       "gazooStatus": "ok",
@@ -2266,7 +2266,7 @@
     },
     {
       "autoImageUpdate": true,
-      "lastGazooCheck": "2026-10-22T21:07:03.556Z",
+      "lastGazooCheck": "2026-10-23T22:50:54.292Z",
       "gazooStatus": "soldout",
       "uid": "car-mu21lymn-ggu8",
       "cert": "standard",
@@ -2374,7 +2374,7 @@
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8379937/83799372026082914580601_L.jpg"
     },
     {
-      "lastGazooCheck": "2026-10-22T21:07:06.808Z",
+      "lastGazooCheck": "2026-10-23T22:50:57.604Z",
       "priceVehicle": 168.1,
       "badges": [
         "修無",
@@ -2583,7 +2583,7 @@
       "listedAt": "2026-09-15T02:18:36.815Z",
       "autoImageUpdate": true,
       "id": "8375427",
-      "lastGazooCheck": "2026-10-22T21:07:10.215Z",
+      "lastGazooCheck": "2026-10-23T22:51:00.902Z",
       "soldout": false
     },
     {
@@ -2598,7 +2598,7 @@
       "autoImageUpdate": true,
       "cert": "standard",
       "id": "8373963",
-      "lastGazooCheck": "2026-10-22T21:07:14.221Z",
+      "lastGazooCheck": "2026-10-23T22:51:04.563Z",
       "image": "images/gazoo-8373963.jpg",
       "uid": "car-mu21lymn-26u0",
       "stock": "877",
@@ -2638,7 +2638,7 @@
       "priceVehicle": 171,
       "name": "ヤリスクロスHEV G",
       "priceTotal": 183.4,
-      "lastGazooCheck": "2026-10-22T21:07:17.604Z",
+      "lastGazooCheck": "2026-10-23T22:51:07.895Z",
       "badges": [
         "修無",
         "整付",
@@ -2709,7 +2709,7 @@
       "autoImageUpdate": true,
       "cert": "standard",
       "priceTotal": 166.4,
-      "lastGazooCheck": "2026-10-22T21:07:20.973Z",
+      "lastGazooCheck": "2026-10-23T22:51:11.202Z",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8376318/83763182026081914170001_L.jpg",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018376318&Sdlr=18101",
       "listedAt": "2026-09-15T02:18:36.816Z",
@@ -2731,7 +2731,7 @@
       "image": "images/gazoo-8376318.jpg"
     },
     {
-      "lastGazooCheck": "2026-10-22T21:07:24.285Z",
+      "lastGazooCheck": "2026-10-23T22:51:14.466Z",
       "badges": [
         "修無",
         "整付",
@@ -2768,7 +2768,7 @@
     },
     {
       "name": "アクア G",
-      "lastGazooCheck": "2026-10-22T21:07:27.560Z",
+      "lastGazooCheck": "2026-10-23T22:51:17.700Z",
       "autoImageUpdate": true,
       "priceVehicle": 157.8,
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8382091/83820912026091111241801_L.jpg",
@@ -2816,7 +2816,7 @@
         "ハイブリッド保証",
         "あんしん診断"
       ],
-      "lastGazooCheck": "2026-10-22T21:07:30.801Z",
+      "lastGazooCheck": "2026-10-23T22:51:20.958Z",
       "specs": {
         "color": "ファイアークォーツレッドメタリック",
         "fuel": "ハイブリッド",
@@ -2855,7 +2855,7 @@
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018382164&Sdlr=18101",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8382164/83821642026091117380001_L.jpg",
       "autoUpdate": true,
-      "lastGazooCheck": "2026-10-22T21:07:34.055Z",
+      "lastGazooCheck": "2026-10-23T22:51:24.434Z",
       "id": "8382164",
       "priceTotal": 200.1,
       "autoImageUpdate": true,
@@ -2907,7 +2907,7 @@
       "excelSource": "a18.xlsx",
       "uid": "car-mvfxo25d-6j9m",
       "listedAt": "2026-10-20T00:16:44.863Z",
-      "lastGazooCheck": "2026-10-22T21:07:37.317Z",
+      "lastGazooCheck": "2026-10-23T22:51:27.700Z",
       "gazooStatus": "ok",
       "cert": "standard",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8383713/83837132026091717204301_L.jpg"
@@ -2944,7 +2944,7 @@
       "excelSource": "a18.xlsx",
       "uid": "car-mvfxo25k-5kza",
       "listedAt": "2026-10-20T00:16:44.863Z",
-      "lastGazooCheck": "2026-10-22T21:07:40.647Z",
+      "lastGazooCheck": "2026-10-23T22:51:30.972Z",
       "gazooStatus": "ok",
       "cert": "light",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8379601/83796012026090415052501_L.jpg"
@@ -2982,7 +2982,7 @@
       "excelSource": "a18.xlsx",
       "uid": "car-mvfxo25k-5tfp",
       "listedAt": "2026-10-20T00:16:44.863Z",
-      "lastGazooCheck": "2026-10-22T21:07:43.956Z",
+      "lastGazooCheck": "2026-10-23T22:51:34.231Z",
       "gazooStatus": "ok",
       "cert": "standard",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8381770/83817702026091514174701_L.jpg"
@@ -3019,14 +3019,14 @@
       "excelSource": "a18.xlsx",
       "uid": "car-mvfxo25k-74ny",
       "listedAt": "2026-10-20T00:16:44.863Z",
-      "lastGazooCheck": "2026-10-22T21:07:47.259Z",
+      "lastGazooCheck": "2026-10-23T22:51:37.477Z",
       "gazooStatus": "ok",
       "cert": "standard",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8383292/83832922026091716450101_L.jpg"
     },
     {
       "id": "8384400",
-      "store": "久留米インター店",
+      "store": "飯塚店",
       "name": "ヤリス HEV Z",
       "gazooUrl": "https://gazoo.com/DealerU-Car/detail?Id=181018384400&Sdlr=18101",
       "stock": "666",
@@ -3057,12 +3057,12 @@
       "excelSource": "a18.xlsx",
       "uid": "car-mvfxo25k-l3bm",
       "listedAt": "2026-10-20T00:16:44.863Z",
-      "lastGazooCheck": "2026-10-22T21:07:50.505Z",
+      "lastGazooCheck": "2026-10-23T22:51:40.729Z",
       "gazooStatus": "ok",
       "cert": "standard",
       "gazooImageUrl": "https://gazoo.com/U-Car/carImg/18101/8384400/83844002026092416400401_L.jpg"
     }
   ],
   "version": 2,
-  "updatedAt": "2026-10-22T21:07:53.508Z"
+  "updatedAt": "2026-10-23T22:51:43.732Z"
 }
