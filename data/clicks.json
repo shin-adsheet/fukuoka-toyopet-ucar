@@ -1401,26 +1401,26 @@
     },
     "2026-10-29": {
       "page-3": {
-        "_pv|v": 963,
-        "car-mvfxo25d-6j9m|i": 125,
-        "car-mvfxo25k-5kza|i": 114,
-        "car-mup14uod-7fi4|i": 86,
-        "car-mup14uod-23o2|i": 68,
-        "car-mup14uod-g2dd|i": 82,
-        "car-mvfxo25k-74ny|i": 80,
-        "car-mup14uod-5cdn|i": 97,
-        "car-mvfxo25k-5tfp|i": 92,
-        "car-mu21lymn-1yt2|i": 89,
-        "car-mvfxo25k-l3bm|i": 73,
-        "car-mvfxo25k-5kza|d": 3,
-        "car-mvfxo25d-6j9m|d": 1,
+        "_pv|v": 2304,
+        "car-mvfxo25d-6j9m|i": 281,
+        "car-mvfxo25k-5kza|i": 244,
+        "car-mup14uod-7fi4|i": 189,
+        "car-mup14uod-23o2|i": 187,
+        "car-mup14uod-g2dd|i": 200,
+        "car-mvfxo25k-74ny|i": 188,
+        "car-mup14uod-5cdn|i": 198,
+        "car-mvfxo25k-5tfp|i": 198,
+        "car-mu21lymn-1yt2|i": 196,
+        "car-mvfxo25k-l3bm|i": 245,
+        "car-mvfxo25k-5kza|d": 6,
+        "car-mvfxo25d-6j9m|d": 3,
         "car-mup14uod-5cdn|d": 3,
-        "car-mu21lymn-1yt2|d": 1,
+        "car-mu21lymn-1yt2|d": 4,
         "car-mup14uod-7fi4|d": 2,
-        "car-mup14uod-g2dd|d": 1,
+        "car-mup14uod-g2dd|d": 2,
         "car-mvfxo25k-74ny|d": 2,
-        "car-mvfxo25k-l3bm|d": 1,
-        "car-mup14uod-23o2|d": 2
+        "car-mvfxo25k-l3bm|d": 3,
+        "car-mup14uod-23o2|d": 3
       }
     },
     "2026-10-28": {
@@ -1456,7 +1456,28 @@
         "car-mvfxo25k-l3bm|d": 1,
         "car-mvfxo25d-6j9m|d": 1
       }
+    },
+    "2026-10-30": {
+      "page-3": {
+        "_pv|v": 2110,
+        "car-mvfxo25k-l3bm|i": 229,
+        "car-mvfxo25d-6j9m|i": 199,
+        "car-mvfxo25k-5kza|i": 175,
+        "car-mup14uod-g2dd|i": 159,
+        "car-mup14uod-23o2|i": 131,
+        "car-mu21lymn-1yt2|i": 114,
+        "car-mup14uod-5cdn|i": 114,
+        "car-mvfxo25k-74ny|i": 104,
+        "car-mup14uod-7fi4|i": 107,
+        "car-mvfxo25k-5tfp|i": 106,
+        "car-mvfxo25k-l3bm|d": 9,
+        "car-mvfxo25d-6j9m|d": 3,
+        "car-mup14uod-g2dd|d": 2,
+        "car-mvfxo25k-5kza|d": 2,
+        "car-mup14uod-23o2|d": 1,
+        "car-mvfxo25k-74ny|d": 1
+      }
     }
   },
-  "updatedAt": "2026-10-29T02:26:42.935Z"
+  "updatedAt": "2026-10-30T09:29:52.057Z"
 }
