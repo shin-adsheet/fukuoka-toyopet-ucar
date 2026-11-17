@@ -1682,28 +1682,32 @@
     },
     "2026-11-13": {
       "page-4": {
-        "_pv|v": 408,
-        "car-mvurs646-h3o|i": 77,
-        "car-mvurs646-h8fx|i": 88,
-        "car-mvurs646-6m2p|i": 92,
-        "car-mvurs646-hg1o|i": 74,
-        "car-mvurs646-h3o|d": 5,
-        "car-mvurs646-58k9|i": 68,
-        "car-mvurs646-76ws|i": 67,
-        "car-mvurs646-7i4h|i": 65,
-        "car-mvurs646-1s5o|i": 70,
-        "car-mvurs646-c66s|i": 66,
-        "car-mvurs646-dfop|i": 66,
-        "car-mvurs646-6m2p|d": 3,
-        "car-mvurs646-h8fx|d": 1,
-        "car-mvurs646-7i4h|d": 3,
+        "_pv|v": 994,
+        "car-mvurs646-h3o|i": 177,
+        "car-mvurs646-h8fx|i": 175,
+        "car-mvurs646-6m2p|i": 184,
+        "car-mvurs646-hg1o|i": 168,
+        "car-mvurs646-h3o|d": 8,
+        "car-mvurs646-58k9|i": 185,
+        "car-mvurs646-76ws|i": 180,
+        "car-mvurs646-7i4h|i": 159,
+        "car-mvurs646-1s5o|i": 162,
+        "car-mvurs646-c66s|i": 160,
+        "car-mvurs646-dfop|i": 160,
+        "car-mvurs646-6m2p|d": 6,
+        "car-mvurs646-h8fx|d": 4,
+        "car-mvurs646-7i4h|d": 5,
         "car-mvurs646-h8fx|p": 3,
-        "car-mvurs646-dfop|d": 1,
-        "car-mvurs646-1s5o|d": 2,
-        "car-mvurs646-c66s|d": 1
+        "car-mvurs646-dfop|d": 4,
+        "car-mvurs646-1s5o|d": 3,
+        "car-mvurs646-c66s|d": 2,
+        "car-mvurs646-58k9|d": 3,
+        "car-mvurs646-76ws|d": 2,
+        "car-mvurs646-hg1o|d": 2,
+        "car-mvurs646-58k9|p": 1
       },
       "page-3": {
-        "_pv|v": 5
+        "_pv|v": 7
       }
     },
     "2026-11-03": {
@@ -1947,7 +1951,99 @@
         "car-mvurs646-58k9|i": 4,
         "car-mvurs646-76ws|i": 4
       }
+    },
+    "2026-11-15": {
+      "page-3": {
+        "_pv|v": 2
+      },
+      "page-4": {
+        "_pv|v": 350,
+        "car-mvurs646-58k9|i": 80,
+        "car-mvurs646-76ws|i": 75,
+        "car-mvurs646-h3o|i": 71,
+        "car-mvurs646-7i4h|i": 70,
+        "car-mvurs646-1s5o|i": 63,
+        "car-mvurs646-c66s|i": 63,
+        "car-mvurs646-hg1o|i": 66,
+        "car-mvurs646-dfop|i": 62,
+        "car-mvurs646-6m2p|i": 61,
+        "car-mvurs646-h8fx|i": 60,
+        "car-mvurs646-h3o|d": 2,
+        "car-mvurs646-6m2p|d": 2,
+        "car-mvurs646-hg1o|d": 2,
+        "car-mvurs646-58k9|d": 2,
+        "car-mvurs646-7i4h|d": 1,
+        "car-mvurs646-1s5o|d": 1,
+        "car-mvurs646-c66s|d": 1,
+        "car-mvurs646-dfop|d": 1,
+        "car-mvurs646-h8fx|d": 1
+      }
+    },
+    "2026-11-16": {
+      "page-4": {
+        "_pv|v": 19,
+        "car-mvurs646-58k9|i": 1
+      },
+      "page-3": {
+        "_pv|v": 3
+      }
+    },
+    "2026-11-14": {
+      "page-3": {
+        "_pv|v": 4
+      },
+      "page-2": {
+        "_pv|v": 1,
+        "car-mu21lymn-h3gi|i": 1,
+        "car-mu21lymn-jsq4|i": 1,
+        "car-mu21lymn-9cbg|i": 1,
+        "car-mu21lymn-fhpw|i": 1
+      },
+      "page-4": {
+        "_pv|v": 1206,
+        "car-mvurs646-58k9|i": 193,
+        "car-mvurs646-76ws|i": 183,
+        "car-mvurs646-h3o|i": 162,
+        "car-mvurs646-7i4h|i": 160,
+        "car-mvurs646-1s5o|i": 154,
+        "car-mvurs646-c66s|i": 142,
+        "car-mvurs646-dfop|i": 146,
+        "car-mvurs646-hg1o|i": 147,
+        "car-mvurs646-6m2p|i": 141,
+        "car-mvurs646-h8fx|i": 140,
+        "car-mvurs646-58k9|d": 6,
+        "car-mvurs646-76ws|d": 4,
+        "car-mvurs646-h3o|d": 3,
+        "car-mvurs646-hg1o|d": 5,
+        "car-mvurs646-6m2p|d": 1,
+        "car-mvurs646-h8fx|d": 1,
+        "car-mvurs646-7i4h|d": 2,
+        "car-mvurs646-dfop|d": 2,
+        "car-mvurs646-58k9|p": 2,
+        "car-mvurs646-c66s|d": 4,
+        "car-mvurs646-1s5o|d": 3,
+        "car-mvurs646-h8fx|p": 1
+      }
+    },
+    "2026-11-17": {
+      "page-3": {
+        "_pv|v": 2
+      },
+      "page-4": {
+        "_pv|v": 13,
+        "car-mvurs646-58k9|i": 6,
+        "car-mvurs646-h8fx|i": 3,
+        "car-mvurs646-76ws|i": 5,
+        "car-mvurs646-7i4h|i": 3,
+        "car-mvurs646-h3o|i": 3,
+        "car-mvurs646-c66s|i": 2,
+        "car-mvurs646-1s5o|i": 3,
+        "car-mvurs646-hg1o|i": 2,
+        "car-mvurs646-dfop|i": 2,
+        "car-mvurs646-6m2p|i": 1,
+        "car-mvurs646-58k9|d": 2
+      }
     }
   },
-  "updatedAt": "2026-11-13T04:30:58.344Z"
+  "updatedAt": "2026-11-17T01:32:04.008Z"
 }
