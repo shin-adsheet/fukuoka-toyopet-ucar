@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>中古車トップ デザイン案</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="トヨタの正規ディーラー、福岡トヨペットの中古車。トヨタ認定中古車を取り扱う県内7店舗で、新着の中古車をジャンル・予算・使い方から探せます。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;900&family=Barlow+Condensed:wght@600;700&family=Satisfy&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   福岡トヨペット 中古車トップ（デザイン案 v3）
+   VOICE  トヨタの正規ディーラーらしい、清潔で頼れる、家族向けのやさしさ
+   IDEA   ディーラーのショールーム。回転台（ターンテーブル）と、県内7店舗の立体マップ
+   PICTURE ファーストビューはGPTの風景＋あとで重ねる車。Three.jsで「3つの安心」の回転台と、福岡県の立体マップ
+   COLOUR 公式サイトの深緑 #00574B と緑のグラデーション、白、ミント
+   TYPE   Noto Sans JP（公式と同じ）、数字は Barlow Condensed、飾りに Satisfy（公式の Topics と同じ）
+   ========================================================= */
+:root{
+  --deep:#00574b;--deep-2:#0a6a5b;--deep-ink:#00463c;
+  --g-grad:linear-gradient(135deg,#69d094 0%,#3ab675 34%,#23995f 68%,#126f44 100%);
+  --g-btn:linear-gradient(135deg,#198050 0%,#126f44 55%,#00574b 100%);
+  --g-script:linear-gradient(180deg,#9bdc9e 0%,#55b96b 58%,#2f914e 100%);
+  --leaf:#3ab675;--leaf-2:#9bdc9e;
+  --paper:#fff;--mist:#eef7f1;--mist-2:#f6fbf8;
+  --ink:#3b322d;--ink-2:#5f5550;--ink-3:#857b75;--rule:#dbe6df;
+  --red:#d50f1c;--tel:#126f44;--focus:#1a7fd0;
+  --jp:"Noto Sans JP","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
+  --num:"Barlow Condensed","Noto Sans JP",sans-serif;
+  --wrap:1180px;--r:12px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;font-family:var(--jp);color:var(--ink-2);background:var(--paper);font-size:16px;line-height:1.8;letter-spacing:.03em;line-break:strict;overflow-x:clip}
+h1,h2,h3{color:var(--ink);letter-spacing:.02em;font-feature-settings:"palt";text-wrap:balance;margin:0}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+[hidden]{display:none!important}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 18px}
+.num{font-family:var(--num);font-feature-settings:"tnum" 1;letter-spacing:.01em}
+.notice{font-size:12px;color:var(--ink-3);line-height:1.7}
+.script{font-family:"Satisfy",cursive;background:var(--g-script);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block;transform:rotate(-2deg);padding:0 8px 4px 0;line-height:1.1;margin:0}
+
+/* ボタン */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:10px;font-weight:700;font-size:15px;text-decoration:none;border:2px solid transparent;cursor:pointer;line-height:1.25;text-align:center}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-main{background:var(--g-btn);color:#fff;box-shadow:0 2px 0 rgba(0,70,60,.25)}
+.btn-main:hover{filter:brightness(1.08)}
+.btn-dark{background:var(--deep);color:#fff}
+.btn-dark:hover{background:var(--deep-ink)}
+.btn-tel{background:#fff;color:var(--tel);border-color:var(--tel)}
+.btn-tel:hover{background:#eef7f1}
+.btn-white{background:#fff;color:var(--deep)}
+.btn-line{background:transparent;color:inherit;border-color:currentColor}
+
+/* ヘッダー */
+.hd{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.97);border-bottom:1px solid var(--rule);backdrop-filter:blur(6px)}
+.hd-in{display:flex;align-items:center;gap:20px;height:60px}
+.brand{display:flex;align-items:baseline;gap:8px;text-decoration:none;flex:none}
+.brand b{font-size:17px;color:var(--deep);font-style:italic;font-weight:900}
+.brand span{font-size:12px;color:var(--ink-2)}
+.gnav{display:none;gap:4px;margin-left:auto}
+.gnav a{padding:8px 12px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:700;color:var(--ink-2)}
+.gnav a:hover{background:var(--mist);color:var(--ink)}
+.hd .btn{min-height:40px;font-size:14px;padding:0 12px;margin-left:auto}
+@media (min-width:900px){.gnav{display:flex}.hd .btn{margin-left:8px}}
+
+/* ---------- ファーストビュー（背景はGPTの絵、車とロゴは枠に重ねる） ---------- */
+.fv{position:relative;display:grid;grid-template-columns:18px minmax(0,1fr) 18px;background:#eef8f2;overflow:hidden}
+.fv-art{grid-column:1/-1;grid-row:1;position:relative;aspect-ratio:4/5;min-height:470px}
+.fv-art .art{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:50% 60%}
+.fv-art::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.88) 0%,rgba(255,255,255,.55) 34%,rgba(255,255,255,0) 50%);pointer-events:none}
+.fv-head{grid-column:2;grid-row:1;align-self:start;position:relative;z-index:2;padding-top:16px}
+.fv-body{grid-column:2;grid-row:2;position:relative;z-index:2;padding:18px 0 22px}
+.fv-badges{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px;padding:0;list-style:none}
+.fv-badges li{font-size:12px;font-weight:700;color:#fff;background:var(--deep);border-radius:4px;padding:3px 8px;line-height:1.5}
+.fv-badges li.alt{background:#fff;color:var(--deep);box-shadow:inset 0 0 0 1.5px var(--deep)}
+.fv .script{font-size:30px;margin-bottom:2px}
+.fv h1{font-size:clamp(28px,7.6vw,52px);line-height:1.2;font-weight:900;color:var(--deep);word-break:keep-all;overflow-wrap:normal}
+.fv-lead{margin:8px 0 0;font-size:clamp(15px,4vw,20px);font-weight:700;color:var(--ink);line-height:1.6}
+.fv-new{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.fv-new .big{display:flex;align-items:baseline;gap:6px;color:var(--deep)}
+.fv-new .big b{font-size:15px;font-weight:900}
+.fv-new .big .num{font-size:56px;line-height:.9;font-weight:700}
+.fv-new .big span{font-size:16px;font-weight:900}
+.fv-live{display:flex;align-items:center;gap:8px;margin:0;font-size:13px;color:var(--ink-2)}
+.pulse{width:9px;height:9px;border-radius:50%;background:var(--leaf);flex:none}
+@media (prefers-reduced-motion:no-preference){.pulse{animation:pulse 2s ease-out infinite}@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(58,182,117,.55)}80%,100%{box-shadow:0 0 0 10px rgba(58,182,117,0)}}}
+.fv-cta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.fv-cta .btn{min-height:54px;font-size:15px;padding:0 10px}
+.slot{border:2px dashed rgba(0,87,75,.55);border-radius:10px;background:rgba(255,255,255,.4);display:grid;place-items:center;text-align:center;color:var(--deep);font-size:12px;font-weight:700;line-height:1.45;padding:6px}
+.slot small{display:block;font-weight:500;color:var(--ink-2)}
+.slot-logo{width:150px;height:38px;margin-bottom:8px;background:rgba(255,255,255,.75)}
+.fv-cars{position:absolute;inset:0;z-index:1}
+.fv-cars .slot{position:absolute;aspect-ratio:16/9}
+.fv-cars .c1{left:4%;bottom:4%;width:68%}
+.fv-cars .c2{left:56%;bottom:21%;width:40%}
+.fv-cars .c3{display:none}
+@media (min-width:761px){
+  .fv{grid-template-columns:minmax(20px,1fr) minmax(0,560px) minmax(0,620px) minmax(20px,1fr);grid-template-rows:1fr auto 1fr}
+  .fv-art{grid-row:1/4;aspect-ratio:auto;min-height:clamp(540px,44vw,680px)}
+  .fv-art .art{object-position:50% 52%}
+  .fv-art::after{background:linear-gradient(90deg,rgba(255,255,255,.85) 0%,rgba(255,255,255,.45) 36%,rgba(255,255,255,0) 54%)}
+  .fv-head{grid-row:1;align-self:end;padding-top:32px}
+  .fv-body{grid-row:2/4;align-self:start;padding:18px 0 36px}
+  .fv .script{font-size:44px}
+  .fv h1{font-size:clamp(34px,3.8vw,52px)}
+  .slot-logo{width:220px;height:46px}
+  .fv-cars .c1{left:57%;bottom:9%;width:29%}
+  .fv-cars .c2{left:49%;bottom:30%;width:19%}
+  .fv-cars .c3{display:grid;left:78%;bottom:31%;width:19%}
+  .fv-cta{display:flex;flex-wrap:wrap}
+  .fv-cta .btn{padding:0 24px}
+}
+
+/* ---------- 最新情報（フェア・店舗ブログ・インスタを1本に） ---------- */
+.news{background:#fff;border-top:4px solid transparent;border-image:var(--g-grad) 1;padding:14px 0 16px}
+.news-top{display:flex;align-items:center;gap:8px 12px;margin-bottom:10px;flex-wrap:wrap}
+@media (max-width:520px){.news-top .seg{width:100%}.news-top .seg button{flex:1 1 auto;padding:7px 8px}}
+.news-top h2{font-size:15px;color:var(--deep);flex:none}
+.seg{display:flex;gap:4px;padding:3px;background:var(--mist);border-radius:999px;overflow-x:auto;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg button{flex:none;border:0;background:transparent;border-radius:999px;padding:7px 14px;font-size:14px;font-weight:700;color:var(--ink-2);cursor:pointer;min-height:38px}
+.seg button[aria-selected="true"]{background:#fff;color:var(--deep);box-shadow:0 1px 3px rgba(0,60,50,.15)}
+.rail,.bays,.cards,.chips,.shop-tabs,.sfac{scroll-padding-inline:18px}
+.rail{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -18px;padding:2px 18px 4px}
+.rail::-webkit-scrollbar{display:none}
+.rail>*{scroll-snap-align:start;flex:none}
+.ncard{width:250px;display:grid;grid-template-columns:84px minmax(0,1fr);gap:10px;align-items:center;text-decoration:none;color:var(--ink);background:var(--mist-2);border:1px solid var(--rule);border-radius:10px;padding:8px}
+.ncard img{width:84px;height:64px;object-fit:cover;border-radius:6px;background:#dfe9e3}
+.ncard b{display:block;font-size:13px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ncard small{display:block;font-size:12px;color:var(--ink-3)}
+.ncard.wide{width:min(560px,86vw);grid-template-columns:1fr}
+.ncard.wide.sm{width:min(400px,78vw)}
+.ncard.wide img{width:100%;height:auto;aspect-ratio:9/1;object-fit:cover}
+.igc{width:112px;text-decoration:none;color:var(--ink)}
+.igc .sq{width:112px;height:112px;border-radius:10px;overflow:hidden;position:relative;background:var(--mist)}
+.igc .sq img{width:100%;height:100%;object-fit:cover}
+.igc .sq .play{position:absolute;right:6px;top:6px;width:24px;height:24px;border-radius:50%;background:rgba(0,40,34,.7)}
+.igc .sq .play::after{content:"";position:absolute;left:9px;top:7px;border-left:8px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.igc small{display:block;font-size:12px;color:var(--ink-3);margin-top:4px}
+.igc.more .sq{display:grid;place-items:center;background:var(--mist);border:1px dashed var(--leaf)}
+.igc.more .sq b{font-size:13px;color:var(--deep);text-align:center;line-height:1.5}
+
+/* ---------- 新着（展示場の帯） ---------- */
+.lot{background:var(--deep);color:#fff;position:relative;overflow:hidden;padding-top:30px}
+.lot::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:var(--g-grad)}
+.bays-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px}
+.bays-head h2{color:#fff;font-size:22px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.bays-head h2 .cnt{display:inline-flex;align-items:baseline;gap:3px;color:var(--leaf-2);font-size:15px}
+.bays-head h2 .cnt .num{font-size:40px;line-height:.9}
+.bays-head p{margin:2px 0 0;font-size:13px;color:#cde9db}
+.bays-ctrl{display:none;gap:8px}
+.bays-ctrl button{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;cursor:pointer;display:grid;place-items:center}
+.bays-ctrl svg{width:18px;height:18px}
+@media (min-width:761px){.bays-ctrl{display:flex}}
+.bays{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:48px;margin:0 -18px;padding-left:18px;padding-right:18px;border-top:3px solid #fff}
+.bays::-webkit-scrollbar{display:none}
+.bay{flex:0 0 250px;scroll-snap-align:start;padding:16px 12px 0;position:relative;border-right:3px solid #fff}
+.bay:first-child{border-left:3px solid #fff}
+.bay::after{content:attr(data-bay);position:absolute;left:50%;bottom:-36px;transform:translateX(-50%);font-family:var(--num);font-size:20px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.06em}
+@media (min-width:761px){.bay{flex-basis:290px;padding:18px 16px 0}}
+@media (prefers-reduced-motion:no-preference){.bay.enter{animation:park .7s cubic-bezier(.2,.75,.25,1) both}@keyframes park{from{opacity:0;transform:translateY(-36px)}to{opacity:1;transform:none}}}
+.lot-card{display:block;text-decoration:none;color:var(--ink);background:#fff;border-radius:var(--r);overflow:hidden}
+.lot-card .ph{aspect-ratio:4/3;background:#cfe0d6}
+.lot-card .ph img{width:100%;height:100%;object-fit:cover}
+.lot-card .bd{padding:10px 12px 12px}
+.lot-card .day{font-size:12px;color:var(--ink-2);display:flex;justify-content:space-between;gap:8px}
+.lot-card h3{margin:2px 0 6px;font-size:16px;line-height:1.45;min-height:2.9em}
+.lot-card .spec{margin:0 0 10px;font-size:13px;line-height:1.6;color:var(--ink-2)}
+
+/* プライスボード */
+.board{background:#f2faf5;color:var(--deep-ink);border:1.5px solid #bfe5cc;border-radius:8px;padding:8px 12px 9px;position:relative}
+.board::before,.board::after{content:"";position:absolute;top:7px;width:6px;height:6px;border-radius:50%;background:rgba(0,87,75,.3)}
+.board::before{left:7px}.board::after{right:7px}
+.board-top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:0 8px}
+.board-label{font-size:12px;font-weight:700;margin-left:10px;padding:2px 7px;border-radius:4px;background:var(--deep);color:#fff;white-space:nowrap;line-height:1.5}
+.board-price{font-family:var(--num);font-weight:700;font-size:36px;line-height:1;white-space:nowrap;margin-left:auto;color:var(--deep)}
+.board-price small{font-size:.62em}
+.board-price i{font-style:normal;font-family:var(--jp);font-size:14px;margin-left:2px;font-weight:700}
+.board-sub{margin-top:4px;font-size:12px;display:flex;justify-content:space-between;gap:6px;border-top:1px dashed rgba(0,87,75,.3);padding-top:4px;color:var(--ink-2)}
+.board-sub span{white-space:nowrap}
+
+/* ---------- セクション共通 ---------- */
+.sec{padding:56px 0}
+.sec-mist{background:var(--mist)}
+.sec-h{margin-bottom:22px}
+.sec-h .script{font-size:30px}
+.sec-h h2{font-size:clamp(24px,5.6vw,36px);line-height:1.35;font-weight:900}
+.sec-h p{margin:8px 0 0;font-size:15px;max-width:40em}
+@media (min-width:761px){.sec{padding:80px 0}.sec-h .script{font-size:40px}}
+
+/* ---------- 選ぶ理由：3つの安心の回転台（Three.js） ---------- */
+.why-top{display:grid;gap:18px}
+.stage3d{position:relative;aspect-ratio:5/4;max-height:440px;width:100%;border-radius:18px;overflow:hidden;background:radial-gradient(120% 90% at 50% 0%,#ffffff 0%,#e7f5ec 55%,#d3ecdd 100%);touch-action:pan-y}
+.stage3d canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.stage3d .fallback{position:absolute;inset:0;display:grid;place-items:center}
+.stage3d .fallback svg{width:46%;height:auto;color:var(--deep)}
+.stage-hint{position:absolute;left:0;right:0;bottom:10px;text-align:center;font-size:12px;color:var(--ink-3);pointer-events:none}
+.anshin-h{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:900;color:var(--deep);margin:0 0 10px}
+.anshin-h i{font-style:normal;font-size:12px;font-weight:700;color:#fff;background:var(--deep);border-radius:4px;padding:2px 7px}
+.atabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:14px}
+.atabs button{border:1.5px solid var(--rule);background:#fff;border-radius:10px;padding:8px 6px;cursor:pointer;font-size:13px;font-weight:700;line-height:1.35;min-height:56px;color:var(--ink)}
+.atabs button span{display:block;font-family:var(--num);font-size:20px;color:var(--leaf);line-height:1}
+.atabs button[aria-selected="true"]{border-color:var(--deep);background:var(--deep);color:#fff}
+.atabs button[aria-selected="true"] span{color:var(--leaf-2)}
+.apanel h3{font-size:24px;font-weight:900;color:var(--deep)}
+.apanel p{margin:8px 0 0;font-size:16px;color:var(--ink)}
+.apanel .notice{margin-top:8px}
+.apanel .more{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+.apanel .more .btn{min-height:44px;font-size:14px;padding:0 14px}
+.why-more{display:grid;gap:14px;margin-top:30px}
+.wcard{background:#fff;border-radius:16px;overflow:hidden;border:1px solid var(--rule);display:flex;flex-direction:column;min-width:0}
+.wcard .ph{aspect-ratio:16/9;background:#dfe9e3}
+.wcard .ph img{width:100%;height:100%;object-fit:cover}
+.wcard .bd{padding:16px 18px 18px}
+.wcard h3{font-size:19px;font-weight:900;color:var(--deep);line-height:1.45}
+.wcard p{margin:6px 0 0;font-size:15px}
+.wcard .cap{font-size:12px;color:var(--ink-3);margin-top:8px}
+@media (max-width:760px){
+  .why-more{gap:10px;margin-top:22px}
+  .wcard{display:grid;grid-template-columns:112px minmax(0,1fr);border-radius:12px}
+  .wcard .ph{aspect-ratio:auto;height:100%;min-height:128px}
+  .wcard .bd{padding:12px 14px}
+  .wcard h3{font-size:16px}
+  .wcard p{font-size:14px;line-height:1.7}
+  .wcard .cap{font-size:11px;margin-top:4px}
+}
+@media (min-width:761px){
+  .why-top{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center}
+  .stage3d{aspect-ratio:auto;height:440px;max-height:none}
+  .why-more{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+/* ---------- 探す（おすすめ・ジャンル・予算・使い方を1か所に） ---------- */
+.finder .seg{margin-bottom:12px;display:inline-flex;max-width:100%}
+@media (max-width:760px){.finder .seg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%}.finder .seg button{padding:9px 2px;font-size:14px;white-space:nowrap;letter-spacing:0}}
+.finder .seg button{padding:9px 16px;font-size:15px;min-height:44px}
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -18px 16px;padding:2px 18px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1.5px solid var(--rule);background:#fff;border-radius:999px;padding:0 16px;min-height:42px;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--deep);border-color:var(--deep);color:#fff}
+.chip.link{text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.chip.link svg{width:14px;height:14px}
+.finder-sub{font-size:13px;color:var(--ink-3);margin:-6px 0 12px}
+/* 使い方で選ぶ（スマホでも押しやすい小さめのランプ） */
+.use{display:grid;gap:12px;margin-bottom:18px}
+.conds{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.cond{width:100%;min-height:64px;display:grid;grid-template-columns:28px minmax(0,1fr);align-items:center;gap:8px;text-align:left;padding:8px 10px;border-radius:10px;border:1.5px solid var(--rule);background:#fff;cursor:pointer;font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.4}
+.cond svg{width:26px;height:26px;color:var(--ink-3)}
+.cond[aria-pressed="true"]{border-color:var(--deep);background:#f2faf5}
+.cond[aria-pressed="true"] svg{color:var(--deep)}
+.cluster{background:var(--deep);background-image:radial-gradient(90% 120% at 50% 0%,#0f7565 0%,var(--deep) 60%);color:#fff;border-radius:14px;padding:14px}
+.lamps{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px;margin:0 0 10px;padding:0;list-style:none}
+.lamp{aspect-ratio:1/1;border-radius:50%;display:grid;place-items:center;background:#0b4d43;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.3);transition:background .25s,color .25s,box-shadow .25s}
+.lamp svg{width:58%;height:58%}
+.lamp.on{background:#1e8f5c;color:#eaffef;box-shadow:0 0 0 2px rgba(155,220,158,.25),0 0 12px rgba(105,208,148,.75)}
+.cluster-msg{margin:0;font-size:17px;font-weight:900;line-height:1.4;color:#fff}
+.cluster-sub{margin:2px 0 10px;font-size:12.5px;color:#cde9db}
+.cluster .btn{width:100%;min-height:48px}
+@media (max-width:760px){
+  .cond{min-height:54px;font-size:13px;padding:6px 8px;grid-template-columns:24px minmax(0,1fr);gap:6px}
+  .cond svg{width:22px;height:22px}
+  .cluster{position:sticky;bottom:calc(74px + env(safe-area-inset-bottom));z-index:5;padding:10px 12px;box-shadow:0 -6px 18px rgba(0,40,34,.18)}
+  .lamps{margin-bottom:6px}
+  .cluster-msg{font-size:15px}
+  .cluster-sub{margin-bottom:8px;font-size:12px}
+  .cluster .btn{min-height:44px}
+}
+@media (min-width:761px){
+  .use{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:start;gap:18px}
+  .conds{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cluster{position:sticky;top:80px;padding:20px}
+  .lamps{grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:14px}
+  .cluster-msg{font-size:20px}
+}
+/* 在庫カード */
+.cards{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -18px;padding:2px 18px 8px}
+.cards::-webkit-scrollbar{display:none}
+.cards>*{flex:0 0 78%;scroll-snap-align:start}
+@media (min-width:761px){.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;overflow:visible;margin:0;padding:0}.cards>*{flex:none}}
+@media (min-width:1080px){.cards{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.cards.swap{animation:swap .28s ease both}
+@keyframes swap{from{opacity:.3}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.cards.swap{animation:none}}
+.car{background:#fff;border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.car .ph{aspect-ratio:4/3;background:#dfe9e3;display:block}
+.car .ph img{width:100%;height:100%;object-fit:cover}
+.car .bd{padding:12px 14px 14px;display:flex;flex-direction:column;gap:9px;flex:1}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.tags li{font-size:12px;line-height:1;padding:5px 7px;border-radius:4px;border:1px solid var(--rule);color:var(--ink-2);font-weight:700}
+.tags .t-new{background:var(--red);border-color:var(--red);color:#fff}
+.tags .t-cert{background:var(--deep);border-color:var(--deep);color:#fff}
+.tags .t-war{border-color:var(--deep);color:var(--deep)}
+.car h3{font-size:16px;line-height:1.45}
+.car h3 a{text-decoration:none}
+.spec-grid{display:grid;grid-template-columns:1fr 1fr;margin:0;border-top:1px solid var(--rule);border-left:1px solid var(--rule);font-size:13px}
+.spec-grid div{display:flex;justify-content:space-between;gap:6px;padding:5px 8px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);min-width:0}
+.spec-grid dt{color:var(--ink-3);flex:none}
+.spec-grid dd{margin:0;font-weight:700;text-align:right;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spec-grid .warn dd{color:var(--red)}
+.car .ft{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.shopline{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-2)}
+.shopline svg{width:15px;height:15px;flex:none}
+.shopline .notice{white-space:nowrap}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.acts .btn{min-height:44px;font-size:14px;padding:0 10px}
+.finder-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid var(--rule)}
+.finder-foot p{margin:0;font-size:12.5px;color:var(--ink-3)}
+.finder-foot .btn{width:100%}
+@media (min-width:761px){.finder-foot .btn{width:auto}}
+.swipe{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-3);margin:-4px 0 8px}
+.swipe svg{width:16px;height:16px}
+@media (min-width:761px){.swipe{display:none}}
+
+/* ---------- 店舗：福岡県の立体マップ（Three.js）＋店舗カード ---------- */
+.shops-wrap{display:grid;gap:16px}
+.map3{position:relative;height:360px;border-radius:18px;overflow:hidden;background:radial-gradient(120% 100% at 50% 0%,#ffffff 0%,#e3f3ea 60%,#cfe9da 100%);touch-action:pan-y}
+.map3 canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.map3 .fallback{position:absolute;inset:0}
+.map3 .fallback svg{width:100%;height:100%}
+.pins{position:absolute;inset:0;pointer-events:none}
+.pin{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;border:0;background:#fff;color:var(--deep);font-size:12px;font-weight:900;border-radius:999px;padding:4px 10px;box-shadow:0 2px 8px rgba(0,60,50,.25);cursor:pointer;white-space:nowrap;line-height:1.4}
+.pin{--dx:var(--dxp,0px);--dy:var(--dyp,0px);margin-left:var(--dx);margin-top:var(--dy)}
+@media (max-width:760px){.pin{--dx:var(--dxs,0px);--dy:var(--dys,0px)}}
+.pin::after{content:"";position:absolute;left:calc(50% - var(--dx));bottom:-5px;transform:translateX(-50%) rotate(45deg);width:8px;height:8px;background:inherit}
+.pin::before{content:"";position:absolute;left:calc(50% - var(--dx) - 1px);top:100%;width:2px;height:calc(-1 * var(--dy));background:inherit}
+/* alt：PCではピンの下、スマホではピンの左にラベルを出す */
+.pin.alt::before{display:none}
+@media (min-width:761px){.pin.alt{transform:translate(-50%,14px);margin:0}.pin.alt::after{bottom:auto;top:-4px}}
+@media (max-width:760px){.pin.alt{transform:translate(calc(-100% - 12px),-50%);margin:0}.pin.alt::after{left:auto;right:-4px;bottom:auto;top:50%;transform:translateY(-50%) rotate(45deg)}}
+.pin[aria-pressed="true"]{background:var(--red);color:#fff;z-index:2}
+.map-legend{position:absolute;left:12px;top:10px;margin:0;font-size:12px;font-weight:700;color:var(--deep);background:rgba(255,255,255,.85);border-radius:6px;padding:3px 8px}
+.shop-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:2px 18px}
+.shop-tabs::-webkit-scrollbar{display:none}
+.shop-tabs button{flex:none;min-height:44px;border-radius:10px;border:1.5px solid var(--rule);background:#fff;padding:4px 12px;cursor:pointer;text-align:left;line-height:1.3}
+.shop-tabs button b{display:block;font-size:14px;color:var(--ink)}
+.shop-tabs button small{font-size:11px;color:var(--ink-3)}
+.shop-tabs button[aria-pressed="true"]{border-color:var(--deep);background:var(--deep)}
+.shop-tabs button[aria-pressed="true"] b,.shop-tabs button[aria-pressed="true"] small{color:#fff}
+.sdetail{background:#fff;border-radius:18px;border:1px solid var(--rule);overflow:hidden}
+.sgal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:#dfe9e3}
+.sgal::-webkit-scrollbar{display:none}
+.sgal figure{flex:0 0 100%;margin:0;scroll-snap-align:start;position:relative;aspect-ratio:3/2}
+.sgal img{width:100%;height:100%;object-fit:cover}
+.sgal figcaption{position:absolute;left:10px;bottom:10px;font-size:12px;font-weight:700;color:#fff;background:rgba(0,40,34,.7);border-radius:4px;padding:2px 8px}
+.sgal-dots{display:flex;justify-content:center;gap:6px;padding:8px 0 0}
+.sgal-dots button{width:28px;height:28px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;padding:0}
+.sgal-dots button i{width:8px;height:8px;border-radius:50%;background:#c7d8ce;display:block}
+.sgal-dots button[aria-current="true"] i{background:var(--deep);width:20px;border-radius:4px}
+.sbody{padding:14px 18px 20px;display:grid;gap:14px}
+.sname{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.sname small{display:block;width:100%;font-size:12px;color:var(--ink-3);font-weight:700}
+.sname h3{font-size:24px;font-weight:900;color:var(--deep)}
+.sname .snew{display:inline-flex;align-items:baseline;gap:3px;font-size:13px;font-weight:700;color:var(--ink)}
+.sname .snew .num{font-size:26px;color:var(--red);line-height:1}
+.spoints{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.spoints li{font-size:13px;font-weight:700;color:var(--deep);background:#eaf6ef;border-radius:6px;padding:4px 10px}
+.smsg{margin:0;padding:12px 14px;border-left:4px solid var(--leaf);background:var(--mist-2);border-radius:0 10px 10px 0;font-size:14.5px;color:var(--ink)}
+.smsg cite{display:block;margin-top:6px;font-style:normal;font-size:12.5px;color:var(--ink-3)}
+.sinfo{display:grid;grid-template-columns:5em minmax(0,1fr);gap:6px 10px;margin:0;font-size:14.5px}
+.sinfo dt{color:var(--ink-3);font-weight:700}
+.sinfo dd{margin:0;color:var(--ink)}
+.sinfo a{color:var(--deep);font-weight:700}
+.sfac{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.sfac li{display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:var(--ink-2);border:1px solid var(--rule);border-radius:999px;padding:3px 10px}
+.sfac li svg{width:14px;height:14px;color:var(--deep)}
+@media (max-width:760px){.sfac{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:0 18px}.sfac::-webkit-scrollbar{display:none}.sfac li{flex:none;white-space:nowrap}}
+.scars h4{margin:0 0 8px;font-size:14px;color:var(--ink)}
+.scars ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.scars a{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:10px;align-items:center;text-decoration:none;color:var(--ink);border:1px solid var(--rule);border-radius:10px;padding:6px}
+.scars img{width:96px;height:72px;object-fit:cover;border-radius:6px}
+.scars b{font-size:14px;line-height:1.4;display:block}
+.scars small{font-size:12px;color:var(--ink-3)}
+.scars .num{font-size:22px;color:var(--deep);font-weight:700;white-space:nowrap}
+.scars .num i{font-style:normal;font-family:var(--jp);font-size:12px}
+.sacts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sacts .btn{min-height:50px;font-size:14px;padding:0 8px}
+.sacts .wide{grid-column:1/-1}
+.sacts.top{margin-top:-2px}
+.sblog{display:grid;grid-template-columns:88px minmax(0,1fr);gap:10px;align-items:center;text-decoration:none;color:var(--ink);background:var(--mist-2);border-radius:10px;padding:8px}
+.sblog img{width:88px;height:66px;object-fit:cover;border-radius:6px}
+.sblog b{font-size:13.5px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sblog small{font-size:12px;color:var(--ink-3)}
+.shops-common{margin-top:14px;font-size:13px;color:var(--ink-2)}
+.slist{margin-top:18px;border-top:1px solid var(--rule)}
+.slist summary{cursor:pointer;padding:14px 4px;font-weight:700;color:var(--deep);list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:48px}
+.slist summary::-webkit-details-marker{display:none}
+.slist table{width:100%;border-collapse:collapse;font-size:14px}
+.slist th,.slist td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--rule);vertical-align:top}
+.slist th{white-space:nowrap;color:var(--ink)}
+.slist td a{color:var(--deep);font-weight:700;white-space:nowrap}
+@media (min-width:761px){
+  .shops-wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+  .map3{height:560px;position:sticky;top:76px}
+  .shop-tabs{grid-column:1/-1;flex-wrap:wrap;margin:0;padding:0}
+}
+@media (max-width:760px){.slist thead{display:none}.slist tr{display:grid;padding:8px 0;border-bottom:1px solid var(--rule)}.slist th,.slist td{border:0;padding:2px 4px}}
+
+/* 買取 */
+.sell{background:var(--deep);background-image:radial-gradient(120% 140% at 100% 0%,rgba(105,208,148,.35) 0%,rgba(0,87,75,0) 55%);color:#fff;border-radius:16px;padding:26px 22px;display:grid;gap:16px}
+.sell h2{color:#fff;font-size:clamp(21px,4.8vw,28px)}
+.sell p{margin:6px 0 0;color:#d5e9df}
+.sell .acts{display:flex;flex-wrap:wrap;gap:10px}
+@media (min-width:761px){.sell{grid-template-columns:minmax(0,1fr) auto;align-items:center;padding:34px}}
+.ft-notes{font-size:12px;color:var(--ink-2);line-height:1.8;margin:0;padding:0 0 0 1.2em}
+.site-ft{background:var(--deep-ink);color:#c9ddd3;padding:36px 0 110px;font-size:13px}
+.site-ft a{color:#fff}
+.site-ft nav{display:flex;flex-wrap:wrap;gap:8px 18px;margin-bottom:16px}
+.dock{transform:translateY(115%);transition:transform .25s ease}
+.dock.show{transform:none}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(255,255,255,.98);border-top:1px solid var(--rule)}
+.dock .btn{min-height:50px}
+@media (min-width:900px){.dock{display:none}.site-ft{padding-bottom:40px}}
+dialog.tel-sheet{border:0;padding:0;border-radius:14px;max-width:440px;width:calc(100% - 24px);color:var(--ink)}
+dialog.tel-sheet::backdrop{background:rgba(10,30,26,.6)}
+.tel-sheet header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--rule)}
+.tel-sheet h2{font-size:18px}
+.tel-sheet header button{border:0;background:var(--mist);width:40px;height:40px;border-radius:50%;cursor:pointer;display:grid;place-items:center}
+.tel-sheet header svg{width:18px;height:18px}
+.tel-sheet ul{list-style:none;margin:0;padding:6px 10px 10px}
+.tel-sheet li a{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 10px;border-radius:8px;text-decoration:none}
+.tel-sheet li a:hover{background:var(--mist)}
+.tel-sheet li b{font-size:15px}
+.tel-sheet li .num{font-size:20px;color:var(--tel);font-weight:600}
+.tel-sheet p{margin:0;padding:0 20px 16px;font-size:12px;color:var(--ink-2)}
+.draft-bar{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;padding:10px 18px;background:#fff3b5;color:#1d2731;font-size:13px;line-height:1.6;border-bottom:1px solid #e6d36a}.draft-bar b{font-size:14px}
+</style>
+</head>
+<body data-ucar-latest="https://raw.githubusercontent.com/shin-adsheet/fukuoka-toyopet-ucar/main/data/latest.json"
+      data-ucar-cars="https://raw.githubusercontent.com/shin-adsheet/fukuoka-toyopet-ucar/main/data/cars.json"
+      data-ucar-base="https://raw.githubusercontent.com/shin-adsheet/fukuoka-toyopet-ucar/main/"
+      data-ucar-staff-page="page-6"
+      data-ucar-insta=""
+      data-ucar-log=""
+      data-ucar-page="top"
+      data-three="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
+<div class="draft-bar" role="note"><b>デザイン案（確認用）</b><span>福岡トヨペットの公式サイトではありません。在庫・インスタ・店舗ブログは11月25日時点の写しで、リンク先は実際のGAZOO・店舗ページです。</span></div>
+<header class="hd">
+  <div class="wrap hd-in">
+    <a class="brand" href="https://fukuoka-toyopet.jp/"><b>福岡トヨペット</b><span>中古車のお店</span></a>
+    <nav class="gnav" aria-label="ページ内のメニュー">
+      <a href="#new">新着</a>
+      <a href="#why">選ぶ理由</a>
+      <a href="#find">在庫を探す</a>
+      <a href="#shops">店舗</a>
+    </nav>
+    <button class="btn btn-tel" type="button" data-open-tel><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 15.4c-1.2 0-2.4-.2-3.5-.6-.4-.1-.7 0-1 .2l-1.6 2c-2.8-1.4-5.5-3.9-6.9-6.8l2-1.7c.3-.3.3-.7.2-1-.4-1.1-.6-2.3-.6-3.5 0-.5-.4-1-1-1H4.2C3.6 3 3 3.2 3 4c0 9.3 7.7 17 17 17 .7 0 1-.6 1-1.2v-3.4c0-.6-.4-1-1-1z"/></svg>電話で聞く</button>
+  </div>
+</header>
+
+<main>
+<!-- ===== ファーストビュー =====
+     背景：ChatGPTで作った絵（img/fv-bg-pc.webp 1536×1024 / img/fv-bg-sp.webp 1024×1280）。車・ロゴ・文字は入っていない
+     車：img-fv-car1〜3（透過PNG）とロゴ：img-logo は、あとから枠に重ねる -->
+<section class="fv" aria-labelledby="fv-title">
+  <div class="fv-art">
+    <picture>
+      <source media="(min-width:761px)" srcset="img/fv-bg-pc.webp" width="1536" height="1024">
+      <img class="art" src="img/fv-bg-sp.webp" alt="" width="1024" height="1280" fetchpriority="high" decoding="async">
+    </picture>
+    <div class="fv-cars">
+      <div class="slot c2" data-slot="img-fv-car2">img-fv-car2<small>車の切り抜き</small></div>
+      <div class="slot c3" data-slot="img-fv-car3">img-fv-car3<small>車の切り抜き</small></div>
+      <div class="slot c1" data-slot="img-fv-car1">img-fv-car1<small>車の切り抜き（透過PNG）をあとで重ねる</small></div>
+    </div>
+  </div>
+  <div class="fv-head">
+    <div class="slot slot-logo" data-slot="img-logo">img-logo<small>ロゴをあとで重ねる</small></div>
+    <ul class="fv-badges"><li>トヨタ正規ディーラー</li><li class="alt">トヨタ認定中古車 取扱店</li></ul>
+    <p class="script" lang="en">Used Car</p>
+    <h1 id="fv-title">福岡トヨペットの<wbr>中古車</h1>
+    <p class="fv-lead">トヨタのお店だから、<br>買ったあとまで安心。</p>
+  </div>
+  <div class="fv-body">
+    <div class="fv-new">
+      <p class="big"><b>新着</b><span class="num" data-stat="newArrivals">108</span><span>台</span></p>
+      <p class="fv-live"><i class="pulse" aria-hidden="true"></i><span data-updated>11月25日 17:39 時点</span></p>
+    </div>
+    <div class="fv-cta">
+      <a class="btn btn-main" href="#new">新着の車を見る</a>
+      <a class="btn btn-tel" href="#shops">近くの店舗を探す</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 最新情報（フェア・店舗ブログ・インスタ） ===== -->
+<section class="news" aria-labelledby="news-title">
+  <div class="wrap">
+    <div class="news-top">
+      <h2 id="news-title">最新情報</h2>
+      <div class="seg" role="tablist" aria-label="最新情報の種類" id="news-seg">
+        <button role="tab" type="button" aria-selected="true" data-news="all">すべて</button>
+        <button role="tab" type="button" aria-selected="false" data-news="fair">フェア</button>
+        <button role="tab" type="button" aria-selected="false" data-news="blog">店舗ブログ</button>
+        <button role="tab" type="button" aria-selected="false" data-news="insta">インスタ</button>
+      </div>
+    </div>
+    <div class="rail" id="news-rail" role="tabpanel" aria-labelledby="news-title"></div>
+  </div>
+</section>
+
+<!-- ===== 新着（展示場の帯） ===== -->
+<section class="lot" id="new" aria-labelledby="lot-title">
+  <div class="wrap">
+    <div class="bays-head">
+      <div>
+        <h2 id="lot-title">最近入った車 <span class="cnt">新着<span class="num" data-stat="newArrivals">108</span>台</span></h2>
+        <p>ロングラン保証つき・修復歴なしの新着から並べています</p>
+      </div>
+      <div class="bays-ctrl">
+        <button type="button" data-bays="-1" aria-label="前の車を見る"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+        <button type="button" data-bays="1" aria-label="次の車を見る"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+      </div>
+    </div>
+    <div class="bays" id="bays" tabindex="0" aria-label="最近入った車の一覧（横にスクロールできます）"></div>
+  </div>
+</section>
+
+<!-- ===== 選ぶ理由 ===== -->
+<section class="sec" id="why" aria-labelledby="why-title">
+  <div class="wrap">
+    <div class="sec-h">
+      <p class="script" lang="en">Why Toyopet</p>
+      <h2 id="why-title">トヨタの正規ディーラーで、<br>中古車を選ぶということ</h2>
+      <p>福岡トヨペットは、新車も扱うトヨタの正規ディーラー。トヨタ認定中古車を取り扱い、買ったあとの車検・点検まで同じお店でお任せいただけます。</p>
+    </div>
+    <div class="why-top">
+      <div class="stage3d" id="stage3d" aria-hidden="true">
+        <div class="fallback" id="stage-fallback"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 5 9 11v11c0 10 6.5 17.5 15 21 8.5-3.5 15-11 15-21V11z"/><path d="m17 24 5 5 9-10"/></svg></div>
+        <p class="stage-hint">回転台をドラッグして回せます</p>
+      </div>
+      <div>
+        <p class="anshin-h"><i>トヨタ認定中古車</i>3つの安心</p>
+        <div class="atabs" role="tablist" aria-label="3つの安心" id="atabs">
+          <button role="tab" type="button" aria-selected="true" data-a="0"><span class="num">1</span>まるごと<br>クリーニング</button>
+          <button role="tab" type="button" aria-selected="false" data-a="1"><span class="num">2</span>車両検査<br>証明書</button>
+          <button role="tab" type="button" aria-selected="false" data-a="2"><span class="num">3</span>ロングラン<br>保証</button>
+        </div>
+        <div class="apanel" id="apanel" role="tabpanel" aria-live="polite"></div>
+      </div>
+    </div>
+    <div class="why-more">
+      <article class="wcard">
+        <div class="ph"><img src="img/shop-hakataminami-2.jpg" alt="博多南店のスタッフ" loading="lazy" width="900" height="600"></div>
+        <div class="bd"><h3>新車も扱う、トヨタのお店</h3><p>下取り・買取りのご相談から、購入後の車検・点検まで。クルマのことを同じお店でまとめてお任せいただけます。</p><p class="cap">写真：トヨタ認定中古車 博多南店のスタッフ</p></div>
+      </article>
+      <article class="wcard">
+        <div class="ph"><img src="img/shop-yahata-3.jpg" alt="八幡店のサービス工場" loading="lazy" width="900" height="600"></div>
+        <div class="bd"><h3>約60項目の点検整備</h3><p>法定12ヶ月点検相当の整備に加え、ナビやオーディオなど故障しやすい部位も点検。オイルやワイパーゴムなどの消耗部品も事前に交換します。</p><p class="cap">トヨタ認定中古車の場合。一部交換していない車もございます。写真：八幡店のサービス工場</p></div>
+      </article>
+      <article class="wcard">
+        <div class="ph"><img src="img/shop-fukuokainta-3.jpg" alt="福岡インター店のショールームとキッズコーナー" loading="lazy" width="900" height="600"></div>
+        <div class="bd"><h3>ご家族で来やすいお店</h3><p>7店舗すべてにキッズコーナー。ベビーシート（おむつ交換用シート）や授乳室のある店舗もあります。</p><p class="cap">写真：福岡インター店のショールーム</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 在庫を探す（おすすめ・ジャンル・予算・使い方） ===== -->
+<section class="sec sec-mist finder" id="find" aria-labelledby="find-title">
+  <div class="wrap">
+    <div class="sec-h">
+      <p class="script" lang="en">Find your car</p>
+      <h2 id="find-title">在庫を探す</h2>
+    </div>
+    <div class="seg" role="tablist" aria-label="探し方" id="find-seg">
+      <button role="tab" type="button" aria-selected="true" data-mode="pick">おすすめ</button>
+      <button role="tab" type="button" aria-selected="false" data-mode="genre">ジャンル</button>
+      <button role="tab" type="button" aria-selected="false" data-mode="price">予算</button>
+      <button role="tab" type="button" aria-selected="false" data-mode="use">使い方</button>
+    </div>
+    <div id="find-panel" role="tabpanel">
+      <div class="use" id="use" hidden>
+        <ul class="conds" id="conds"></ul>
+        <div class="cluster" aria-live="polite">
+          <ul class="lamps" id="lamps" aria-hidden="true"></ul>
+          <p class="cluster-msg" id="cluster-msg">当てはまる使い方をタップ</p>
+          <p class="cluster-sub" id="cluster-sub">ランプが点いて、合いそうなジャンルが分かります。</p>
+          <button class="btn btn-white" type="button" id="cluster-go" disabled>ジャンルを決めて在庫を見る</button>
+        </div>
+      </div>
+      <div class="chips" id="chips"></div>
+      <p class="finder-sub" id="finder-sub"></p>
+      <p class="swipe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg>横にスワイプして見られます</p>
+      <div class="cards" id="cards"></div>
+      <div class="finder-foot">
+        <p>価格はすべて支払総額（消費税込み・展示店で登録する場合）。掲載車は売約済みの場合があります。</p>
+        <a class="btn btn-dark clicktag" id="find-more" href="#" target="_blank" rel="noopener" data-clicktagaction="gazooURL">GAZOOで在庫をすべて見る</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 店舗 ===== -->
+<section class="sec" id="shops" aria-labelledby="shops-title">
+  <div class="wrap">
+    <div class="sec-h">
+      <p class="script" lang="en">Our shops</p>
+      <h2 id="shops-title">トヨタ認定中古車のお店<br>福岡県内に7店舗</h2>
+      <p>福岡・北九州・筑豊・筑後のトヨタ認定中古車のお店です。地図のお店を押すと、写真や店長のひとこと、新着の車が見られます。</p>
+    </div>
+    <div class="shops-wrap">
+      <div class="shop-tabs" id="shop-tabs" aria-label="店舗をえらぶ"></div>
+      <div class="map3" id="map3" aria-label="福岡県の店舗マップ">
+        <div class="fallback" id="map-fallback"></div>
+        <div class="pins" id="pins"></div>
+        <p class="map-legend">福岡県</p>
+      </div>
+      <article class="sdetail" id="sdetail" aria-live="polite"></article>
+    </div>
+    <p class="shops-common">営業時間は各店とも 10:00〜18:00。休業日は<a href="https://fukuoka-toyopet.jp/calendar">営業日カレンダー</a>でご確認ください。電話では「ホームページを見た」とお伝えください。</p>
+    <details class="slist">
+      <summary>7店舗の住所・電話を一覧で見る<span aria-hidden="true">＋</span></summary>
+      <table id="slist"></table>
+    </details>
+  </div>
+</section>
+
+<!-- ===== 買取 ===== -->
+<section class="sec" style="padding-top:0" aria-labelledby="sell-title">
+  <div class="wrap">
+    <div class="sell">
+      <div>
+        <h2 id="sell-title" style="word-break:keep-all">今のクルマの買取りも、<wbr>トヨタのお店で</h2>
+        <p>乗り換えでも、売るだけでも。まずは無料のお試し査定で目安がわかります。</p>
+      </div>
+      <div class="acts">
+        <a class="btn btn-white" href="https://fukuoka-toyopet.jp/sell-car/satei-form">無料でお試し査定する</a>
+        <a class="btn btn-line" href="https://fukuoka-toyopet.jp/sell-car/yoyaku-form">来店を予約する</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-label="表示についての注意" style="padding-bottom:40px">
+  <ul class="ft-notes">
+    <li>価格は支払総額（車両価格＋諸費用）です。支払総額には、保険料、税金（法定費用含む）、登録等に伴う費用、リサイクル預託金相当額など、購入時に最低限必要な費用が含まれます。消費税10%込み、展示店で登録する場合の価格です。</li>
+    <li>月々のお支払い例やローン条件は、各車の詳細ページ（GAZOO）でご確認ください。</li>
+    <li>掲載車は売約済みの場合や、ほかの店舗へ移動している場合があります。最新の状況は各店舗にお問い合わせください。</li>
+    <li>3つの安心・約60項目の点検整備は、トヨタ認定中古車が対象です。ロングラン保証は一部対象外の車両があります。</li>
+    <li>在庫データはGAZOO（トヨタの中古車情報サイト）の掲載内容をもとに自動で更新しています。<span data-updated-note></span></li>
+    <li>地図は国土数値情報（行政区域データ・国土交通省）をもとに作成しています。</li>
+  </ul>
+</section>
+</main>
+
+<footer class="site-ft">
+  <div class="wrap">
+    <nav aria-label="サイトのメニュー">
+      <a href="https://fukuoka-toyopet.jp/">トップページ</a>
+      <a href="https://fukuoka-toyopet.jp/lineup">新車</a>
+      <a href="https://fukuoka-toyopet.jp/u-car/nintei">トヨタ認定中古車</a>
+      <a href="https://fukuoka-toyopet.jp/u-car/longrun">ロングラン保証</a>
+      <a href="https://fukuoka-toyopet.jp/mainte">車検・点検・整備</a>
+      <a href="https://fukuoka-toyopet.jp/sell-car">クルマ買取り</a>
+      <a href="https://fukuoka-toyopet.jp/contact">お問い合わせ</a>
+      <a href="https://fukuoka-toyopet.jp/ownership/privacy">プライバシーポリシー</a>
+    </nav>
+    <p>福岡トヨペット株式会社</p>
+  </div>
+</footer>
+
+<div class="dock">
+  <a class="btn btn-main" href="#new">新着を見る</a>
+  <button class="btn btn-tel" type="button" data-open-tel>店舗に電話</button>
+</div>
+
+<dialog class="tel-sheet" id="tel-sheet" aria-labelledby="tel-title">
+  <header>
+    <h2 id="tel-title">どの店舗に電話しますか</h2>
+    <button type="button" data-close-tel aria-label="閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </header>
+  <ul id="tel-list"></ul>
+  <p>営業時間 10:00〜18:00。「ホームページを見た」とお伝えください。</p>
+</dialog>
+
+<script type="application/json" id="ucar-latest-snapshot">{"version":1,"dealer":"18101","source":"GAZOO DealerU-Car","updatedAt":"2026-11-25T08:39:53.095Z","stats":{"total":494,"cert":291,"hybrid":250,"newArrivals":108,"genres":{"suv":174,"minivan":134,"sedan":42,"sports":2,"small":47,"compact":86,"wagon":10,"business":18},"under100":73,"premium":58,"shops":{"U-Car総合センター":43,"八幡店":72,"久留米インター店":62,"小倉東店":66,"飯塚店":71,"福岡西店":64,"博多南店":71,"福岡インター店":45},"priceBands":{"100-200":167,"200-300":129,"50-100":55,"300~":125,"~50":18},"models":[["アルファード","アルファード",45],["シエンタ","シエンタ",45],["ハリアー","ハリアー",42],["ヤリスクロス","ヤリスクロス",34],["アクア","アクア",33],["カローラクロス","カローラクロス",20],["ヴォクシー","ヴォクシー",18],["プリウス","プリウス",17],["ライズ","ライズ",15],["ランドクルーザー・プラド","ランドクルーザー・プラド",14],["ルーミー","ルーミー",12],["ヤリス","ヤリス",11],["C-HR","Ｃ－ＨＲ",10],["カローラアクシオ","カローラアクシオ",9],["エスクァイア","エスクァイア",8],["ハイエースバン","ハイエースバン",8],["カムリ","カムリ",6],["カローラスポーツ","カローラスポーツ",6],["RAV4","ＲＡＶ４",6],["ヴェルファイア","ヴェルファイア",6],["プリウスα","プリウスα",5],["ラクティス","ラクティス",5]],"matrix":{"rows":["minivan","suv","compact","small","sedan"],"bands":["~50","50-100","100-200","200-300","300~"],"counts":{"minivan":[2,12,23,37,60],"suv":[1,2,48,69,54],"compact":[9,23,47,7,0],"small":[4,13,29,1,0],"sedan":[2,6,18,9,7]}}},"lists":{"new":["9061477","9061418","9061370","9061345","9061337","9061311","9061302","9061299","9061281","9061264","9061248","9061221","9061213","9061078","9061027","9061001","9060942","9060934","9060900","9060861"],"minivan":["9061353","9061299","9061281","9061043","9061035","9061001","9060900","9060888","9060845","9060667","9060497","9060331"],"suv":["9061477","9061418","9061370","9061272","9061264","9061248","9061221","9061141","9061019","9060951","9060861","9060802"],"compact":["9061302","9061167","9061086","9061078","9061027","9060942","9060918","9060811","9060756","9060683","9060560","9060438"],"small":["9061337","9060934","9060705","9060551","9060462","9060357","9060195","9060021","9059987","9059723","9059448","9059359"],"sedan":["9061345","9061311","9061213","9060292","9060284","9059952","9059928","9059545","9057763","9057704","8397072","8397064"],"hybrid":["9061345","9061311","9061281","9061272","9061221","9061213","9061043","9061035","9061027","9061019","9060942","9060900"],"under100":["9061311","9061302","9061281","9061167","9061141","9061086","9061078","9061035","9061027","9060942","9060934","9060918"],"premium":["9061264","9059499","9058077","8398443","8397714","8397552","8397072","8396939","8396904","8396491"]},"cars":{"9061477":{"id":"9061477","model":"ヤリスクロス","name":"ヤリスクロス Z","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9061477/90614772026112516395701_L.jpg","priceTotal":167.8,"priceVehicle":159.8,"fee":8.0,"year":2020,"shaken":"2027年11月","km":"101,000km","score":null,"color":"黒","warranty":[],"supportCar":true,"view360":false,"isNew":true,"cert":false,"hybrid":false,"genres":["suv"],"maintenance":false,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061477&Sdlr=18101","listedAt":"2026-11-25T16:39:00+09:00"},"9061418":{"id":"9061418","model":"ハリアー","name":"ハリアー プレミアム","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9061418/90614182026112516411501_L.jpg","priceTotal":205.9,"priceVehicle":192.5,"fee":13.4,"year":2020,"shaken":"車検整備付","km":"116,000km","score":null,"color":"パール","warranty":[],"supportCar":true,"view360":false,"isNew":true,"cert":false,"hybrid":false,"genres":["suv"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061418&Sdlr=18101","listedAt":"2026-11-25T16:41:00+09:00"},"9061370":{"id":"9061370","model":"エクストレイル","name":"エクストレイル 20XI","comment":"アウトドアにピッタリのエクストレイル!ダイナミックなデザインが人気","shop":"八幡店","tel":"093-621-5352","image":"https://gazoo.com/U-Car/carImg/18101/9061370/90613702026112413460001_L.jpg","priceTotal":137.2,"priceVehicle":124.8,"fee":12.4,"year":2018,"shaken":"車検整備付","km":"64,000km","score":null,"color":"パール","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":false,"hybrid":false,"genres":["suv"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061370&Sdlr=18101","listedAt":"2026-11-24T13:46:00+09:00"},"9061345":{"id":"9061345","model":"プリウス","name":"プリウス Aツーリングセレクション","comment":"トヨタ自慢のハイブリッド　美しさと走りを極めた、大人の「ツーリング」","shop":"久留米インター店","tel":"0942-44-6144","image":"https://gazoo.com/U-Car/carImg/18101/9061345/90613452026112116575701_L.jpg","priceTotal":120.4,"priceVehicle":108.8,"fee":11.6,"year":2018,"shaken":"車検整備付","km":"130,000km","score":null,"color":"黒","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":false,"hybrid":true,"genres":["sedan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061345&Sdlr=18101","listedAt":"2026-11-21T16:57:00+09:00"},"9061337":{"id":"9061337","model":"S660","name":"S660 アルファ","comment":"クルマと一体になって走る!乗っていて楽しくなる軽スポーツカー","shop":"小倉東店","tel":"093-472-1234","image":"https://gazoo.com/U-Car/carImg/18101/9061337/90613372026112016423601_L.jpg","priceTotal":167.0,"priceVehicle":157.8,"fee":9.2,"year":2015,"shaken":"車検整備付","km":"46,000km","score":null,"color":"赤","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":false,"hybrid":false,"genres":["sports","small"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061337&Sdlr=18101","listedAt":"2026-11-20T16:42:00+09:00"},"9061311":{"id":"9061311","model":"プリウス","name":"プリウス S","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9061311/90613112026112516383101_L.jpg","priceTotal":82.9,"priceVehicle":74.8,"fee":8.1,"year":2016,"shaken":"2027年2月","km":"75,000km","score":null,"color":"シルバー","warranty":[],"supportCar":true,"view360":false,"isNew":true,"cert":false,"hybrid":true,"genres":["sedan"],"maintenance":false,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061311&Sdlr=18101","listedAt":"2026-11-25T16:38:00+09:00"},"9061302":{"id":"9061302","model":"ヴィッツ","name":"ヴィッツ U","comment":"トヨタ人気のコンパクト・ヴィッツ　リーズナブルな価格でご用意しました","shop":"飯塚店","tel":"0948-82-2594","image":"https://gazoo.com/U-Car/carImg/18101/9061302/90613022026111914342401_L.jpg","priceTotal":58.1,"priceVehicle":45.9,"fee":12.2,"year":2014,"shaken":"車検整備付","km":"75,000km","score":null,"color":"パール","warranty":["ロングラン保証付"],"supportCar":false,"view360":true,"isNew":true,"cert":false,"hybrid":false,"genres":["compact"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061302&Sdlr=18101","listedAt":"2026-11-19T14:34:00+09:00"},"9061299":{"id":"9061299","model":"アルファード","name":"アルファード SC","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9061299/90612992026111816424801_L.jpg","priceTotal":302.3,"priceVehicle":292.3,"fee":10.0,"year":2019,"shaken":"2028年8月","km":"78,000km","score":null,"color":"パール","warranty":[],"supportCar":true,"view360":false,"isNew":true,"cert":false,"hybrid":false,"genres":["minivan"],"maintenance":false,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061299&Sdlr=18101","listedAt":"2026-11-18T16:42:00+09:00"},"9061281":{"id":"9061281","model":"シエンタ","name":"シエンタHEV G","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9061281/90612812026111816411901_L.jpg","priceTotal":54.4,"priceVehicle":45.8,"fee":8.6,"year":2017,"shaken":"2028年4月","km":"184,000km","score":null,"color":"茶","warranty":[],"supportCar":false,"view360":false,"isNew":true,"cert":false,"hybrid":true,"genres":["minivan"],"maintenance":false,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061281&Sdlr=18101","listedAt":"2026-11-18T16:41:00+09:00"},"9061264":{"id":"9061264","model":"RX","name":"RX300 Fスポーツ","comment":"レクサスのSUV・RX300　快適な走り・乗り心地、洗練されたデザイン","shop":"福岡西店","tel":"092-894-8639","image":"https://gazoo.com/U-Car/carImg/18101/9061264/90612642026111816040901_L.jpg","priceTotal":406.1,"priceVehicle":392.7,"fee":13.4,"year":2020,"shaken":"車検整備付","km":"77,000km","score":null,"color":"白","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":false,"hybrid":false,"genres":["suv"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061264&Sdlr=18101","listedAt":"2026-11-18T16:04:00+09:00"},"9061248":{"id":"9061248","model":"ライズ","name":"ライズ Z","comment":"人気のコンパクトSUV・ライズ　充実装備のZ!安心の全周囲モニター付き","shop":"福岡西店","tel":"092-894-8639","image":"https://gazoo.com/U-Car/carImg/18101/9061248/90612482026111914020801_L.jpg","priceTotal":133.2,"priceVehicle":122.1,"fee":11.1,"year":2020,"shaken":"車検整備付","km":"81,000km","score":null,"color":"青","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":false,"hybrid":false,"genres":["suv"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061248&Sdlr=18101","listedAt":"2026-11-19T14:02:00+09:00"},"9061221":{"id":"9061221","model":"ヤリスクロス","name":"ヤリスクロスHEV Z","comment":"幅広い年代に人気のスタイリッシュな都市型コンパクトSUV","shop":"博多南店","tel":"092-581-3131","image":"https://gazoo.com/U-Car/carImg/18101/9061221/90612212026112111352801_L.jpg","priceTotal":168.1,"priceVehicle":159.8,"fee":8.3,"year":2021,"shaken":"2028年5月","km":"60,000km","score":null,"color":"パール","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":false,"hybrid":true,"genres":["suv"],"maintenance":true,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061221&Sdlr=18101","listedAt":"2026-11-21T11:35:00+09:00"},"9061213":{"id":"9061213","model":"プリウス","name":"プリウス Sセーフティープラス2","comment":"燃費の良さに加えて安全装備充実のプリウス　大切な人を守る安心のクルマ","shop":"久留米インター店","tel":"0942-44-6144","image":"https://gazoo.com/U-Car/carImg/18101/9061213/90612132026111815120601_L.jpg","priceTotal":135.3,"priceVehicle":122.8,"fee":12.5,"year":2022,"shaken":"車検整備付","km":"99,000km","score":null,"color":"パール","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":false,"hybrid":true,"genres":["sedan"],"maintenance":true,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061213&Sdlr=18101","listedAt":"2026-11-18T15:12:00+09:00"},"9061078":{"id":"9061078","model":"ポルテ","name":"ポルテ G","comment":"助手席側の大型スライドドアが特徴・ポルテ　多彩なシートアレンジが可能","shop":"博多南店","tel":"092-581-3131","image":"https://gazoo.com/U-Car/carImg/18101/9061078/90610782026111915303001_L.jpg","priceTotal":64.4,"priceVehicle":55.8,"fee":8.6,"year":2015,"shaken":"2028年6月","km":"32,000km","score":null,"color":"ベージュ","warranty":["ロングラン保証付"],"supportCar":false,"view360":true,"isNew":true,"cert":false,"hybrid":false,"genres":["compact"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061078&Sdlr=18101","listedAt":"2026-11-19T15:30:00+09:00"},"9061027":{"id":"9061027","model":"ノート","name":"ノート e-パワーX","comment":"日産のコンパクト・ノートeパワー　街乗りに力を発揮する走行性能","shop":"小倉東店","tel":"093-472-1234","image":"https://gazoo.com/U-Car/carImg/18101/9061027/90610272026111917141601_L.jpg","priceTotal":45.7,"priceVehicle":37.5,"fee":8.2,"year":2017,"shaken":"2028年2月","km":"71,000km","score":null,"color":"パール","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":false,"hybrid":true,"genres":["compact"],"maintenance":true,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061027&Sdlr=18101","listedAt":"2026-11-19T17:14:00+09:00"},"9061001":{"id":"9061001","model":"エスクァイア","name":"エスクァイア GIブラックテーラード","comment":"人気の7人乗りミニバン・エスクァイア　高級感がありシックな雰囲気","shop":"久留米インター店","tel":"0942-44-6144","image":"https://gazoo.com/U-Car/carImg/18101/9061001/90610012026112115084701_L.jpg","priceTotal":122.0,"priceVehicle":108.5,"fee":13.5,"year":2016,"shaken":"車検整備付","km":"92,000km","score":null,"color":"黒","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":false,"hybrid":false,"genres":["minivan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061001&Sdlr=18101","listedAt":"2026-11-21T15:08:00+09:00"},"9060942":{"id":"9060942","model":"アクア","name":"アクア X","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9060942/90609422026111814140301_L.jpg","priceTotal":79.9,"priceVehicle":67.9,"fee":12.0,"year":2021,"shaken":"車検整備付","km":"187,000km","score":null,"color":"黒","warranty":[],"supportCar":true,"view360":false,"isNew":true,"cert":false,"hybrid":true,"genres":["compact"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060942&Sdlr=18101","listedAt":"2026-11-18T14:14:00+09:00"},"9060934":{"id":"9060934","model":"タント","name":"タントカスタムXトップEDリミテSA3","comment":"ダイハツ人気の軽・タントカスタム　街で目を惹く、クール&スポーティ","shop":"小倉東店","tel":"093-472-1234","image":"https://gazoo.com/U-Car/carImg/18101/9060934/90609342026111816511401_L.jpg","priceTotal":86.8,"priceVehicle":77.5,"fee":9.3,"year":2017,"shaken":"車検整備付","km":"66,000km","score":null,"color":"茶","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":false,"hybrid":false,"genres":["small"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060934&Sdlr=18101","listedAt":"2026-11-18T16:51:00+09:00"},"9060900":{"id":"9060900","model":"プリウスα","name":"プリウスアルファ Gチューンブラック","comment":"プリウスのワゴンタイプ5人乗り　燃費の良さも荷室の広さもイイトコロどり","shop":"飯塚店","tel":"0948-82-2594","image":"https://gazoo.com/U-Car/carImg/18101/9060900/90609002026111816075501_L.jpg","priceTotal":58.3,"priceVehicle":45.7,"fee":12.6,"year":2014,"shaken":"車検整備付","km":"114,000km","score":null,"color":"シルバー","warranty":["ロングラン保証付"],"supportCar":false,"view360":true,"isNew":true,"cert":false,"hybrid":true,"genres":["minivan","wagon"],"maintenance":true,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060900&Sdlr=18101","listedAt":"2026-11-18T16:07:00+09:00"},"9060861":{"id":"9060861","model":"ランドクルーザー・プラド","name":"ランクルプラドTXL70thアニバ","comment":"トヨタ自慢の4WD　人気のプラド・70th記念!歴史が育んだ特別な1台","shop":"福岡西店","tel":"092-894-8639","image":"https://gazoo.com/U-Car/carImg/18101/9060861/90608612026111916395601_L.jpg","priceTotal":393.0,"priceVehicle":378.5,"fee":14.5,"year":2022,"shaken":"車検整備付","km":"116,000km","score":null,"color":"黒","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":false,"hybrid":false,"genres":["suv"],"maintenance":true,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060861&Sdlr=18101","listedAt":"2026-11-19T16:39:00+09:00"},"9061353":{"id":"9061353","model":"アルファード","name":"アルファード S Cパッケージ","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9061353/90613532026111316335401_L.jpg","priceTotal":298.7,"priceVehicle":289.5,"fee":9.2,"year":2021,"shaken":"2028年4月","km":"97,000km","score":null,"color":"パール","warranty":[],"supportCar":true,"view360":false,"isNew":false,"cert":false,"hybrid":false,"genres":["minivan"],"maintenance":false,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061353&Sdlr=18101","listedAt":"2026-11-13T16:33:00+09:00"},"9061043":{"id":"9061043","model":"プリウスα","name":"プリウスアルファSチューンブラック2","comment":"プリウスのワゴンタイプ5人乗り　燃費の良さも荷室の広さもイイトコロどり","shop":"福岡インター店","tel":"092-938-1422","image":"https://gazoo.com/U-Car/carImg/18101/9061043/90610432026111518385501_L.jpg","priceTotal":141.4,"priceVehicle":129.8,"fee":11.6,"year":2018,"shaken":"車検整備付","km":"69,000km","score":null,"color":"青","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":true,"genres":["minivan","wagon"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061043&Sdlr=18101","listedAt":"2026-11-15T18:38:00+09:00"},"9061035":{"id":"9061035","model":"シエンタ","name":"シエンタHEV G","comment":"人気の人乗りコンパクトミニバン　いざという時の3列目シートが大活躍","shop":"八幡店","tel":"093-621-5352","image":"https://gazoo.com/U-Car/carImg/18101/9061035/90610352026111517064001_L.jpg","priceTotal":61.2,"priceVehicle":48.9,"fee":12.3,"year":2016,"shaken":"車検整備付","km":"159,000km","score":null,"color":"青","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":true,"genres":["minivan"],"maintenance":true,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061035&Sdlr=18101","listedAt":"2026-11-15T17:06:00+09:00"},"9060888":{"id":"9060888","model":"シエンタ","name":"シエンタ Z","comment":"小さな7人乗りミニバン　安全装備・快適装備が充実のZグレード","shop":"博多南店","tel":"092-581-3131","image":"https://gazoo.com/U-Car/carImg/18101/9060888/90608882026111215351801_L.jpg","priceTotal":215.3,"priceVehicle":203.0,"fee":12.3,"year":2022,"shaken":"車検整備付","km":"41,000km","score":null,"color":"赤","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":false,"genres":["minivan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060888&Sdlr=18101","listedAt":"2026-11-12T15:35:00+09:00"},"9060845":{"id":"9060845","model":"アイシス","name":"アイシスプラタナVセレクションブラン","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9060845/90608452026111211254801_L.jpg","priceTotal":53.8,"priceVehicle":45.7,"fee":8.1,"year":2014,"shaken":"2027年5月","km":"76,000km","score":null,"color":"パール","warranty":[],"supportCar":false,"view360":false,"isNew":false,"cert":false,"hybrid":false,"genres":["minivan"],"maintenance":false,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060845&Sdlr=18101","listedAt":"2026-11-12T11:25:00+09:00"},"9060667":{"id":"9060667","model":"ヴォクシー","name":"ヴォクシー ZSキラメキ","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9060667/90606672026110611055201_L.jpg","priceTotal":95.2,"priceVehicle":81.7,"fee":13.5,"year":2016,"shaken":"車検整備付","km":"157,000km","score":null,"color":"パール","warranty":[],"supportCar":true,"view360":false,"isNew":false,"cert":false,"hybrid":false,"genres":["minivan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060667&Sdlr=18101","listedAt":"2026-11-06T11:05:00+09:00"},"9060497":{"id":"9060497","model":"エスクァイア","name":"エスクァイア GI","comment":"8人乗りミニバン!上質なインテリアに快適な後席モニター付き","shop":"博多南店","tel":"092-581-3131","image":"https://gazoo.com/U-Car/carImg/18101/9060497/90604972026111214054201_L.jpg","priceTotal":138.6,"priceVehicle":129.9,"fee":8.7,"year":2017,"shaken":"2028年1月","km":"97,000km","score":null,"color":"黒","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":false,"genres":["minivan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060497&Sdlr=18101","listedAt":"2026-11-12T14:05:00+09:00"},"9060331":{"id":"9060331","model":"アルファード","name":"アルファード SA Cパッケージ","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9060331/90603312026111814124301_L.jpg","priceTotal":204.8,"priceVehicle":189.7,"fee":15.1,"year":2015,"shaken":"車検整備付","km":"71,000km","score":null,"color":"黒","warranty":[],"supportCar":true,"view360":false,"isNew":true,"cert":false,"hybrid":false,"genres":["minivan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060331&Sdlr=18101","listedAt":"2026-11-18T14:12:00+09:00"},"9061272":{"id":"9061272","model":"カローラクロス","name":"カローラクロスHEV Z","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9061272/90612722026111316323301_L.jpg","priceTotal":210.1,"priceVehicle":197.8,"fee":12.3,"year":2021,"shaken":"車検整備付","km":"190,000km","score":null,"color":"黒","warranty":[],"supportCar":true,"view360":false,"isNew":false,"cert":false,"hybrid":true,"genres":["suv"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061272&Sdlr=18101","listedAt":"2026-11-13T16:32:00+09:00"},"9061141":{"id":"9061141","model":"デュアリス","name":"デュアリス 20G","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9061141/90611412026111216285201_L.jpg","priceTotal":43.2,"priceVehicle":29.7,"fee":13.5,"year":2013,"shaken":"車検整備付","km":"78,000km","score":null,"color":"黒","warranty":[],"supportCar":false,"view360":false,"isNew":false,"cert":false,"hybrid":false,"genres":["suv"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061141&Sdlr=18101","listedAt":"2026-11-12T16:28:00+09:00"},"9061019":{"id":"9061019","model":"ライズ","name":"ライズHEV Z","comment":"人気のコンパクトSUV　充実装備のZ!フルエアロ装備で足元キマってます","shop":"博多南店","tel":"092-581-3131","image":"https://gazoo.com/U-Car/carImg/18101/9061019/90610192026111216454401_L.jpg","priceTotal":151.7,"priceVehicle":139.5,"fee":12.2,"year":2022,"shaken":"車検整備付","km":"102,000km","score":null,"color":"パール","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":true,"genres":["suv"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061019&Sdlr=18101","listedAt":"2026-11-12T16:45:00+09:00"},"9060951":{"id":"9060951","model":"ハリアー","name":"ハリアー プレミアムスタイルノアール","comment":"トヨタ人気のSUV　特別仕様車専用オシャレなインテリアとアルミホイール","shop":"久留米インター店","tel":"0942-44-6144","image":"https://gazoo.com/U-Car/carImg/18101/9060951/90609512026111017554701_L.jpg","priceTotal":211.3,"priceVehicle":197.9,"fee":13.4,"year":2020,"shaken":"車検整備付","km":"92,000km","score":null,"color":"パール","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":false,"genres":["suv"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060951&Sdlr=18101","listedAt":"2026-11-10T17:55:00+09:00"},"9060802":{"id":"9060802","model":"C-HR","name":"C-HRHEV G","comment":"大人のスタイリッシュなデザインと快適な走り　うれしいハイブリッド仕様","shop":"福岡西店","tel":"092-894-8639","image":"https://gazoo.com/U-Car/carImg/18101/9060802/90608022026111518231401_L.jpg","priceTotal":110.9,"priceVehicle":102.4,"fee":8.5,"year":2018,"shaken":"2027年11月","km":"124,000km","score":null,"color":"パール","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":true,"genres":["suv"],"maintenance":true,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060802&Sdlr=18101","listedAt":"2026-11-15T18:23:00+09:00"},"9061167":{"id":"9061167","model":"インプレッサ","name":"インプレッサスポ-ツ1.6iLアイS","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9061167/90611672026111216271301_L.jpg","priceTotal":61.9,"priceVehicle":53.7,"fee":8.2,"year":2018,"shaken":"2027年5月","km":"101,000km","score":null,"color":"シルバー","warranty":[],"supportCar":true,"view360":false,"isNew":false,"cert":false,"hybrid":false,"genres":["compact"],"maintenance":false,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061167&Sdlr=18101","listedAt":"2026-11-12T16:27:00+09:00"},"9061086":{"id":"9061086","model":"ノート","name":"ノート エアロスタイルエマブレパッケ","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9061086/90610862026111211271701_L.jpg","priceTotal":27.5,"priceVehicle":19.8,"fee":7.7,"year":2014,"shaken":"2027年3月","km":"82,000km","score":null,"color":"黒","warranty":[],"supportCar":true,"view360":false,"isNew":false,"cert":false,"hybrid":false,"genres":["compact"],"maintenance":false,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019061086&Sdlr=18101","listedAt":"2026-11-12T11:27:00+09:00"},"9060918":{"id":"9060918","model":"スイフト","name":"スイフト RStセーフティパッケージ","comment":"スズキ人気のコンパクト・スイフト　走る楽しさ!軽快なハンドリングです","shop":"小倉東店","tel":"093-472-1234","image":"https://gazoo.com/U-Car/carImg/18101/9060918/90609182026111317255501_L.jpg","priceTotal":86.6,"priceVehicle":75.3,"fee":11.3,"year":2017,"shaken":"車検整備付","km":"74,000km","score":null,"color":"パール","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":false,"genres":["compact"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060918&Sdlr=18101","listedAt":"2026-11-13T17:25:00+09:00"},"9060811":{"id":"9060811","model":"アクア","name":"アクア G","comment":"トヨタ自慢のハイブリッド　毎日使う相棒としての親しみやすさがあります","shop":"飯塚店","tel":"0948-82-2594","image":"https://gazoo.com/U-Car/carImg/18101/9060811/90608112026111515252801_L.jpg","priceTotal":96.5,"priceVehicle":88.0,"fee":8.5,"year":2021,"shaken":"2028年10月","km":"126,000km","score":null,"color":"ベージュ","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":true,"genres":["compact"],"maintenance":true,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060811&Sdlr=18101","listedAt":"2026-11-15T15:25:00+09:00"},"9060756":{"id":"9060756","model":"アクア","name":"アクア G","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9060756/90607562026110714252001_L.jpg","priceTotal":71.2,"priceVehicle":62.8,"fee":8.4,"year":2017,"shaken":"2028年3月","km":"47,000km","score":null,"color":"紫","warranty":[],"supportCar":true,"view360":false,"isNew":false,"cert":false,"hybrid":true,"genres":["compact"],"maintenance":false,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060756&Sdlr=18101","listedAt":"2026-11-07T14:25:00+09:00"},"9060683":{"id":"9060683","model":"アクア","name":"アクア Sスタイルブラック","comment":"トヨタ自慢のハイブリッド　燃費が良いということも車選びのポイントの1つ","shop":"八幡店","tel":"093-621-5352","image":"https://gazoo.com/U-Car/carImg/18101/9060683/90606832026111911573601_L.jpg","priceTotal":66.0,"priceVehicle":54.8,"fee":11.2,"year":2018,"shaken":"車検整備付","km":"61,000km","score":null,"color":"パール","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":false,"hybrid":true,"genres":["compact"],"maintenance":true,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060683&Sdlr=18101","listedAt":"2026-11-19T11:57:00+09:00"},"9060560":{"id":"9060560","model":"アクア","name":"アクア Gブラックソフトレザーセレク","comment":"トヨタ自慢のハイブリッド　人気のアクア!レザーシートの上質なインテリア","shop":"飯塚店","tel":"0948-82-2594","image":"https://gazoo.com/U-Car/carImg/18101/9060560/90605602026110719270001_L.jpg","priceTotal":69.1,"priceVehicle":56.8,"fee":12.3,"year":2014,"shaken":"車検整備付","km":"84,000km","score":null,"color":"シルバー","warranty":["ロングラン保証付"],"supportCar":false,"view360":true,"isNew":false,"cert":false,"hybrid":true,"genres":["compact"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060560&Sdlr=18101","listedAt":"2026-11-07T19:27:00+09:00"},"9060438":{"id":"9060438","model":"アクア","name":"アクア S","comment":"自慢のハイブリッド　コンパクトならではの取りまわしの良さ","shop":"飯塚店","tel":"0948-82-2594","image":"https://gazoo.com/U-Car/carImg/18101/9060438/90604382026111115020401_L.jpg","priceTotal":53.2,"priceVehicle":41.0,"fee":12.2,"year":2015,"shaken":"車検整備付","km":"83,000km","score":null,"color":"パール","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":true,"genres":["compact"],"maintenance":true,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060438&Sdlr=18101","listedAt":"2026-11-11T15:02:00+09:00"},"9060705":{"id":"9060705","model":"ハスラー","name":"ハスラー G","comment":"スズキの人気軽SUV・ハスラー　リーズナブルな価格でご用意しました","shop":"博多南店","tel":"092-581-3131","image":"https://gazoo.com/U-Car/carImg/18101/9060705/90607052026111114570801_L.jpg","priceTotal":52.3,"priceVehicle":43.0,"fee":9.3,"year":2016,"shaken":"車検整備付","km":"45,000km","score":null,"color":"赤","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":true,"genres":["suv","small"],"maintenance":true,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060705&Sdlr=18101","listedAt":"2026-11-11T14:57:00+09:00"},"9060551":{"id":"9060551","model":"N-BOX","name":"N-BOX Gホンダセンシング","comment":"ホンダ人気の軽・N-BOX　毎日の行ってきますを支える充実した安全装備","shop":"久留米インター店","tel":"0942-44-6144","image":"https://gazoo.com/U-Car/carImg/18101/9060551/90605512026111014053201_L.jpg","priceTotal":49.1,"priceVehicle":39.9,"fee":9.2,"year":2017,"shaken":"車検整備付","km":"80,000km","score":null,"color":"ベージュ","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":false,"genres":["small"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060551&Sdlr=18101","listedAt":"2026-11-10T14:05:00+09:00"},"9060462":{"id":"9060462","model":"タント","name":"タント カスタムRS","comment":"スポーティな外観のタントカスタム　走りと実用性のバランスが魅力","shop":"飯塚店","tel":"0948-82-2594","image":"https://gazoo.com/U-Car/carImg/18101/9060462/90604622026111814571401_L.jpg","priceTotal":81.9,"priceVehicle":74.9,"fee":7.0,"year":2019,"shaken":"2028年2月","km":"42,000km","score":null,"color":"不明","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":false,"hybrid":false,"genres":["small"],"maintenance":true,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060462&Sdlr=18101","listedAt":"2026-11-18T14:57:00+09:00"},"9060357":{"id":"9060357","model":"eKワゴン","name":"eKカスタム Gセーフティパッケージ","comment":"ミツビシ人気の軽・ekカスタム　リーズナブルな価格でご用意しました","shop":"八幡店","tel":"093-621-5352","image":"https://gazoo.com/U-Car/carImg/18101/9060357/90603572026110618504901_L.jpg","priceTotal":40.4,"priceVehicle":33.3,"fee":7.1,"year":2017,"shaken":"2028年3月","km":"93,000km","score":null,"color":"パール","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":false,"genres":["small"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060357&Sdlr=18101","listedAt":"2026-11-06T18:50:00+09:00"},"9060195":{"id":"9060195","model":"ワゴンR","name":"ワゴンR FX","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9060195/90601952026102717085301_L.jpg","priceTotal":26.0,"priceVehicle":19.3,"fee":6.7,"year":2012,"shaken":"2027年4月","km":"74,000km","score":null,"color":"白","warranty":[],"supportCar":false,"view360":false,"isNew":false,"cert":false,"hybrid":false,"genres":["small"],"maintenance":false,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060195&Sdlr=18101","listedAt":"2026-10-27T17:08:00+09:00"},"9060021":{"id":"9060021","model":"デイズ","name":"デイズ ハイウェイスターGターボ","comment":"ニッサン人気の軽　オシャレなデザイン、キビキビ走れるターボエンジン搭載","shop":"福岡インター店","tel":"092-938-1422","image":"https://gazoo.com/U-Car/carImg/18101/9060021/90600212026102411483701_L.jpg","priceTotal":60.6,"priceVehicle":53.7,"fee":6.9,"year":2018,"shaken":"2027年12月","km":"71,000km","score":null,"color":"パール","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":false,"genres":["small"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060021&Sdlr=18101","listedAt":"2026-10-24T11:48:00+09:00"},"9059987":{"id":"9059987","model":"デイズ","name":"デイズHスターGターボプロパイ","comment":"ニッサン人気の軽　オシャレなデザイン、キビキビ走れるターボエンジン搭載","shop":"福岡西店","tel":"092-894-8639","image":"https://gazoo.com/U-Car/carImg/18101/9059987/90599872026103013280401_L.jpg","priceTotal":79.5,"priceVehicle":70.3,"fee":9.2,"year":2020,"shaken":"車検整備付","km":"74,000km","score":null,"color":"シルバー","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":true,"genres":["small"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019059987&Sdlr=18101","listedAt":"2026-10-30T13:28:00+09:00"},"9059723":{"id":"9059723","model":"ピクシスエポック","name":"ピクシスエポック G SA3","comment":"経済的なうえに運転がしやすく実用的な軽自動車!安全機能も備わり安心","shop":"小倉東店","tel":"093-472-1234","image":"https://gazoo.com/U-Car/carImg/18101/9059723/90597232026101817060201_L.jpg","priceTotal":74.6,"priceVehicle":65.5,"fee":9.1,"year":2019,"shaken":"車検整備付","km":"53,000km","score":null,"color":"青","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":false,"genres":["small"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019059723&Sdlr=18101","listedAt":"2026-10-18T17:06:00+09:00"},"9059448":{"id":"9059448","model":"デイズルークス","name":"デイズルークスライダーHWSXベ","comment":"専用フロントグリルやエアロパーツなどで一味違うスポーティな存在感","shop":"小倉東店","tel":"093-472-1234","image":"https://gazoo.com/U-Car/carImg/18101/9059448/90594482026102216063201_L.jpg","priceTotal":78.1,"priceVehicle":68.8,"fee":9.3,"year":2016,"shaken":"車検整備付","km":"52,000km","score":null,"color":"黒","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":false,"genres":["small"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019059448&Sdlr=18101","listedAt":"2026-10-22T16:06:00+09:00"},"9059359":{"id":"9059359","model":"ムーヴキャンバス","name":"ムーヴキャンバスGメイクアッSA3","comment":"ダイハツ人気の軽ムーブキャンバス　愛嬌のある外観!運転が楽しくなる","shop":"福岡西店","tel":"092-894-8639","image":"https://gazoo.com/U-Car/carImg/18101/9059359/90593592026102216222801_L.jpg","priceTotal":100.3,"priceVehicle":91.0,"fee":9.3,"year":2018,"shaken":"車検整備付","km":"71,000km","score":null,"color":"ベージュ","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":false,"genres":["small"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019059359&Sdlr=18101","listedAt":"2026-10-22T16:22:00+09:00"},"9060292":{"id":"9060292","model":"プリウス","name":"プリウス S","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9060292/90602922026102717111101_L.jpg","priceTotal":32.4,"priceVehicle":23.7,"fee":8.7,"year":2010,"shaken":"2027年12月","km":"168,000km","score":null,"color":"シルバー","warranty":[],"supportCar":false,"view360":false,"isNew":false,"cert":false,"hybrid":true,"genres":["sedan"],"maintenance":false,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060292&Sdlr=18101","listedAt":"2026-10-27T17:11:00+09:00"},"9060284":{"id":"9060284","model":"プリウス","name":"プリウス Aツーリングセレクション","comment":"トヨタ自慢のハイブリッド　人気のプリウス!キレイで艶やかなレッドボディ","shop":"福岡西店","tel":"092-894-8639","image":"https://gazoo.com/U-Car/carImg/18101/9060284/90602842026102817281701_L.jpg","priceTotal":154.0,"priceVehicle":145.7,"fee":8.3,"year":2020,"shaken":"2027年11月","km":"53,000km","score":null,"color":"赤","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":true,"genres":["sedan"],"maintenance":true,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019060284&Sdlr=18101","listedAt":"2026-10-28T17:28:00+09:00"},"9059952":{"id":"9059952","model":"マークX","name":"マークX プレミアム","comment":"トヨタ自慢のFRセダン・マークX　快適な走りと上質なインテリアは健在","shop":"飯塚店","tel":"0948-82-2594","image":"https://gazoo.com/U-Car/carImg/18101/9059952/90599522026103013181901_L.jpg","priceTotal":73.1,"priceVehicle":58.0,"fee":15.1,"year":2012,"shaken":"車検整備付","km":"73,000km","score":null,"color":"シルバー","warranty":["ロングラン保証付"],"supportCar":false,"view360":true,"isNew":false,"cert":false,"hybrid":false,"genres":["sedan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019059952&Sdlr=18101","listedAt":"2026-10-30T13:18:00+09:00"},"9059928":{"id":"9059928","model":"アクセラ","name":"アクセラセダンHV S","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9059928/90599282026101517271201_L.jpg","priceTotal":55.9,"priceVehicle":47.8,"fee":8.1,"year":2016,"shaken":"2027年3月","km":"132,000km","score":null,"color":"黒","warranty":[],"supportCar":true,"view360":false,"isNew":false,"cert":false,"hybrid":true,"genres":["sedan"],"maintenance":false,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019059928&Sdlr=18101","listedAt":"2026-10-15T17:27:00+09:00"},"9059545":{"id":"9059545","model":"プリウス","name":"プリウス Sツーリングセレクション","comment":"長距離も日常使いでも経済的!走行安定性もよく安心して乗れる人気のセダン","shop":"八幡店","tel":"093-621-5352","image":"https://gazoo.com/U-Car/carImg/18101/9059545/90595452026102717273101_L.jpg","priceTotal":90.0,"priceVehicle":77.5,"fee":12.5,"year":2016,"shaken":"車検整備付","km":"91,000km","score":null,"color":"赤","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":true,"genres":["sedan"],"maintenance":true,"repair":"あり","url":"https://gazoo.com/DealerU-Car/detail?Id=181019059545&Sdlr=18101","listedAt":"2026-10-27T17:27:00+09:00"},"9057763":{"id":"9057763","model":"プリウス","name":"プリウス Sツーリングセレクション","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9057763/90577632026090518502901_L.jpg","priceTotal":43.4,"priceVehicle":29.9,"fee":13.5,"year":2011,"shaken":"車検整備付","km":"142,000km","score":null,"color":"黒","warranty":[],"supportCar":false,"view360":false,"isNew":false,"cert":false,"hybrid":true,"genres":["sedan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019057763&Sdlr=18101","listedAt":"2026-09-05T18:50:00+09:00"},"9057704":{"id":"9057704","model":"カムリ","name":"カムリ G プレミアムブラック","comment":"","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9057704/90577042026090518491901_L.jpg","priceTotal":82.4,"priceVehicle":68.9,"fee":13.5,"year":2015,"shaken":"車検整備付","km":"146,000km","score":null,"color":"黒","warranty":[],"supportCar":true,"view360":false,"isNew":false,"cert":false,"hybrid":true,"genres":["sedan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019057704&Sdlr=18101","listedAt":"2026-09-05T18:49:00+09:00"},"8397072":{"id":"8397072","model":"カムリ","name":"カムリ WSレザーパッケージ","comment":"セダン人気を再燃させたカムリ　走行距離少なめ!お問い合わせはお早めに","shop":"小倉東店","tel":"093-472-1234","image":"https://gazoo.com/U-Car/carImg/18101/8397072/83970722026111518455301_L.jpg","priceTotal":412.1,"priceVehicle":398.5,"fee":13.6,"year":2024,"shaken":"車検整備付","km":"14,000km","score":"4.5","color":"パール","warranty":["ロングラン保証付","ハイブリッド保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":true,"hybrid":true,"genres":["sedan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181018397072&Sdlr=18101","listedAt":"2026-11-15T18:45:00+09:00"},"8397064":{"id":"8397064","model":"クラウン","name":"クラウンHEVRSFOURリミテッド2","comment":"RSグレードならではの専用装備がスタイリッシュ!快適な乗り心地も人気","shop":"福岡西店","tel":"092-894-8639","image":"https://gazoo.com/U-Car/carImg/18101/8397064/83970642026111916433001_L.jpg","priceTotal":369.4,"priceVehicle":357.2,"fee":12.2,"year":2022,"shaken":"車検整備付","km":"77,000km","score":"4","color":"黒","warranty":["ロングラン保証付","ハイブリッド保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":true,"hybrid":true,"genres":["sedan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181018397064&Sdlr=18101","listedAt":"2026-11-19T16:43:00+09:00"},"9059499":{"id":"9059499","model":"ハリアー","name":"ハリアーPHEV Z","comment":"稀少!人気SUV・ハリアーのPHEV　日常はほぼガソリンを使わずに","shop":"福岡インター店","tel":"092-938-1422","image":"https://gazoo.com/U-Car/carImg/18101/9059499/90594992026102317435901_L.jpg","priceTotal":412.7,"priceVehicle":399.0,"fee":13.7,"year":2024,"shaken":"車検整備付","km":"33,000km","score":null,"color":"グレー","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":true,"genres":["suv"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019059499&Sdlr=18101","listedAt":"2026-10-23T17:43:00+09:00"},"9058077":{"id":"9058077","model":"アルファード","name":"アルファードエグゼクティブラウン","comment":"アルファードならではの静粛性と高級感　2列目シートの快適性も魅力","shop":"U-Car総合センター","tel":"","image":"https://gazoo.com/U-Car/carImg/18101/9058077/90580772026102410071601_L.jpg","priceTotal":448.9,"priceVehicle":438.9,"fee":10.0,"year":2023,"shaken":"2028年5月","km":"64,000km","score":null,"color":"パール","warranty":[],"supportCar":true,"view360":true,"isNew":false,"cert":false,"hybrid":false,"genres":["minivan"],"maintenance":false,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181019058077&Sdlr=18101","listedAt":"2026-10-24T10:07:00+09:00"},"8398443":{"id":"8398443","model":"クラウン クロスオーバー","name":"クラウンHEVクロスオーバーRSAD","comment":"SUVとセダンを融合させた都会的スタイル　上質な乗り心地と高い走行性能","shop":"小倉東店","tel":"093-472-1234","image":"https://gazoo.com/U-Car/carImg/18101/8398443/83984432026112017035001_L.jpg","priceTotal":443.6,"priceVehicle":429.8,"fee":13.8,"year":2023,"shaken":"車検整備付","km":"25,000km","score":"4.5","color":"パール","warranty":["ロングラン保証付","ハイブリッド保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":true,"hybrid":true,"genres":["suv"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181018398443&Sdlr=18101","listedAt":"2026-11-20T17:03:00+09:00"},"8397714":{"id":"8397714","model":"アルファード","name":"アルファード Z","comment":"人気の高級ミニバン　欲しい装備が満載!乗る人すべてを満足させる快適性","shop":"福岡西店","tel":"092-894-8639","image":"https://gazoo.com/U-Car/carImg/18101/8397714/83977142026112116504901_L.jpg","priceTotal":534.8,"priceVehicle":519.8,"fee":15.0,"year":2024,"shaken":"車検整備付","km":"27,000km","score":"4.5","color":"パール","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":true,"hybrid":false,"genres":["minivan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181018397714&Sdlr=18101","listedAt":"2026-11-21T16:50:00+09:00"},"8397552":{"id":"8397552","model":"ハリアー","name":"ハリアーHEV Zナイトシェード","comment":"ブラック基調の専用内外装を採用した特別仕様車!静かでパワフルなSUV","shop":"福岡西店","tel":"092-894-8639","image":"https://gazoo.com/U-Car/carImg/18101/8397552/83975522026112111274201_L.jpg","priceTotal":451.0,"priceVehicle":441.8,"fee":9.2,"year":2025,"shaken":"2028年8月","km":"11,000km","score":"4.5","color":"パール","warranty":["ロングラン保証付","ハイブリッド保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":true,"hybrid":true,"genres":["suv"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181018397552&Sdlr=18101","listedAt":"2026-11-21T11:27:00+09:00"},"8396939":{"id":"8396939","model":"アルファード","name":"アルファード Z","comment":"居住性を高めた室内空間はファミリー層にも人気!ドライブが楽しくなる","shop":"福岡インター店","tel":"092-938-1422","image":"https://gazoo.com/U-Car/carImg/18101/8396939/83969392026112115270101_L.jpg","priceTotal":558.1,"priceVehicle":548.2,"fee":9.9,"year":2025,"shaken":"2028年9月","km":"9,000km","score":"4.5","color":"パール","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":true,"hybrid":false,"genres":["minivan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181018396939&Sdlr=18101","listedAt":"2026-11-21T15:27:00+09:00"},"8396904":{"id":"8396904","model":"アルファード","name":"アルファード Z","comment":"トヨタ人気の高級ミニバン・アルファード　上質さ!選ばれ続ける理由がある","shop":"八幡店","tel":"093-621-5352","image":"https://gazoo.com/U-Car/carImg/18101/8396904/83969042026111914144501_L.jpg","priceTotal":544.8,"priceVehicle":529.8,"fee":15.0,"year":2024,"shaken":"車検整備付","km":"12,000km","score":"4","color":"黒","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":true,"hybrid":false,"genres":["minivan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181018396904&Sdlr=18101","listedAt":"2026-11-19T14:14:00+09:00"},"8396491":{"id":"8396491","model":"アルファード","name":"アルファード S Cパッケージ","comment":"人気高級ミニバン・アルファード　電動で開閉するバックドアが高級感を演出","shop":"福岡インター店","tel":"092-938-1422","image":"https://gazoo.com/U-Car/carImg/18101/8396491/83964912026111817033001_L.jpg","priceTotal":434.8,"priceVehicle":419.8,"fee":15.0,"year":2022,"shaken":"車検整備付","km":"39,000km","score":"4","color":"黒","warranty":["ロングラン保証付"],"supportCar":true,"view360":true,"isNew":true,"cert":true,"hybrid":false,"genres":["minivan"],"maintenance":true,"repair":"なし","url":"https://gazoo.com/DealerU-Car/detail?Id=181018396491&Sdlr=18101","listedAt":"2026-11-18T17:03:00+09:00"}}}</script>
+<script type="application/json" id="ucar-insta-snapshot">{"account":"fukuokatoyopet_ucar","name":"福岡トヨペット中古車【公式】","fetchedAt":"2026-11-25T08:45:00Z","posts":[{"url":"https://www.instagram.com/fukuokatoyopet_ucar/p/DgJg-rHk5Xu/","type":"photo","date":"2026-11-24","image":"img/ig-DgJg-rHk5Xu.jpg"},{"url":"https://www.instagram.com/fukuokatoyopet_ucar/reel/DgFAnDrB4k5/","type":"reel","date":"2026-11-23","image":""},{"url":"https://www.instagram.com/fukuokatoyopet_ucar/p/Df_6j4xIyHe/","type":"photo","date":"2026-11-20","image":"img/ig-Df_6j4xIyHe.jpg"},{"url":"https://www.instagram.com/fukuokatoyopet_ucar/p/Df3fXgAE3WZ/","type":"photo","date":"2026-11-17","image":"img/ig-Df3fXgAE3WZ.jpg"},{"url":"https://www.instagram.com/fukuokatoyopet_ucar/p/DforzxKExc1/","type":"photo","date":"2026-11-12","image":"img/ig-DforzxKExc1.jpg"},{"url":"https://www.instagram.com/fukuokatoyopet_ucar/p/DfoCljokx-p/","type":"photo","date":"2026-11-11","image":"img/ig-DfoCljokx-p.jpg"},{"url":"https://www.instagram.com/fukuokatoyopet_ucar/p/DfmHBpBk3u9/","type":"photo","date":"2026-11-11","image":"img/ig-DfmHBpBk3u9.jpg"},{"url":"https://www.instagram.com/fukuokatoyopet_ucar/p/Dfld2dwE91s/","type":"photo","date":"2026-11-10","image":"img/ig-Dfld2dwE91s.jpg"}]}</script>
+<script type="application/json" id="ucar-staff-snapshot">null</script>
+<script type="application/json" id="ucar-shops">[{"key":"nisi","name":"福岡西店","area":"福岡エリア","url":"https://fukuoka-toyopet.jp/shop/ucar-fukuokanisi","addr":"福岡市西区橋本1-13-6","tel":"092-894-8639","ll":[130.318634,33.56155],"shp":"83","newCount":17,"manager":"川村 直人","msg":"福岡都市高速「福重出口（外回り）」すぐ、緑の看板が目印です。サービス工場を併設しておりますので、ご購入後もお客様の愛車をしっかりとメンテナンスさせていただきます。","points":["都市高速 福重出口すぐ","サービス工場を併設","授乳室あり"],"fac":["キッズコーナー","授乳室","ベビーシート","バリアフリー・多目的トイレ","WiFi","子供110番","車検・整備","クルマ買取り"],"photos":[{"cap":"外観","img":"img/shop-nisi-1.jpg"},{"cap":"ショールーム","img":"img/shop-nisi-3.jpg"},{"cap":"展示場","img":"img/shop-nisi-2.jpg"}],"blog":{"date":"2026.11.20","url":"https://fukuoka-toyopet.jp/blog/store/detail/521685?shop_id=7651","title":"トヨタ認定中古車福岡西11/21・22日2日間限定おもてなし","img":"img/blog-nisi.jpg"},"cars":["9061264","9061248","9060861"]},{"key":"hakataminami","name":"博多南店","area":"福岡エリア","url":"https://fukuoka-toyopet.jp/shop/ucar-hakataminami","addr":"福岡市博多区井相田1-13-42","tel":"092-581-3131","ll":[130.461365,33.556561],"shp":"81","newCount":18,"manager":"今屋","msg":"商談スペースは木で造られた温かみのあるアットホームな雰囲気です。整備に関しても経験豊富な整備士ばかりなので何でもご相談ください。","points":["木のぬくもりの商談スペース","経験豊富な整備士"],"fac":["キッズコーナー","ベビーシート","WiFi","子供110番","車検・整備","クルマ買取り"],"photos":[{"cap":"外観","img":"img/shop-hakataminami-1.jpg"},{"cap":"スタッフ","img":"img/shop-hakataminami-2.jpg"},{"cap":"展示場","img":"img/shop-hakataminami-3.jpg"}],"blog":{"date":"2026.11.20","url":"https://fukuoka-toyopet.jp/blog/store/detail/521681?shop_id=7684","title":"【トヨタ認定中古車博多南店】燃費で選ぶならトヨタのアクアおすすめです","img":"img/blog-hakataminami.jpg"},"cars":["9061221","9061078","9061019"]},{"key":"fukuokainta","name":"福岡インター店","area":"福岡エリア","url":"https://fukuoka-toyopet.jp/shop/ucar-fukuokainta","addr":"糟屋郡粕屋町大字大隈字大間185-1","tel":"092-938-1422","ll":[130.491486,33.618938],"shp":"22","newCount":11,"manager":"徳永 隆文","msg":"初めておクルマのご購入をお考えのお客様、中古車選びにご不安をお持ちのお客様には、トヨタ認定中古車の安心をお届けします。広々としたショールームには、キッズコーナーや授乳室を完備しております。","points":["広々としたショールーム","キッズコーナー・授乳室","工場を併設"],"fac":["キッズコーナー","WiFi","子供110番","車検・整備","クルマ買取り"],"photos":[{"cap":"外観","img":"img/shop-fukuokainta-1.jpg"},{"cap":"ショールーム","img":"img/shop-fukuokainta-3.jpg"},{"cap":"入口","img":"img/shop-fukuokainta-2.jpg"}],"blog":{"date":"2026.11.17","url":"https://fukuoka-toyopet.jp/blog/store/detail/521210?shop_id=7676","title":"オータムフェア開催します福岡トヨペットトヨタ認定中古車福岡インター店","img":"img/blog-fukuokainta.jpg"},"cars":["9061043","9060021","9059499"]},{"key":"kokurahigasi","name":"小倉東店","area":"北九州エリア","url":"https://fukuoka-toyopet.jp/shop/ucar-kokurahigasi","addr":"北九州市小倉南区葛原東4-1-17","tel":"093-472-1234","ll":[130.931046,33.837063],"shp":"85","newCount":15,"manager":"中山 恵美","msg":"当店はアフターサービスに注力し、お客様との繋がりや絆を大切にしていきたいと考えています。購入時も購入後も安心してお任せいただける店舗を目指しています。","points":["アフターサービスに注力"],"fac":["キッズコーナー","ベビーシート","WiFi","子供110番","クルマ買取り"],"photos":[{"cap":"外観","img":"img/shop-kokurahigasi-1.jpg"},{"cap":"スタッフ","img":"img/shop-kokurahigasi-2.jpg"},{"cap":"ショールーム","img":"img/shop-kokurahigasi-3.jpg"}],"blog":{"date":"2026.11.21","url":"https://fukuoka-toyopet.jp/blog/store/detail/521838?shop_id=7652","title":"【トヨタ認定中古車 小倉東店】 秋のファミリーフェア開催!","img":"img/blog-kokurahigasi.jpg"},"cars":["9061337","9061027","9060934"]},{"key":"yahata","name":"八幡店","area":"北九州エリア","url":"https://fukuoka-toyopet.jp/shop/ucar-yahata","addr":"北九州市八幡西区陣原2-12-6","tel":"093-621-5352","ll":[130.740799,33.864418],"shp":"86","newCount":12,"manager":"兼安 誠","msg":"トヨタ認定中古車をはじめ他メーカー車なども数多く展示しております。サービス工場も併設しておりますので、ご購入いただいた後のメンテナンスもしっかりさせていただきます。","points":["サービス工場を併設","他メーカー車も展示"],"fac":["キッズコーナー","WiFi","子供110番","車検・整備","クルマ買取り"],"photos":[{"cap":"外観","img":"img/shop-yahata-2.jpg"},{"cap":"サービス工場","img":"img/shop-yahata-3.jpg"},{"cap":"看板","img":"img/shop-yahata-1.jpg"}],"blog":{"date":"2026.11.21","url":"https://fukuoka-toyopet.jp/blog/store/detail/521549?shop_id=7653","title":"【トヨタ認定中古車八幡店】21日(土),22日(日)限定の美味しいもの","img":"img/blog-yahata.jpg"},"cars":["9061370","9061035","9060683"]},{"key":"iiduka","name":"飯塚店","area":"筑豊エリア","url":"https://fukuoka-toyopet.jp/shop/ucar-iiduka","addr":"飯塚市有井353","tel":"0948-82-2594","ll":[130.716263,33.646523],"shp":"87","newCount":16,"manager":"藤井 健次","msg":"筑豊地区を中心としたお客様へ50年以上の歴史を持つU-car店舗です。2025年5月にリニューアルオープンし、屋外展示場や納車コーナー、キッズコーナーや授乳室、多目的トイレなども完備しております。","points":["2025年5月リニューアル","屋外展示場・納車コーナー"],"fac":["キッズコーナー","ベビーシート","WiFi","子供110番","車検・整備","クルマ買取り"],"photos":[{"cap":"外観","img":"img/shop-iiduka-1.jpg"},{"cap":"ショールーム","img":"img/shop-iiduka-2.jpg"},{"cap":"多目的トイレ","img":"img/shop-iiduka-3.jpg"}],"blog":{"date":"2026.11.25","url":"https://fukuoka-toyopet.jp/blog/store/detail/520512?shop_id=7654","title":"福岡トヨペット(株)トヨタ認定中古車飯塚店スタッフの休日ブログ","img":"img/blog-iiduka.jpg"},"cars":["9061302","9060900","9060811"]},{"key":"kurumeinta","name":"久留米インター店","area":"筑後エリア","url":"https://fukuoka-toyopet.jp/shop/ucar-kurumeinta","addr":"久留米市東合川1-9-11","tel":"0942-44-6144","ll":[130.546753,33.321648],"shp":"88","newCount":11,"manager":"小河 光博","msg":"国道210号線バイパス沿い、九州自動車道久留米インター近くにあります。バイパス沿いの大きなU-CARの看板が目印です。","points":["九州道 久留米IC近く","国道210号バイパス沿い"],"fac":["キッズコーナー","ベビーシート","WiFi","子供110番","車検・整備","クルマ買取り"],"photos":[{"cap":"外観","img":"img/shop-kurumeinta-2.jpg"},{"cap":"展示場","img":"img/shop-kurumeinta-1.jpg"},{"cap":"展示場","img":"img/shop-kurumeinta-3.jpg"}],"blog":{"date":"2026.11.20","url":"https://fukuoka-toyopet.jp/blog/store/detail/521454?shop_id=7655","title":"【トヨタ認定中古車久留米インター店】11/21(土)・22(日)限定~秋のおもてなし~","img":"img/blog-kurumeinta.jpg"},"cars":["9061345","9061213","9061001"]}]</script>
+<script type="application/json" id="ucar-news">{"fair":[{"title":"トヨタ認定中古車 オータムフェア","when":"2026年11月21日・22日・28日・29日（11月23日は店休日）","url":"https://fukuoka-toyopet.jp/event/event202611_u-car_autumn","img":"img/event-ucar-autumn.jpg"}]}</script>
+<script type="application/json" id="ucar-geo">{"main":[[130.6724,33.9187],[130.6804,33.9234],[130.6846,33.9319],[130.6812,33.9367],[130.6861,33.9349],[130.6981,33.9387],[130.7277,33.9352],[130.7276,33.9297],[130.7371,33.9263],[130.7384,33.9318],[130.7463,33.9318],[130.7473,33.9233],[130.7527,33.9309],[130.7527,33.9455],[130.769,33.9472],[130.7689,33.9403],[130.7602,33.9395],[130.7601,33.9338],[130.7691,33.9338],[130.7691,33.929],[130.752,33.9257],[130.7507,33.9228],[130.7543,33.9227],[130.7536,33.9203],[130.7734,33.9269],[130.7767,33.9342],[130.8062,33.9305],[130.8177,33.9229],[130.8165,33.9169],[130.8063,33.9167],[130.8053,33.9127],[130.816,33.9142],[130.8144,33.9033],[130.7968,33.8909],[130.7761,33.8915],[130.7627,33.8849],[130.7683,33.8877],[130.7827,33.8863],[130.7526,33.8781],[130.7433,33.8882],[130.7467,33.8765],[130.7404,33.8749],[130.7721,33.8795],[130.7715,33.8748],[130.7747,33.8807],[130.7815,33.882],[130.7787,33.8771],[130.7815,33.8782],[130.784,33.8826],[130.795,33.8851],[130.8017,33.8913],[130.804,33.8817],[130.7988,33.8739],[130.8071,33.8776],[130.8048,33.8915],[130.8153,33.8973],[130.8201,33.9026],[130.8189,33.9069],[130.8216,33.9039],[130.8233,33.9199],[130.8562,33.9289],[130.86,33.9239],[130.8474,33.9192],[130.8489,33.9163],[130.8521,33.9175],[130.8497,33.9149],[130.8638,33.9199],[130.8685,33.9181],[130.8492,33.9098],[130.8474,33.9054],[130.8517,33.9043],[130.8561,33.9066],[130.854,33.9087],[130.8718,33.9153],[130.8785,33.9093],[130.8762,33.9062],[130.8832,33.9053],[130.8703,33.8993],[130.8662,33.9007],[130.863,33.8955],[130.8658,33.8979],[130.8738,33.8955],[130.8868,33.9021],[130.8924,33.8961],[130.8832,33.896],[130.8769,33.8901],[130.8917,33.8932],[130.887,33.8885],[130.891,33.8877],[130.8998,33.8941],[130.9197,33.8975],[130.9297,33.9069],[130.9449,33.9378],[130.963,33.9462],[130.9621,33.962],[130.9766,33.9576],[130.9912,33.9623],[130.9895,33.9591],[131.0001,33.9696],[131.0069,33.968],[131,33.9643],[131.0053,33.9623],[131.0096,33.9658],[131.0191,33.9629],[131.0165,33.9611],[131.0229,33.9589],[131.0172,33.9499],[131.0211,33.9429],[131.0108,33.9415],[131.0073,33.9366],[131.0097,33.9313],[131.0011,33.925],[131.0012,33.9219],[131.0147,33.9199],[131.0032,33.9127],[131.0022,33.9073],[131.0054,33.9051],[131.0002,33.9031],[130.9968,33.9065],[130.9871,33.9002],[130.9881,33.8927],[131.0039,33.8915],[130.9988,33.8735],[130.9951,33.8742],[130.9994,33.8773],[130.993,33.8782],[130.9941,33.8845],[130.9903,33.8857],[130.9857,33.882],[130.986,33.8721],[130.9813,33.8671],[130.9836,33.8641],[130.9878,33.8687],[130.9978,33.8669],[130.9926,33.8509],[130.9862,33.8549],[130.9804,33.8412],[130.9766,33.8444],[130.9757,33.8346],[130.9596,33.839],[130.9567,33.8301],[130.9658,33.8094],[130.978,33.8116],[130.9826,33.8086],[130.9995,33.8155],[131.004,33.8064],[130.9963,33.8101],[130.9993,33.8005],[130.987,33.7965],[130.9861,33.7877],[130.9817,33.7844],[130.9878,33.786],[130.9968,33.7963],[130.9992,33.7931],[130.9948,33.791],[130.9994,33.7912],[131.0028,33.7833],[130.9913,33.7734],[131.0004,33.7746],[130.9968,33.7711],[130.9987,33.7691],[131.0106,33.7775],[131.0169,33.7681],[130.9997,33.7572],[131.0032,33.7498],[131.0074,33.7439],[131.0097,33.7492],[131.0149,33.7509],[131.0176,33.7471],[131.0144,33.7319],[131.0193,33.7313],[131.0393,33.691],[131.0553,33.69],[131.0494,33.6859],[131.0627,33.6693],[131.0675,33.6546],[131.0707,33.6563],[131.0797,33.6477],[131.0827,33.6359],[131.0925,33.6287],[131.093,33.6235],[131.107,33.6168],[131.1072,33.6238],[131.1126,33.6238],[131.1123,33.6177],[131.1152,33.6187],[131.1142,33.6303],[131.1201,33.6302],[131.1218,33.6245],[131.1311,33.6231],[131.1281,33.6312],[131.1291,33.628],[131.1601,33.6168],[131.178,33.6197],[131.1845,33.6162],[131.1719,33.5865],[131.1733,33.5766],[131.1891,33.5619],[131.1872,33.5462],[131.1657,33.5284],[131.1673,33.5157],[131.1765,33.508],[131.169,33.5049],[131.1626,33.5082],[131.1318,33.5056],[131.1293,33.5021],[131.1218,33.502],[131.106,33.5075],[131.0973,33.5046],[131.0738,33.5059],[131.0647,33.5098],[131.0538,33.508],[131.0444,33.5099],[131.0356,33.5182],[131.0294,33.5184],[131.025,33.5131],[131.015,33.5098],[131.0022,33.5122],[130.9737,33.5055],[130.9602,33.4933],[130.9254,33.4779],[130.9296,33.4652],[130.9254,33.4575],[130.8945,33.4462],[130.8966,33.4383],[130.8909,33.4299],[130.891,33.4065],[130.8873,33.4053],[130.8855,33.3798],[130.8779,33.3765],[130.8638,33.3773],[130.859,33.373],[130.8609,33.3628],[130.8345,33.3435],[130.844,33.3333],[130.8441,33.3385],[130.8499,33.3365],[130.8563,33.327],[130.8536,33.3247],[130.8654,33.2929],[130.8517,33.2782],[130.8597,33.2673],[130.867,33.2675],[130.8655,33.2619],[130.8292,33.2576],[130.824,33.2533],[130.8253,33.2374],[130.8577,33.2298],[130.8577,33.2261],[130.8451,33.2231],[130.8357,33.2114],[130.8626,33.1936],[130.8865,33.1867],[130.8849,33.1761],[130.8735,33.1691],[130.8786,33.1527],[130.8699,33.1458],[130.8639,33.1251],[130.8525,33.1093],[130.8389,33.1039],[130.8195,33.1065],[130.8167,33.114],[130.7921,33.1229],[130.7708,33.1245],[130.7622,33.1328],[130.7559,33.1323],[130.7381,33.1451],[130.7305,33.1546],[130.7221,33.1517],[130.7118,33.1549],[130.7069,33.1511],[130.6905,33.1519],[130.6922,33.1599],[130.6792,33.1712],[130.6777,33.1651],[130.6668,33.1571],[130.6676,33.1381],[130.6606,33.1301],[130.6588,33.1157],[130.6536,33.1133],[130.6588,33.1101],[130.647,33.1081],[130.6393,33.1133],[130.6091,33.1093],[130.6019,33.1141],[130.5797,33.1157],[130.5609,33.104],[130.565,33.0872],[130.5491,33.0844],[130.5476,33.0809],[130.5411,33.0821],[130.5362,33.0793],[130.5307,33.0643],[130.5175,33.0654],[130.4968,33.0522],[130.4942,33.0494],[130.5024,33.0386],[130.5035,33.0275],[130.5113,33.0208],[130.5151,33.0121],[130.5053,33.0032],[130.4968,33.0057],[130.4765,33.0027],[130.4303,33.0051],[130.3957,33.0005],[130.3946,33.0032],[130.4085,33.0092],[130.4176,33.0074],[130.4164,33.012],[130.4214,33.012],[130.4225,33.0163],[130.4158,33.0131],[130.4133,33.0165],[130.4085,33.0105],[130.4068,33.0159],[130.4211,33.0285],[130.4195,33.0336],[130.4275,33.0355],[130.4186,33.0356],[130.4242,33.0527],[130.4088,33.0879],[130.3871,33.0951],[130.3961,33.108],[130.3718,33.1207],[130.3756,33.1287],[130.3737,33.1394],[130.3549,33.1404],[130.3524,33.1803],[130.3406,33.1883],[130.3386,33.2033],[130.3418,33.2081],[130.3532,33.2089],[130.3766,33.2204],[130.3782,33.2289],[130.3694,33.2364],[130.3713,33.243],[130.3843,33.2403],[130.3897,33.2461],[130.388,33.2549],[130.3907,33.2599],[130.3983,33.2595],[130.4011,33.249],[130.4146,33.2532],[130.4177,33.2593],[130.4166,33.2681],[130.4191,33.2713],[130.4273,33.2715],[130.4295,33.2836],[130.4258,33.2889],[130.431,33.2925],[130.4365,33.29],[130.4349,33.2725],[130.4396,33.2649],[130.4489,33.265],[130.4471,33.2755],[130.4526,33.2831],[130.465,33.2851],[130.4668,33.2886],[130.4548,33.2942],[130.4554,33.3017],[130.482,33.3049],[130.4863,33.3123],[130.4879,33.3181],[130.4763,33.3254],[130.479,33.3307],[130.4839,33.3328],[130.4974,33.3257],[130.5033,33.3291],[130.5054,33.3395],[130.5098,33.3438],[130.5249,33.34],[130.5319,33.3459],[130.5352,33.3428],[130.541,33.3663],[130.5401,33.4199],[130.5362,33.4382],[130.5116,33.4493],[130.5087,33.4438],[130.4962,33.4448],[130.4799,33.4365],[130.4751,33.4375],[130.4605,33.4283],[130.4573,33.4199],[130.444,33.4173],[130.4362,33.4049],[130.4374,33.4006],[130.4294,33.3974],[130.4189,33.4006],[130.4102,33.395],[130.4076,33.4025],[130.4144,33.4103],[130.4043,33.416],[130.3953,33.4273],[130.3774,33.4249],[130.3684,33.4358],[130.3555,33.4335],[130.3448,33.4447],[130.337,33.4449],[130.3207,33.4579],[130.2975,33.4624],[130.2766,33.4783],[130.2592,33.4767],[130.2468,33.4707],[130.233,33.4782],[130.198,33.4811],[130.198,33.4776],[130.1894,33.4753],[130.1839,33.4675],[130.1748,33.4663],[130.15,33.4774],[130.1384,33.4705],[130.107,33.4776],[130.0997,33.4706],[130.0779,33.4688],[130.0679,33.472],[130.0449,33.4677],[130.0387,33.4697],[130.0486,33.4883],[130.0444,33.4962],[130.0586,33.4973],[130.0823,33.5072],[130.0871,33.5049],[130.0972,33.5091],[130.0996,33.5157],[130.1039,33.5148],[130.1017,33.5128],[130.1054,33.5097],[130.1218,33.5088],[130.1286,33.5126],[130.1327,33.5215],[130.1236,33.5251],[130.1521,33.5369],[130.1645,33.5558],[130.1635,33.5607],[130.1548,33.5599],[130.1415,33.5487],[130.137,33.5541],[130.1257,33.5569],[130.1157,33.5469],[130.1218,33.5598],[130.1319,33.5589],[130.133,33.5679],[130.1188,33.5745],[130.0978,33.5643],[130.0961,33.5746],[130.0868,33.5782],[130.0885,33.5836],[130.1083,33.5865],[130.1063,33.5965],[130.1218,33.59],[130.1459,33.5953],[130.1595,33.608],[130.1598,33.6153],[130.154,33.6195],[130.1561,33.6283],[130.1666,33.6324],[130.1695,33.6297],[130.1823,33.6325],[130.1989,33.6409],[130.2002,33.6455],[130.208,33.6494],[130.2056,33.6645],[130.2086,33.6671],[130.2351,33.6496],[130.2338,33.6435],[130.2239,33.635],[130.231,33.6165],[130.2468,33.6113],[130.2725,33.6115],[130.2744,33.605],[130.2669,33.5947],[130.2652,33.5972],[130.2647,33.5922],[130.266,33.5865],[130.2727,33.5824],[130.2853,33.5834],[130.2914,33.5803],[130.301,33.5831],[130.3103,33.5876],[130.3122,33.5932],[130.3086,33.5958],[130.3113,33.5982],[130.3219,33.5988],[130.3241,33.5937],[130.3282,33.5988],[130.3516,33.595],[130.3692,33.6003],[130.3729,33.605],[130.3805,33.6028],[130.3822,33.5968],[130.3781,33.5969],[130.3852,33.594],[130.3871,33.5974],[130.3924,33.5971],[130.3907,33.6001],[130.3837,33.5999],[130.3873,33.6015],[130.3839,33.6074],[130.3892,33.6096],[130.3961,33.6015],[130.3941,33.5987],[130.3987,33.6005],[130.3958,33.6051],[130.4013,33.605],[130.3952,33.6101],[130.398,33.6129],[130.405,33.6081],[130.4072,33.6107],[130.399,33.6151],[130.4004,33.6184],[130.4138,33.618],[130.4142,33.6207],[130.4024,33.6234],[130.4088,33.6329],[130.4034,33.6344],[130.4065,33.6423],[130.4143,33.6382],[130.4155,33.6411],[130.4105,33.6437],[130.4199,33.6411],[130.4211,33.6467],[130.404,33.6521],[130.4248,33.6607],[130.432,33.6589],[130.4341,33.6626],[130.4244,33.675],[130.4315,33.6793],[130.4286,33.6873],[130.4066,33.6834],[130.4021,33.6805],[130.4039,33.6763],[130.4069,33.6769],[130.3931,33.6699],[130.3687,33.6653],[130.3614,33.6603],[130.3581,33.652],[130.3602,33.6449],[130.3559,33.6434],[130.3391,33.6518],[130.3336,33.6499],[130.3266,33.6579],[130.2953,33.6631],[130.2855,33.6786],[130.2892,33.6864],[130.303,33.6874],[130.3146,33.6629],[130.3216,33.6603],[130.3481,33.6632],[130.3718,33.6714],[130.3954,33.685],[130.4158,33.7049],[130.4202,33.7185],[130.4285,33.7153],[130.4463,33.725],[130.4561,33.7349],[130.4663,33.7532],[130.47,33.7739],[130.4671,33.7833],[130.4608,33.788],[130.4571,33.7863],[130.4576,33.7911],[130.4496,33.7849],[130.4446,33.7945],[130.4495,33.8038],[130.4434,33.8146],[130.4472,33.8169],[130.4522,33.8107],[130.4628,33.8107],[130.4723,33.8183],[130.4813,33.8469],[130.4765,33.8578],[130.484,33.8516],[130.4968,33.8521],[130.5164,33.8601],[130.5261,33.8705],[130.529,33.8827],[130.5236,33.8895],[130.5371,33.8874],[130.5637,33.8907],[130.5687,33.88],[130.5863,33.8779],[130.6348,33.8854],[130.6523,33.8933],[130.6533,33.8977],[130.6662,33.8972],[130.6565,33.9093],[130.6608,33.9075],[130.6635,33.9111],[130.6614,33.9163],[130.6665,33.915],[130.6673,33.9187]],"islands":[[[130.8216,33.9303],[130.8138,33.9342],[130.8115,33.9313],[130.7817,33.935],[130.7777,33.9387],[130.778,33.9458],[130.799,33.946],[130.8079,33.9493],[130.8137,33.9433],[130.8316,33.9498],[130.8446,33.9393]],[[130.4262,33.8871],[130.4096,33.8928],[130.4055,33.8973],[130.4071,33.9111],[130.4176,33.9123],[130.4279,33.9093],[130.4313,33.9148],[130.4452,33.9147],[130.4467,33.9112],[130.4423,33.9045],[130.4366,33.9029],[130.437,33.8979],[130.4343,33.8993],[130.4296,33.8879]]]}</script>
+<script>
+(function () {
+  "use strict";
+  var body = document.body;
+  var CONF = {
+    latest: body.getAttribute("data-ucar-latest") || "",
+    cars: body.getAttribute("data-ucar-cars") || "",
+    base: body.getAttribute("data-ucar-base") || "",
+    staffPage: body.getAttribute("data-ucar-staff-page") || "",
+    insta: body.getAttribute("data-ucar-insta") || "",
+    log: body.getAttribute("data-ucar-log") || "",
+    page: body.getAttribute("data-ucar-page") || "top",
+    three: body.getAttribute("data-three") || ""
+  };
+  var REDUCE = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var GAZOO = "https://gazoo.com/DealerU-Car/search_result?";
+  var DLR = "Dlr=18101&Sdlr=18101";
+
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function telHref(t) { return "tel:" + String(t).replace(/[^0-9+]/g, ""); }
+  function snapshot(id) { try { return JSON.parse(document.getElementById(id).textContent); } catch (e) { return null; } }
+  function getJSON(url, ms) {
+    return new Promise(function (resolve, reject) {
+      if (!url) { reject(new Error("no url")); return; }
+      var done = false;
+      var timer = setTimeout(function () { if (!done) { done = true; reject(new Error("timeout")); } }, ms || 5000);
+      fetch(url + (url.indexOf("?") < 0 ? "?" : "&") + "t=" + Date.now())
+        .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+        .then(function (j) { if (!done) { done = true; clearTimeout(timer); resolve(j); } })
+        .catch(function (e) { if (!done) { done = true; clearTimeout(timer); reject(e); } });
+    });
+  }
+
+  // ---- 計測：中古車イベントのカードと同じ管理画面（GAS）へ送る（data-ucar-log を入れたときだけ） ----
+  function sendLog(uid, kind) {
+    if (!CONF.log || !uid) return;
+    try {
+      var b = JSON.stringify({ p: CONF.page, u: uid, k: kind });
+      if (navigator.sendBeacon) navigator.sendBeacon(CONF.log, new Blob([b], { type: "text/plain;charset=UTF-8" }));
+      else fetch(CONF.log, { method: "POST", body: b, mode: "no-cors", keepalive: true });
+    } catch (e) {}
+  }
+  document.addEventListener("click", function (ev) {
+    var a = ev.target.closest && ev.target.closest("[data-log]");
+    if (a) sendLog(a.getAttribute("data-log"), a.getAttribute("data-log-kind") || "d");
+  });
+  var seen = {};
+  var io = window.IntersectionObserver && CONF.log ? new IntersectionObserver(function (es) {
+    es.forEach(function (en) {
+      var uid = en.target.getAttribute("data-uid");
+      if (!uid || seen[uid] || !en.isIntersecting || en.intersectionRatio < 0.5) return;
+      seen[uid] = 1; io.unobserve(en.target); sendLog(uid, "i");
+    });
+  }, { threshold: [0.5] }) : null;
+  function watch(root) { if (io) $$("[data-uid]", root).forEach(function (el) { io.observe(el); }); }
+
+  // ---- 店舗データ ----
+  var SHOPS = snapshot("ucar-shops") || [];
+  var TEL = {}; SHOPS.forEach(function (s) { TEL[s.name] = s.tel; });
+
+  // ---- アイコン ----
+  var IC = function (d, w) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (w || 1.9) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + "</svg>"; };
+  var ICON_PIN = IC('<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>', 2);
+  var ICON_TEL = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 15.4c-1.2 0-2.4-.2-3.5-.6-.4-.1-.7 0-1 .2l-1.6 2c-2.8-1.4-5.5-3.9-6.9-6.8l2-1.7c.3-.3.3-.7.2-1-.4-1.1-.6-2.3-.6-3.5 0-.5-.4-1-1-1H4.2C3.6 3 3 3.2 3 4c0 9.3 7.7 17 17 17 .7 0 1-.6 1-1.2v-3.4c0-.6-.4-1-1-1z"/></svg>';
+  var ICON_OUT = IC('<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>', 2);
+  var ICON_CHECK = IC('<path d="m5 12 5 5 9-10"/>', 2.6);
+  var FAC_ICON = {
+    "キッズコーナー": '<path d="M4 20V10l8-6 8 6v10"/><path d="M9 20v-5h6v5"/>',
+    "授乳室": '<circle cx="12" cy="7" r="3"/><path d="M6 21c0-4 2.7-7 6-7s6 3 6 7"/>',
+    "ベビーシート": '<rect x="4" y="9" width="16" height="7" rx="2"/><path d="M7 16v3M17 16v3"/>',
+    "バリアフリー・多目的トイレ": '<circle cx="11" cy="5" r="2"/><path d="M11 8v6h5l2 5M8 11a5 5 0 1 0 6 7"/>',
+    "WiFi": '<path d="M2 9a15 15 0 0 1 20 0M5 13a10 10 0 0 1 14 0M8.5 16.5a5 5 0 0 1 7 0"/><circle cx="12" cy="20" r="1"/>',
+    "子供110番": '<path d="M12 3 4 7v5c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V7z"/>',
+    "車検・整備": '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>',
+    "クルマ買取り": '<path d="M7 4l5 7 5-7M12 11v9M8 13.5h8M8 16.5h8"/>'
+  };
+
+  // ---- 在庫カード ----
+  function priceParts(v) {
+    var s = (Math.round(Number(v) * 10) / 10).toFixed(1).split(".");
+    return esc(s[0]) + (s[1] && s[1] !== "0" ? "<small>." + esc(s[1]) + "</small>" : "");
+  }
+  function board(car) {
+    if (car.priceTotal == null) return "";
+    var fee = car.fee != null ? car.fee : Math.round((car.priceTotal - car.priceVehicle) * 10) / 10;
+    var sub = car.priceVehicle != null ? '<div class="board-sub"><span>車両 ' + esc(car.priceVehicle) + "万円</span><span>諸費用 " + esc(fee) + "万円</span></div>" : "";
+    return '<div class="board"><div class="board-top"><span class="board-label">支払総額</span><span class="board-price num">' + priceParts(car.priceTotal) + "<i>万円</i></span></div>" + sub + "</div>";
+  }
+  function kmText(km) {
+    if (/万km/.test(String(km || ""))) return String(km);
+    var n = Number(String(km || "").replace(/[^0-9]/g, ""));
+    if (!n) return km || "-";
+    if (n < 10000) return n.toLocaleString("ja-JP") + "km";
+    return (Math.round(n / 1000) / 10).toString() + "万km";
+  }
+  function shakenText(s) { if (!s) return "-"; if (/整備付/.test(s)) return "整備付"; return s.replace(/^車検\s*/, "").replace(/(\d{4})年(\d{1,2})月/, "$1/$2"); }
+  function listedText(iso) { if (!iso) return ""; var d = new Date(iso); return isNaN(d) ? "" : (d.getMonth() + 1) + "/" + d.getDate() + " 掲載"; }
+  function tags(car) {
+    var t = [];
+    if (car.isNew) t.push('<li class="t-new">新着</li>');
+    if (car.cert) t.push('<li class="t-cert">トヨタ認定中古車</li>');
+    if (car.warranty && car.warranty.length) t.push('<li class="t-war">' + (car.warranty.join(" ").indexOf("ハイブリッド") >= 0 ? "ロングラン＋HV保証" : "ロングラン保証") + "</li>");
+    else t.push("<li>保証なし</li>");
+    return '<ul class="tags">' + t.join("") + "</ul>";
+  }
+  function specGrid(car) {
+    return '<dl class="spec-grid">'
+      + "<div><dt>年式</dt><dd>" + esc(car.year || "-") + "年</dd></div>"
+      + "<div><dt>走行</dt><dd>" + esc(kmText(car.km)) + "</dd></div>"
+      + "<div><dt>車検</dt><dd>" + esc(shakenText(car.shaken)) + "</dd></div>"
+      + '<div class="' + (car.repair === "あり" ? "warn" : "") + '"><dt>修復歴</dt><dd>' + esc(car.repair || "-") + "</dd></div>"
+      + "<div><dt>点検整備</dt><dd>" + (car.maintenance == null ? "-" : car.maintenance ? "付" : "なし") + "</dd></div>"
+      + '<div><dt>色</dt><dd title="' + esc(car.color || "") + '">' + esc(car.color || "-") + "</dd></div></dl>";
+  }
+  function tagName(section, car, i) { return CONF.page + "_" + section + "_" + ("0" + (i + 1)).slice(-2) + "_" + (car.name || "") + "_" + String(car.shop || "").replace(/店$/, ""); }
+  function carCard(car, i, section) {
+    var uid = "gz-" + car.id, tel = car.tel || TEL[car.shop] || "";
+    var ct = esc(tagName(section, car, i));
+    var contact = "https://gazoo.com/DealerU-Car/contact?Id=18101" + esc(car.id) + "&Sdlr=18101";
+    return '<article class="car" data-uid="' + esc(uid) + '">'
+      + '<a class="ph clicktag" href="' + esc(car.url) + '" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true" data-log="' + esc(uid) + '" data-clicktag="' + ct + '" data-clicktagaction="gazooURL"><img src="' + esc(car.image) + '" alt="" loading="lazy" decoding="async" width="800" height="600"></a>'
+      + '<div class="bd">' + tags(car)
+      + '<h3><a class="clicktag" href="' + esc(car.url) + '" target="_blank" rel="noopener" data-log="' + esc(uid) + '" data-clicktag="' + ct + '" data-clicktagaction="gazooURL">' + esc(car.name) + "</a></h3>"
+      + specGrid(car) + board(car)
+      + '<div class="ft"><span class="shopline">' + ICON_PIN + esc(car.shop || "") + (car.listedAt ? '<span class="notice">　' + esc(listedText(car.listedAt)) + "</span>" : "") + "</span>"
+      + '<div class="acts"><a class="btn btn-dark clicktag" href="' + esc(car.url) + '" target="_blank" rel="noopener" data-log="' + esc(uid) + '" data-clicktag="' + ct + '" data-clicktagaction="gazooURL">詳しく見る</a>'
+      + (tel ? '<a class="btn btn-tel" href="' + esc(telHref(tel)) + '" data-log="' + esc(uid) + '" data-log-kind="p" aria-label="' + esc((car.shop || "") + "に電話する（" + tel + "）") + '">' + ICON_TEL + "電話</a>"
+             : '<a class="btn btn-tel" href="' + contact + '" target="_blank" rel="noopener" data-log="' + esc(uid) + '">問い合わせ</a>')
+      + "</div></div></div></article>";
+  }
+  function lotCard(car, i) {
+    var uid = "gz-" + car.id;
+    return '<div class="bay" data-bay="' + ("0" + (i + 1)).slice(-2) + '"><a class="lot-card clicktag" data-uid="' + esc(uid) + '" data-log="' + esc(uid) + '" href="' + esc(car.url) + '" target="_blank" rel="noopener" data-clicktag="' + esc(tagName("lot", car, i)) + '" data-clicktagaction="gazooURL">'
+      + '<div class="ph"><img src="' + esc(car.image) + '" alt="" loading="' + (i < 3 ? "eager" : "lazy") + '" decoding="async" width="800" height="600"></div>'
+      + '<div class="bd"><div class="day"><span>' + esc(car.shop || "") + "</span><span>" + esc(listedText(car.listedAt)) + "</span></div>"
+      + "<h3>" + esc(car.name) + "</h3>"
+      + '<p class="spec">' + esc(car.year) + "年　" + esc(kmText(car.km)) + "　車検" + esc(shakenText(car.shaken)) + "<br>修復歴" + esc(car.repair || "-") + "　" + (car.warranty && car.warranty.length ? "保証付" : "保証なし") + "　点検整備" + (car.maintenance ? "付" : "なし") + "</p>"
+      + board(car) + "</div></a></div>";
+  }
+
+  // ---- 最新在庫（GAZOO） ----
+  var latest = null;
+  function carsOf(key) { return ((latest.lists && latest.lists[key]) || []).map(function (id) { return latest.cars[id]; }).filter(Boolean); }
+  function allCars() { return Object.keys(latest.cars).map(function (k) { return latest.cars[k]; }).sort(function (a, b) { return Number(b.id) - Number(a.id); }); }
+  function fmtUpdated(iso) { var d = new Date(iso); if (isNaN(d)) return ""; return (d.getMonth() + 1) + "月" + d.getDate() + "日 " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2) + " 時点"; }
+  function renderLot() {
+    var withWar = carsOf("new").filter(function (c) { return c.warranty && c.warranty.length && c.repair === "なし"; });
+    var list = (withWar.length >= 6 ? withWar : carsOf("new")).slice(0, 10);
+    var el = $("#bays");
+    el.innerHTML = list.map(lotCard).join("");
+    $$(".bay", el).forEach(function (bay, i) { bay.style.animationDelay = (i * 90) + "ms"; bay.classList.add("enter"); });
+    watch(el);
+  }
+  function applyLatest(data) {
+    latest = data;
+    var na = (data.stats && data.stats.newArrivals) || "";
+    $$('[data-stat="newArrivals"]').forEach(function (el) { el.textContent = na; });
+    var up = fmtUpdated(data.updatedAt);
+    $$("[data-updated]").forEach(function (el) { el.textContent = up; });
+    var note = $("[data-updated-note]"); if (note) note.textContent = "（" + up + "）";
+    renderLot(); finderReady(); renderShops();
+  }
+
+  // ---- 最新情報（フェア・店舗ブログ・インスタ） ----
+  var NEWS = snapshot("ucar-news") || { fair: [] };
+  var INSTA = null;
+  function normInsta(j) {
+    var arr = Array.isArray(j) ? j : (j && (j.posts || j.data || j.items)) || [];
+    return arr.map(function (p) {
+      var type = String(p.type || p.media_type || "").toLowerCase();
+      return { url: p.url || p.permalink || "", image: p.image || p.thumbnail_url || p.media_url || "", reel: /reel|video/.test(type), date: p.date || p.timestamp || "" };
+    }).filter(function (p) { return p.url; }).slice(0, 8);
+  }
+  function fairHtml(sm) {
+    return (NEWS.fair || []).map(function (f) {
+      return '<a class="ncard wide' + (sm ? " sm" : "") + '" href="' + esc(f.url) + '"><img src="' + esc(f.img) + '" alt="' + esc(f.title) + '" loading="lazy"><span><b>' + esc(f.title) + "</b><small>" + esc(f.when) + "</small></span></a>";
+    }).join("");
+  }
+  function blogHtml(limit) {
+    return SHOPS.slice().sort(function (a, b) { return a.blog.date < b.blog.date ? 1 : -1; }).slice(0, limit || 99).map(function (s) {
+      return '<a class="ncard" href="' + esc(s.blog.url) + '"><img src="' + esc(s.blog.img) + '" alt="" loading="lazy"><span><small>' + esc(s.name) + "　" + esc(s.blog.date) + "</small><b>" + esc(s.blog.title) + "</b></span></a>";
+    }).join("");
+  }
+  function renderNews(kind) {
+    $$("#news-seg button").forEach(function (b) { b.setAttribute("aria-selected", b.getAttribute("data-news") === kind ? "true" : "false"); });
+    var rail = $("#news-rail"), h = "";
+    if (kind === "all") {
+      h = fairHtml(true) + blogHtml(4) + instaHtml(4, true);
+    } else if (kind === "fair") {
+      h = fairHtml(false);
+    } else if (kind === "blog") {
+      h = blogHtml();
+    } else {
+      h = instaHtml(8, false);
+    }
+    rail.innerHTML = h;
+    rail.scrollLeft = 0;
+  }
+  function instaHtml(limit, compact) {
+      // 画像が取れない投稿（サムネイルのないリールなど）は並べない
+      var posts = (INSTA || []).filter(function (p) { return p.image; }).slice(0, limit);
+      return posts.map(function (p) {
+        var d = new Date(p.date), ds = isNaN(d) ? "" : (d.getMonth() + 1) + "/" + d.getDate();
+        return '<a class="igc" href="' + esc(p.url) + '" target="_blank" rel="noopener" aria-label="Instagramの' + (p.reel ? "リール" : "投稿") + "を開く（" + esc(ds) + '）"><div class="sq"><img src="' + esc(p.image) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest(\'.igc\').remove()">' + (p.reel ? '<i class="play" aria-hidden="true"></i>' : "") + "</div><small>" + esc(ds) + (p.reel ? "　リール" : "") + "</small></a>";
+      }).join("") + '<a class="igc more" href="https://www.instagram.com/fukuokatoyopet_ucar/" target="_blank" rel="noopener"><div class="sq"><b>' + (compact ? "インスタを<br>もっと見る" : "Instagram<br>をフォロー") + "</b></div><small>@fukuokatoyopet_ucar</small></a>";
+  }
+  $("#news-seg").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) renderNews(b.getAttribute("data-news")); });
+
+  // ---- 探す（おすすめ・ジャンル・予算・使い方） ----
+  var GENRES = [
+    { key: "minivan", label: "ミニバン", q: "Ge=minivan" }, { key: "suv", label: "SUV", q: "Ge=suv" },
+    { key: "compact", label: "コンパクト", q: "Ge=compact" }, { key: "small", label: "軽自動車", q: "Ge=small" },
+    { key: "sedan", label: "セダン", q: "Ge=sedan" }, { key: "hybrid", label: "ハイブリッド", q: "Ge=hybrid" }
+  ];
+  var BANDS = [
+    { key: "b1", label: "50万円まで", min: 0, max: 50, q: "Pmx=50" }, { key: "b2", label: "50〜100万円", min: 50, max: 100, q: "Pmn=50&Pmx=100" },
+    { key: "b3", label: "100〜200万円", min: 100, max: 200, q: "Pmn=100&Pmx=200" }, { key: "b4", label: "200〜300万円", min: 200, max: 300, q: "Pmn=200&Pmx=300" },
+    { key: "b5", label: "300万円から", min: 300, max: 1e9, q: "Pmn=300" }
+  ];
+  var CONDS = [
+    { id: "big", label: "家族5人以上で乗ることがある", w: { minivan: 3 }, icon: '<circle cx="8" cy="7" r="3"/><circle cx="16.5" cy="8.5" r="2.4"/><path d="M2.5 20c0-4 2.5-6.2 5.5-6.2s5.5 2.2 5.5 6.2M13.5 20c.3-3 1.5-4.6 3-4.6s3 1.6 3 4.6"/>' },
+    { id: "slide", label: "雨の日の送り迎えにスライドドア", w: { minivan: 2, small: 1 }, icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M13 5v14M9 12H5m2.5-2.5L5 12l2.5 2.5"/>' },
+    { id: "cargo", label: "ベビーカーや荷物をよく積む", w: { minivan: 2, suv: 1 }, icon: '<path d="M4 9h16v11H4zM9 9V5h6v4M4 13h16"/>' },
+    { id: "outdoor", label: "週末はキャンプや遠出が多い", w: { suv: 3 }, icon: '<path d="M3 20 12 4l9 16zM9 20l3-6 3 6"/>' },
+    { id: "daily", label: "買い物や通勤がほとんど", w: { compact: 2, small: 2 }, icon: '<path d="M3 4h3l2.2 11h10.6L21 7H7"/><circle cx="10" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>' },
+    { id: "fuel", label: "ガソリン代をおさえたい", w: { hybrid: 3 }, icon: '<path d="M5 19C5 10 11 5 20 4c-1 9-6 15-15 15zM5 19l8-8"/>' },
+    { id: "park", label: "狭い道や駐車がちょっと苦手", w: { compact: 2, small: 2 }, icon: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M10 17V8h3a2.5 2.5 0 0 1 0 5h-3"/>' },
+    { id: "quiet", label: "静かで上質な乗り心地がいい", w: { sedan: 3 }, icon: '<path d="M8 4h5l1.2 9H9zM6.5 13h11v3h-11zM9 16l-1 4M15 16l1 4"/>' },
+    { id: "first", label: "はじめての車・運転に慣れていない", w: { small: 2, compact: 1 }, icon: '<path d="M12 4 6 8v12l6-4 6 4V8z"/><path d="M12 4v12"/>' },
+    { id: "tow", label: "雪道や坂道も安心して走りたい", w: { suv: 2 }, icon: '<path d="M3 20h18M5 20l5-9 3 4 2-3 4 8"/>' }
+  ];
+  var mode = "pick", sel = { genre: "minivan", price: "b3" }, condOn = {}, staffList = null;
+  function genreLabel(k) { var g = GENRES.filter(function (x) { return x.key === k; })[0]; return g ? g.label : k; }
+  function setCards(list, section) {
+    var el = $("#cards");
+    el.innerHTML = list.length ? list.map(function (c, i) { return carCard(c, i, section); }).join("") : '<p class="notice">いま表示できる車がありません。ほかの条件もお試しください。</p>';
+    el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap");
+    el.scrollLeft = 0;
+    watch(el);
+  }
+  function setMore(url, label, tag) { var a = $("#find-more"); a.href = url; a.textContent = label; a.setAttribute("data-clicktag", CONF.page + "_find-more_" + tag); }
+  function chipBtn(key, label, on) { return '<button type="button" class="chip" aria-pressed="' + (on ? "true" : "false") + '" data-k="' + esc(key) + '">' + esc(label) + "</button>"; }
+  function renderFinder() {
+    if (!latest) return;
+    $$("#find-seg button").forEach(function (b) { b.setAttribute("aria-selected", b.getAttribute("data-mode") === mode ? "true" : "false"); });
+    var chips = $("#chips"), sub = $("#finder-sub"), use = $("#use");
+    use.hidden = mode !== "use";
+    chips.hidden = mode === "use" || mode === "pick";
+    sub.textContent = "";
+    if (mode === "pick") {
+      sub.textContent = staffList ? "各店のスタッフが選んだ、いまおすすめの車です。" : "";
+      setCards(staffList || carsOf("new").slice(0, 8), "pick");
+      setMore(GAZOO + DLR, "GAZOOで在庫をすべて見る", "all");
+    } else if (mode === "genre") {
+      var models = ((latest.stats && latest.stats.models) || []).slice(0, 10);
+      chips.innerHTML = GENRES.map(function (g) { return chipBtn(g.key, g.label, sel.genre === g.key); }).join("")
+        + models.map(function (m) { return '<a class="chip link clicktag" href="' + GAZOO + "Cn=01_" + encodeURIComponent(m[1]) + "&" + DLR + '" target="_blank" rel="noopener" data-clicktag="' + CONF.page + "_model_" + esc(m[0]) + '" data-clicktagaction="gazooURL">' + esc(m[0]) + ICON_OUT + "</a>"; }).join("");
+      sub.textContent = "後ろの車種名を押すと、GAZOOでその車種の在庫が開きます。";
+      var g = GENRES.filter(function (x) { return x.key === sel.genre; })[0];
+      setCards(carsOf(sel.genre).slice(0, 12), "genre");
+      setMore(GAZOO + g.q + "&" + DLR, g.label + "の在庫をGAZOOですべて見る", sel.genre);
+    } else if (mode === "price") {
+      chips.innerHTML = BANDS.map(function (b) { return chipBtn(b.key, b.label, sel.price === b.key); }).join("");
+      var b = BANDS.filter(function (x) { return x.key === sel.price; })[0];
+      var list = allCars().filter(function (c) { return c.priceTotal > b.min && c.priceTotal <= b.max; }).slice(0, 12);
+      setCards(list, "price");
+      setMore(GAZOO + b.q + "&" + DLR, b.label + "の在庫をGAZOOですべて見る", b.key);
+    } else {
+      updateUse();
+    }
+  }
+  function renderUse() {
+    $("#conds").innerHTML = CONDS.map(function (c) { return '<li><button type="button" class="cond" aria-pressed="' + (condOn[c.id] ? "true" : "false") + '" data-cond="' + c.id + '">' + IC(c.icon) + "<span>" + esc(c.label) + "</span></button></li>"; }).join("");
+    $("#lamps").innerHTML = CONDS.map(function (c) { return '<li class="lamp' + (condOn[c.id] ? " on" : "") + '" data-lamp="' + c.id + '">' + IC(c.icon) + "</li>"; }).join("");
+  }
+  function scoreUse() {
+    var score = {}, n = 0;
+    CONDS.forEach(function (c) { if (!condOn[c.id]) return; n++; Object.keys(c.w).forEach(function (k) { score[k] = (score[k] || 0) + c.w[k]; }); });
+    var ranked = Object.keys(score).sort(function (a, b) { return score[b] - score[a]; });
+    return { n: n, top: ranked[0], second: ranked[1] };
+  }
+  function updateUse() {
+    CONDS.forEach(function (c) { var l = $('[data-lamp="' + c.id + '"]'); if (l) l.classList.toggle("on", !!condOn[c.id]); });
+    var r = scoreUse(), go = $("#cluster-go");
+    if (!r.n) {
+      $("#cluster-msg").textContent = "当てはまる使い方をタップ";
+      $("#cluster-sub").textContent = "ランプが点いて、合いそうなジャンルが分かります。";
+      go.disabled = true; go.textContent = "ジャンルを決めて在庫を見る";
+      setCards(carsOf("new").slice(0, 4), "use");
+      setMore(GAZOO + DLR, "GAZOOで在庫をすべて見る", "all");
+      return;
+    }
+    $("#cluster-msg").textContent = genreLabel(r.top) + "が合いそうです";
+    $("#cluster-sub").textContent = "ランプが" + r.n + "つ点いています。" + (r.second ? "次に合いそうなのは" + genreLabel(r.second) + "です。" : "");
+    go.disabled = false; go.textContent = genreLabel(r.top) + "の在庫を見る";
+    go.setAttribute("data-k", r.top);
+    var g = GENRES.filter(function (x) { return x.key === r.top; })[0];
+    setCards(carsOf(r.top).slice(0, 8), "use");
+    setMore(GAZOO + g.q + "&" + DLR, g.label + "の在庫をGAZOOですべて見る", r.top);
+  }
+  var finderInit = false;
+  function finderReady() {
+    if (!finderInit) {
+      finderInit = true;
+      renderUse();
+      $("#find-seg").addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; mode = b.getAttribute("data-mode"); renderFinder(); });
+      $("#find-seg").addEventListener("keydown", function (e) {
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        var bs = $$("#find-seg button"), i = bs.findIndex(function (b) { return b.getAttribute("data-mode") === mode; });
+        i = (i + (e.key === "ArrowRight" ? 1 : -1) + bs.length) % bs.length;
+        mode = bs[i].getAttribute("data-mode"); renderFinder(); bs[i].focus();
+      });
+      $("#chips").addEventListener("click", function (e) {
+        var b = e.target.closest("button.chip"); if (!b) return;
+        if (mode === "genre") sel.genre = b.getAttribute("data-k"); else if (mode === "price") sel.price = b.getAttribute("data-k");
+        renderFinder();
+      });
+      $("#conds").addEventListener("click", function (e) {
+        var b = e.target.closest(".cond"); if (!b) return;
+        var id = b.getAttribute("data-cond"); condOn[id] = !condOn[id];
+        b.setAttribute("aria-pressed", condOn[id] ? "true" : "false");
+        updateUse();
+      });
+      $("#cluster-go").addEventListener("click", function () {
+        var k = this.getAttribute("data-k"); if (!k) return;
+        sel.genre = k; mode = "genre"; renderFinder();
+        $("#find-seg").scrollIntoView({ behavior: REDUCE ? "auto" : "smooth", block: "start" });
+      });
+    }
+    renderFinder();
+  }
+  function fromAdmin(car) {
+    var s = car.specs || {}, img = car.image || "";
+    if (img && !/^https?:/.test(img) && CONF.base) img = CONF.base + img.replace(/^\//, "");
+    return {
+      id: String(car.id || car.uid || ""), name: car.name, shop: car.store, tel: TEL[car.store], image: img,
+      priceTotal: car.priceTotal, priceVehicle: car.priceVehicle, year: (String(s.year || "").match(/\d{4}/) || [""])[0], km: s.km, shaken: s.shaken, color: s.color,
+      repair: (car.badges || []).indexOf("修無") >= 0 ? "なし" : "", maintenance: (car.badges || []).indexOf("整付") >= 0 ? true : null,
+      warranty: (car.badges || []).filter(function (b) { return /保証/.test(b); }), cert: car.cert === "standard" || car.cert === "light", isNew: false, url: car.gazooUrl
+    };
+  }
+  function loadStaff(data) {
+    var pages = (data && data.pages) || [];
+    var page = pages.filter(function (p) { return p.id === CONF.staffPage; })[0] || pages[pages.length - 1];
+    if (!page) return;
+    var byUid = {}; (data.cars || []).forEach(function (c) { if (c && c.uid) byUid[c.uid] = c; });
+    var list = (page.carUids || []).map(function (u) { return byUid[u]; }).filter(function (c) { return c && !c.hidden && !c.soldout && c.gazooUrl; }).slice(0, 8).map(fromAdmin);
+    if (list.length) { staffList = list; if (mode === "pick") renderFinder(); }
+  }
+
+  // ---- 3つの安心（パネルの文言は公式ページのとおり） ----
+  var ANSHIN = [
+    { t: "まるごとクリーニング", p: "エンジンルームからシートを外した洗浄まで、目に見えないところまで徹底的に洗浄しています。", n: "※一部シートを外していないクルマもございます。", links: [["トヨタ認定中古車について", "https://fukuoka-toyopet.jp/u-car/nintei"]] },
+    { t: "車両検査証明書", p: "プロの検査員が実施した検査書で、総合評価や内外装の状態をひと目で確認できます。", n: "", links: [["トヨタ認定中古車について", "https://fukuoka-toyopet.jp/u-car/nintei"]] },
+    { t: "ロングラン保証", p: "メーカー・年式を問わず、走行距離無制限の1年間無償保証。トヨタ販売店ならではの無償保証です。さらに1年・2年を追加できる有償の延長保証「ロングラン保証α」も選べます。", n: "※一部対象外の車両もございます。保証内容の詳細は販売店にお問い合わせください。", links: [["ロングラン保証について", "https://fukuoka-toyopet.jp/u-car/longrun"]] }
+  ];
+  var anshinIdx = 0, turntable = null;
+  function showAnshin(i, fromScene) {
+    anshinIdx = i;
+    $$("#atabs button").forEach(function (b) { b.setAttribute("aria-selected", Number(b.getAttribute("data-a")) === i ? "true" : "false"); });
+    var a = ANSHIN[i];
+    $("#apanel").innerHTML = "<h3>" + esc(a.t) + "</h3><p>" + esc(a.p) + "</p>" + (a.n ? '<p class="notice">' + esc(a.n) + "</p>" : "")
+      + '<div class="more">' + a.links.map(function (l) { return '<a class="btn btn-line" href="' + l[1] + '">' + esc(l[0]) + "</a>"; }).join("")
+      + '<a class="btn btn-line" href="https://www.youtube.com/watch?v=qbvMJk5kQp4" target="_blank" rel="noopener">紹介動画を見る</a></div>';
+    if (turntable && !fromScene) turntable.select(i);
+  }
+  $("#atabs").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) { showAnshin(Number(b.getAttribute("data-a"))); if (turntable) turntable.hold(); } });
+  showAnshin(0);
+
+  // ---- 店舗 ----
+  var GEO = snapshot("ucar-geo");
+  var shopIdx = 0, mapApi = null;
+  var LON0 = 130.61, LAT0 = 33.48, K = 10, COSL = Math.cos(LAT0 * Math.PI / 180);
+  function proj(ll) { return [(ll[0] - LON0) * COSL * K, (ll[1] - LAT0) * K]; }
+  function renderShopTabs() {
+    $("#shop-tabs").innerHTML = SHOPS.map(function (s, i) { return '<button type="button" aria-pressed="' + (i === shopIdx ? "true" : "false") + '" data-i="' + i + '"><b>' + esc(s.name) + "</b><small>" + esc(s.area) + "</small></button>"; }).join("");
+    // 近い店舗のラベルが重ならないように、ずらす量を決めておく（PC / スマホ）。b はピンの下に出す
+    var OFF = { fukuokainta: { pc: [10, -8], sp: [-18, -32] }, hakataminami: { alt: 1 }, kokurahigasi: { sp: [10, 0] }, yahata: { sp: [-6, 0] } };
+    $("#pins").innerHTML = SHOPS.map(function (s, i) { var o = OFF[s.key] || {}, pc = o.pc || [0, 0], sp = o.sp || [0, 0]; return '<button type="button" class="pin' + (o.alt ? " alt" : "") + '" style="--dxp:' + pc[0] + "px;--dyp:" + pc[1] + "px;--dxs:" + sp[0] + "px;--dys:" + sp[1] + 'px" aria-pressed="' + (i === shopIdx ? "true" : "false") + '" data-i="' + i + '" aria-label="' + esc(s.name) + 'を表示">' + esc(s.name.replace(/店$/, "")) + "</button>"; }).join("");
+    $("#slist").innerHTML = "<thead><tr><th>店舗</th><th>住所</th><th>電話</th></tr></thead><tbody>" + SHOPS.map(function (s) { return "<tr><th>" + esc(s.name) + "</th><td>" + esc(s.addr) + '</td><td><a href="' + telHref(s.tel) + '" data-log="shop-' + esc(s.name) + '" data-log-kind="p">' + esc(s.tel) + "</a></td></tr>"; }).join("") + "</tbody>";
+    $("#tel-list").innerHTML = SHOPS.map(function (s) { return '<li><a href="' + telHref(s.tel) + '" data-log="shop-' + esc(s.name) + '" data-log-kind="p"><b>' + esc(s.name) + '</b><span class="num">' + esc(s.tel) + "</span></a></li>"; }).join("");
+  }
+  function renderShopDetail() {
+    var s = SHOPS[shopIdx]; if (!s) return;
+    var cars = latest ? s.cars.map(function (id) { return latest.cars[id]; }).filter(Boolean) : [];
+    var gmap = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("トヨタ認定中古車 " + s.name + " " + s.addr);
+    var stock = GAZOO + "Dlr=18101&Shp=" + encodeURIComponent(s.shp) + "&Sdlr=18101";
+    $("#sdetail").innerHTML =
+      '<div class="sgal" id="sgal">' + s.photos.map(function (p, i) { return '<figure><img src="' + esc(p.img) + '" alt="' + esc(s.name + "の" + p.cap) + '" loading="' + (i ? "lazy" : "eager") + '" width="900" height="600"><figcaption>' + esc(p.cap) + "</figcaption></figure>"; }).join("") + "</div>"
+      + '<div class="sgal-dots" id="sgal-dots">' + s.photos.map(function (p, i) { return '<button type="button" aria-label="' + esc(p.cap) + 'の写真" aria-current="' + (i ? "false" : "true") + '" data-g="' + i + '"><i></i></button>'; }).join("") + "</div>"
+      + '<div class="sbody">'
+      + '<div class="sname"><small>トヨタ認定中古車 ・ ' + esc(s.area) + "</small><h3>" + esc(s.name) + '</h3><span class="snew">新着<span class="num">' + esc(s.newCount) + "</span>台</span></div>"
+      + '<ul class="spoints">' + s.points.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul>"
+      + '<div class="sacts top"><a class="btn btn-main" href="' + telHref(s.tel) + '" data-log="shop-' + esc(s.name) + '" data-log-kind="p">' + ICON_TEL + "電話する</a>"
+      + '<a class="btn btn-tel" href="' + gmap + '" target="_blank" rel="noopener">' + ICON_PIN + "地図を開く</a></div>"
+      + '<blockquote class="smsg">' + esc(s.msg) + "<cite>店長 " + esc(s.manager) + "</cite></blockquote>"
+      + '<dl class="sinfo"><dt>住所</dt><dd>' + esc(s.addr) + '　<a href="' + gmap + '" target="_blank" rel="noopener">地図</a></dd><dt>電話</dt><dd><a href="' + telHref(s.tel) + '" data-log="shop-' + esc(s.name) + '" data-log-kind="p">' + esc(s.tel) + "</a></dd><dt>営業時間</dt><dd>10:00〜18:00</dd></dl>"
+      + '<ul class="sfac">' + s.fac.map(function (f) { return "<li>" + (FAC_ICON[f] ? IC(FAC_ICON[f], 2) : ICON_CHECK) + esc(f) + "</li>"; }).join("") + "</ul>"
+      + (cars.length ? '<div class="scars"><h4>この店舗の新着</h4><ul>' + cars.map(function (c) { return '<li><a class="clicktag" href="' + esc(c.url) + '" target="_blank" rel="noopener" data-log="gz-' + esc(c.id) + '" data-clicktag="' + CONF.page + "_shop_" + esc(c.name) + '" data-clicktagaction="gazooURL"><img src="' + esc(c.image) + '" alt="" loading="lazy"><span><b>' + esc(c.name) + "</b><small>" + esc(c.year) + "年　" + esc(kmText(c.km)) + "　修復歴" + esc(c.repair) + '</small></span><span class="num">' + priceParts(c.priceTotal) + "<i>万円</i></span></a></li>"; }).join("") + '</ul><p class="notice">価格は支払総額です。</p></div>' : "")
+      + '<div class="sacts"><a class="btn btn-dark wide clicktag" href="' + stock + '" target="_blank" rel="noopener" data-clicktag="' + CONF.page + "_shop-stock_" + esc(s.name) + '" data-clicktagaction="gazooURL">' + esc(s.name) + "の在庫を見る</a>"
+      + "</div>"
+      + '<a class="sblog" href="' + esc(s.blog.url) + '"><img src="' + esc(s.blog.img) + '" alt="" loading="lazy"><span><small>店舗ブログ　' + esc(s.blog.date) + "</small><b>" + esc(s.blog.title) + "</b></span></a>"
+      + '<a class="btn btn-line" href="' + esc(s.url) + '">' + esc(s.name) + "のページを見る</a>"
+      + "</div>";
+    var gal = $("#sgal"), dots = $$("#sgal-dots button");
+    gal.addEventListener("scroll", function () { var i = Math.round(gal.scrollLeft / gal.clientWidth); dots.forEach(function (d, k) { d.setAttribute("aria-current", k === i ? "true" : "false"); }); }, { passive: true });
+    dots.forEach(function (d) { d.addEventListener("click", function () { gal.scrollTo({ left: gal.clientWidth * Number(d.getAttribute("data-g")), behavior: REDUCE ? "auto" : "smooth" }); }); });
+    watch($("#sdetail"));
+  }
+  function selectShop(i, from) {
+    shopIdx = i;
+    $$("#shop-tabs button, #pins .pin").forEach(function (b) { b.setAttribute("aria-pressed", Number(b.getAttribute("data-i")) === i ? "true" : "false"); });
+    renderShopDetail();
+    if (mapApi && from !== "map") mapApi.select(i);
+    if (from === "tab") { var t = $('#shop-tabs button[data-i="' + i + '"]'); if (t && t.scrollIntoView) t.scrollIntoView({ block: "nearest", inline: "center" }); }
+  }
+  var shopsInit = false;
+  function renderShops() {
+    if (!shopsInit) {
+      shopsInit = true;
+      renderShopTabs(); drawMapFallback();
+      $("#shop-tabs").addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) selectShop(Number(b.getAttribute("data-i")), "tab"); });
+      $("#pins").addEventListener("click", function (e) { var b = e.target.closest(".pin"); if (b) selectShop(Number(b.getAttribute("data-i")), "pin"); });
+    }
+    selectShop(shopIdx, "init");
+  }
+  // 2Dの地図（Three.js が使えないときの代わり。読み込み中もこれを表示）
+  function drawMapFallback() {
+    var box = $("#map-fallback"); if (!GEO || !box) return;
+    var pts = GEO.main.map(proj), xs = pts.map(function (p) { return p[0]; }), ys = pts.map(function (p) { return p[1]; });
+    var minx = Math.min.apply(null, xs), maxx = Math.max.apply(null, xs), miny = Math.min.apply(null, ys), maxy = Math.max.apply(null, ys);
+    var pad = 0.6, W = maxx - minx + pad * 2, H = maxy - miny + pad * 2;
+    var tx = function (p) { return [(p[0] - minx + pad), (maxy - p[1] + pad)]; };
+    var d = "M" + pts.map(function (p) { var q = tx(p); return q[0].toFixed(3) + " " + q[1].toFixed(3); }).join("L") + "Z";
+    box.innerHTML = '<svg viewBox="0 0 ' + W.toFixed(2) + " " + H.toFixed(2) + '" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path d="' + d + '" fill="#f4fbf7" stroke="#00574b" stroke-width="0.06"/></svg>';
+    var svg = $("svg", box);
+    function place() {
+      var r = svg.getBoundingClientRect(), br = $("#map3").getBoundingClientRect();
+      var s = Math.min(r.width / W, r.height / H), ox = r.left - br.left + (r.width - W * s) / 2, oy = r.top - br.top + (r.height - H * s) / 2;
+      $$("#pins .pin").forEach(function (b) { var q = tx(proj(SHOPS[Number(b.getAttribute("data-i"))].ll)); b.style.left = (ox + q[0] * s) + "px"; b.style.top = (oy + q[1] * s) + "px"; });
+    }
+    place();
+    window.addEventListener("resize", function () { if (!mapApi) place(); });
+  }
+
+  // ---- Three.js：読み込めたら、3つの安心の回転台と福岡県の立体マップを描く ----
+  function loadThree() {
+    if (window.THREE) return Promise.resolve(window.THREE);
+    if (!CONF.three) return Promise.reject(new Error("no three"));
+    return new Promise(function (res, rej) { var s = document.createElement("script"); s.src = CONF.three; s.async = true; s.onload = function () { window.THREE ? res(window.THREE) : rej(new Error("no THREE")); }; s.onerror = rej; document.head.appendChild(s); });
+  }
+  function webglOK() { try { var c = document.createElement("canvas"); return !!(c.getContext("webgl") || c.getContext("experimental-webgl")); } catch (e) { return false; } }
+  function makeRenderer(T, host) {
+    var r = new T.WebGLRenderer({ antialias: true, alpha: true });
+    r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    host.insertBefore(r.domElement, host.firstChild);
+    return r;
+  }
+  // カメラの距離を、指定した点がすべて画面の内側（m）に収まるところまで二分探索で決める
+  function fitDist(T, cam, look, dir, pts, m) {
+    var lo = 2, hi = 150, v = new T.Vector3(), w = new T.Vector3();
+    for (var k = 0; k < 28; k++) {
+      var d = (lo + hi) / 2;
+      cam.position.copy(dir).multiplyScalar(d).add(look); cam.lookAt(look); cam.updateMatrixWorld(true);
+      var ok = pts.every(function (p) { w.copy(p).applyMatrix4(cam.matrixWorldInverse); if (w.z > -cam.near) return false; v.copy(p).project(cam); return Math.abs(v.x) <= m && Math.abs(v.y) <= m; });
+      if (ok) hi = d; else lo = d;
+    }
+    return hi;
+  }
+  function boxPts(T, x0, x1, y0, y1, z0, z1) { var a = []; [x0, x1].forEach(function (x) { [y0, y1].forEach(function (y) { [z0, z1].forEach(function (z) { a.push(new T.Vector3(x, y, z)); }); }); }); return a; }
+  function visibleLoop(host, frame) {
+    var on = false, raf = 0;
+    function tick(t) { frame(t); if (on) raf = requestAnimationFrame(tick); }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) { es.forEach(function (en) { var was = on; on = en.isIntersecting; if (on && !was) raf = requestAnimationFrame(tick); if (!on) cancelAnimationFrame(raf); }); }, { threshold: 0.05 }).observe(host);
+    } else { on = true; raf = requestAnimationFrame(tick); }
+    return { kick: function () { if (!on) frame(performance.now()); } };
+  }
+
+  // 3つの安心：ショールームの回転台に、しずく・検査証明書・盾をのせる
+  function initTurntable(T) {
+    var host = $("#stage3d"); if (!host) return null;
+    var R = makeRenderer(T, host), scene = new T.Scene();
+    var cam = new T.PerspectiveCamera(32, 1, 0.1, 400);
+    scene.add(new T.HemisphereLight(0xffffff, 0xcfe9da, 0.62));
+    var dl = new T.DirectionalLight(0xffffff, 0.62); dl.position.set(3, 7, 6); scene.add(dl);
+    var rim = new T.DirectionalLight(0x9bdc9e, 0.35); rim.position.set(-5, 3, -4); scene.add(rim);
+    var table = new T.Group(); scene.add(table);
+    var disc = new T.Mesh(new T.CylinderGeometry(3.2, 3.32, 0.24, 72), new T.MeshStandardMaterial({ color: 0xf3f6f4, roughness: 0.45, metalness: 0.05 }));
+    disc.position.y = -0.12; table.add(disc);
+    var ring = new T.Mesh(new T.TorusGeometry(3.26, 0.05, 12, 120), new T.MeshStandardMaterial({ color: 0x3ab675, emissive: 0x23995f, emissiveIntensity: 0.9 }));
+    ring.rotation.x = Math.PI / 2; ring.position.y = 0.0; table.add(ring);
+    var inner = new T.Mesh(new T.RingGeometry(2.2, 2.24, 96), new T.MeshBasicMaterial({ color: 0xbfe5cc, side: T.DoubleSide }));
+    inner.rotation.x = -Math.PI / 2; inner.position.y = 0.005; table.add(inner);
+    // 床の影（ぼかした円）
+    var cv = document.createElement("canvas"); cv.width = cv.height = 128; var g = cv.getContext("2d"), gr = g.createRadialGradient(64, 64, 10, 64, 64, 64);
+    gr.addColorStop(0, "rgba(0,70,60,0.28)"); gr.addColorStop(1, "rgba(0,70,60,0)"); g.fillStyle = gr; g.fillRect(0, 0, 128, 128);
+    var shadow = new T.Mesh(new T.PlaneGeometry(9, 9), new T.MeshBasicMaterial({ map: new T.CanvasTexture(cv), transparent: true, depthWrite: false }));
+    shadow.rotation.x = -Math.PI / 2; shadow.position.y = -0.26; scene.add(shadow);
+    var deep = new T.MeshStandardMaterial({ color: 0x00574b, roughness: 0.35, metalness: 0.15 });
+    var leaf = new T.MeshStandardMaterial({ color: 0x3ab675, roughness: 0.18, metalness: 0.1 });
+    var white = new T.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 });
+    var mint = new T.MeshStandardMaterial({ color: 0x9bdc9e, roughness: 0.6 });
+    var tube = function (pts, rad, mat) { return new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(pts.map(function (p) { return new T.Vector3(p[0], p[1], p[2]); }), false, "catmullrom", 0.0), 40, rad, 10, false), mat); };
+    // しずく
+    var drop = new T.Group(), prof = [], Rr = 0.62, i;
+    for (i = 0; i <= 18; i++) { var th = -Math.PI / 2 + i * (2 * Math.PI / 3) / 18; prof.push(new T.Vector2(Rr * Math.cos(th), Rr * Math.sin(th))); }
+    for (i = 1; i <= 8; i++) { var t = i / 8; prof.push(new T.Vector2(Rr * 0.866 * (1 - t), Rr * 0.5 + (Rr * 2 - Rr * 0.5) * t)); }
+    var dm = new T.Mesh(new T.LatheGeometry(prof, 64), leaf); drop.add(dm);
+    var hl = new T.Mesh(new T.SphereGeometry(0.12, 16, 12), new T.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 })); hl.position.set(-0.22, 0.18, 0.5); hl.scale.set(1, 1.6, 0.4); drop.add(hl);
+    var sparkles = [];
+    [[0.9, 1.1, 0.2], [-0.85, 0.7, 0.3], [0.7, -0.1, 0.5]].forEach(function (p, k) { var s = new T.Mesh(new T.OctahedronGeometry(0.11 - k * 0.02), new T.MeshStandardMaterial({ color: 0xffffff, emissive: 0x9bdc9e, emissiveIntensity: 0.6 })); s.position.set(p[0], p[1], p[2]); drop.add(s); sparkles.push(s); });
+    drop.position.y = 0.75;
+    // 検査証明書（クリップボード）
+    var cert = new T.Group();
+    var boardM = new T.Mesh(new T.BoxGeometry(1.25, 1.62, 0.08), white); cert.add(boardM);
+    var edge = new T.Mesh(new T.BoxGeometry(1.31, 1.68, 0.05), deep); edge.position.z = -0.03; cert.add(edge);
+    var clip = new T.Mesh(new T.BoxGeometry(0.56, 0.18, 0.14), deep); clip.position.set(0, 0.8, 0.04); cert.add(clip);
+    [0.42, 0.18, -0.06].forEach(function (y, k) { var l = new T.Mesh(new T.BoxGeometry(k === 2 ? 0.45 : 0.8, 0.07, 0.02), mint); l.position.set(k === 2 ? -0.17 : 0, y, 0.05); cert.add(l); });
+    var ck = tube([[-0.28, -0.42, 0.07], [-0.08, -0.6, 0.07], [0.34, -0.18, 0.07]], 0.055, leaf); cert.add(ck);
+    cert.position.y = 1.0; cert.rotation.x = -0.12;
+    // 盾（ロングラン保証）
+    var sh = new T.Shape();
+    sh.moveTo(0, 0.9); sh.lineTo(0.72, 0.62); sh.lineTo(0.72, 0.05); sh.bezierCurveTo(0.72, -0.5, 0.35, -0.85, 0, -1.0); sh.bezierCurveTo(-0.35, -0.85, -0.72, -0.5, -0.72, 0.05); sh.lineTo(-0.72, 0.62); sh.lineTo(0, 0.9);
+    var shield = new T.Group();
+    var smesh = new T.Mesh(new T.ExtrudeGeometry(sh, { depth: 0.2, bevelEnabled: true, bevelThickness: 0.06, bevelSize: 0.05, bevelSegments: 4 }), deep);
+    smesh.position.z = -0.1; shield.add(smesh);
+    var sck = tube([[-0.3, -0.02, 0.2], [-0.07, -0.26, 0.2], [0.34, 0.24, 0.2]], 0.07, white); shield.add(sck);
+    shield.position.y = 1.02;
+    var objs = [drop, cert, shield], RAD = 1.95;
+    objs.forEach(function (o, k) { var a = k * 2 * Math.PI / 3; o.position.x = Math.sin(a) * RAD; o.position.z = Math.cos(a) * RAD; o.userData.base = o.position.y; o.userData.a = a; table.add(o); });
+    var angle = 0, target = 0, drag = null, lastUser = 0, idx = 0, onSel = null;
+    function norm(a) { while (a > Math.PI) a -= 2 * Math.PI; while (a < -Math.PI) a += 2 * Math.PI; return a; }
+    function select(i) { idx = i; var want = -i * 2 * Math.PI / 3; target = angle + norm(want - angle); }
+    var LOOK = new T.Vector3(0, 0.62, 0), DIR = new T.Vector3(0, 0.4, 1).normalize(), BOX = boxPts(T, -3.4, 3.4, -0.3, 2.55, -3.4, 3.4);
+    function size() { var w = host.clientWidth, h = host.clientHeight; R.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); var d = fitDist(T, cam, LOOK, DIR, BOX, 0.94); cam.position.copy(DIR).multiplyScalar(d).add(LOOK); cam.lookAt(LOOK); }
+    size(); if ("ResizeObserver" in window) new ResizeObserver(function () { size(); loop.kick(); }).observe(host);
+    var t0 = performance.now(), lastAuto = performance.now();
+    function frame(now) {
+      var t = (now - t0) / 1000;
+      if (!drag) angle += (target - angle) * (REDUCE ? 1 : 0.08);
+      table.rotation.y = angle;
+      objs.forEach(function (o, k) {
+        var front = Math.cos(norm(o.userData.a + angle));
+        o.position.y = o.userData.base + (REDUCE ? 0 : Math.sin(t * 1.6 + k) * 0.07);
+        o.rotation.y = -angle + (REDUCE ? 0 : Math.sin(t * 0.9 + k) * 0.35);
+        var s = 1.0 + 0.32 * Math.max(0, front); o.scale.setScalar(s);
+      });
+      sparkles.forEach(function (s, k) { s.rotation.y = t * 1.5 + k; s.rotation.x = t + k; });
+      ring.material.emissiveIntensity = 0.7 + (REDUCE ? 0 : Math.sin(t * 2) * 0.25);
+      if (!REDUCE && !drag && now - lastUser > 9000 && now - lastAuto > 4800) { lastAuto = now; idx = (idx + 1) % 3; select(idx); if (onSel) onSel(idx); }
+      R.render(scene, cam);
+    }
+    var loop = visibleLoop(host, frame);
+    var c = R.domElement;
+    c.addEventListener("pointerdown", function (e) { drag = { x: e.clientX, a: angle, moved: false }; lastUser = performance.now(); c.setPointerCapture(e.pointerId); });
+    c.addEventListener("pointermove", function (e) { if (!drag) return; var dx = e.clientX - drag.x; if (Math.abs(dx) > 4) drag.moved = true; angle = drag.a + dx / host.clientWidth * Math.PI * 1.4; target = angle; loop.kick(); });
+    function end() { if (!drag) return; drag = null; lastUser = performance.now(); var k = Math.round(-angle / (2 * Math.PI / 3)); idx = ((k % 3) + 3) % 3; target = -k * 2 * Math.PI / 3; if (onSel) onSel(idx); }
+    c.addEventListener("pointerup", end); c.addEventListener("pointercancel", end);
+    var fb = $("#stage-fallback"); if (fb) fb.remove();
+    return { select: function (i) { select(i); loop.kick(); }, hold: function () { lastUser = performance.now(); }, onSelect: function (fn) { onSel = fn; } };
+  }
+
+  // 福岡県の立体マップ（店舗のピンを立てる）
+  function initMap(T) {
+    var host = $("#map3"); if (!host || !GEO) return null;
+    var R = makeRenderer(T, host), scene = new T.Scene();
+    var cam = new T.PerspectiveCamera(30, 1, 0.1, 400);
+    scene.add(new T.HemisphereLight(0xffffff, 0xbfe5cc, 0.7));
+    var dl = new T.DirectionalLight(0xffffff, 0.55); dl.position.set(-4, 10, 8); scene.add(dl);
+    var world = new T.Group(); scene.add(world);
+    function shapeFrom(ring) { var s = new T.Shape(); ring.forEach(function (ll, i) { var p = proj(ll); if (i) s.lineTo(p[0], p[1]); else s.moveTo(p[0], p[1]); }); return s; }
+    var DEPTH = 0.38;
+    var mats = [new T.MeshStandardMaterial({ color: 0xf4fbf7, roughness: 0.75 }), new T.MeshStandardMaterial({ color: 0x00574b, roughness: 0.5 })];
+    [GEO.main].concat(GEO.islands || []).forEach(function (ring) {
+      var geo = new T.ExtrudeGeometry(shapeFrom(ring), { depth: DEPTH, bevelEnabled: true, bevelThickness: 0.04, bevelSize: 0.03, bevelSegments: 2 });
+      var m = new T.Mesh(geo, mats); m.rotation.x = -Math.PI / 2; world.add(m);
+    });
+    var pts = GEO.main.map(function (ll) { var p = proj(ll); return new T.Vector3(p[0], DEPTH + 0.06, -p[1]); });
+    var line = new T.LineLoop(new T.BufferGeometry().setFromPoints(pts), new T.LineBasicMaterial({ color: 0x23995f })); world.add(line);
+    var cv = document.createElement("canvas"); cv.width = cv.height = 128; var g = cv.getContext("2d"), gr = g.createRadialGradient(64, 64, 8, 64, 64, 64);
+    gr.addColorStop(0, "rgba(0,70,60,0.22)"); gr.addColorStop(1, "rgba(0,70,60,0)"); g.fillStyle = gr; g.fillRect(0, 0, 128, 128);
+    var sh = new T.Mesh(new T.PlaneGeometry(16, 16), new T.MeshBasicMaterial({ map: new T.CanvasTexture(cv), transparent: true, depthWrite: false })); sh.rotation.x = -Math.PI / 2; sh.position.y = -0.05; world.add(sh);
+    var pinMat = new T.MeshStandardMaterial({ color: 0x23995f, emissive: 0x126f44, emissiveIntensity: 0.35, roughness: 0.4 });
+    var pinSel = new T.MeshStandardMaterial({ color: 0xd50f1c, emissive: 0x7a0008, emissiveIntensity: 0.3, roughness: 0.35 });
+    var pins = SHOPS.map(function (s) {
+      var p = proj(s.ll), grp = new T.Group();
+      var stick = new T.Mesh(new T.CylinderGeometry(0.035, 0.035, 0.9, 10), pinMat); stick.position.y = 0.45; grp.add(stick);
+      var head = new T.Mesh(new T.SphereGeometry(0.16, 20, 14), pinMat); head.position.y = 0.95; grp.add(head);
+      var halo = new T.Mesh(new T.RingGeometry(0.18, 0.26, 40), new T.MeshBasicMaterial({ color: 0x3ab675, transparent: true, opacity: 0.6, side: T.DoubleSide })); halo.rotation.x = -Math.PI / 2; halo.position.y = 0.01; grp.add(halo);
+      grp.position.set(p[0], DEPTH + 0.04, -p[1]); world.add(grp);
+      return { g: grp, stick: stick, head: head, halo: halo };
+    });
+    var xs = pts.map(function (p) { return p.x; }), zs = pts.map(function (p) { return p.z; });
+    var bx0 = Math.min.apply(null, xs), bx1 = Math.max.apply(null, xs), bz0 = Math.min.apply(null, zs), bz1 = Math.max.apply(null, zs);
+    var CENTER = new T.Vector3((bx0 + bx1) / 2, 0.2, (bz0 + bz1) / 2), EL = 0.98;
+    var BOXM = boxPts(T, bx0, bx1, 0, 1.7, bz0, bz1);
+    var look = CENTER.clone(), lookTo = CENTER.clone(), sel = 0, yaw = 0, yawTo = 0, drag = null, fitD = 15;
+    function size() {
+      var w = host.clientWidth, h = host.clientHeight; R.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
+      var dir = new T.Vector3(0, Math.sin(EL), Math.cos(EL));
+      fitD = fitDist(T, cam, CENTER, dir, BOXM, 0.88);
+    }
+    size(); if ("ResizeObserver" in window) new ResizeObserver(function () { size(); loop.kick(); }).observe(host);
+    var labels = $$("#pins .pin"), v = new T.Vector3(), t0 = performance.now();
+    function frame(now) {
+      var t = (now - t0) / 1000;
+      look.lerp(lookTo, REDUCE ? 1 : 0.06);
+      yaw += (yawTo - yaw) * (REDUCE ? 1 : 0.08);
+      var sway = REDUCE || drag ? 0 : Math.sin(t * 0.25) * 0.06;
+      var a = yaw + sway, el = EL, d = fitD * 1.04;
+      cam.position.set(look.x + Math.sin(a) * Math.cos(el) * d, Math.sin(el) * d, look.z + Math.cos(a) * Math.cos(el) * d);
+      cam.lookAt(look);
+      pins.forEach(function (p, i) {
+        var on = i === sel, s = on ? 1.35 : 1;
+        p.g.scale.setScalar(p.g.scale.x + (s - p.g.scale.x) * 0.15);
+        p.head.material = on ? pinSel : pinMat; p.stick.material = on ? pinSel : pinMat;
+        var pulse = on && !REDUCE ? 1 + ((t * 0.8) % 1) * 2.2 : 1;
+        p.halo.scale.setScalar(pulse); p.halo.material.opacity = on ? (REDUCE ? 0.6 : 0.65 * (1 - ((t * 0.8) % 1))) : 0.35;
+      });
+      R.render(scene, cam);
+      var W = host.clientWidth, H = host.clientHeight;
+      labels.forEach(function (b, i) { var p = pins[i]; v.set(0, (b.classList.contains("alt") ? 0.35 : 1.2) * p.g.scale.x, 0); p.g.localToWorld(v); v.project(cam); b.style.left = ((v.x + 1) / 2 * W) + "px"; b.style.top = ((1 - v.y) / 2 * H) + "px"; });
+    }
+    var loop = visibleLoop(host, frame);
+    function select(i) { sel = i; var p = pins[i].g.position; lookTo.set(CENTER.x + (p.x - CENTER.x) * 0.12, CENTER.y, CENTER.z + (p.z - CENTER.z) * 0.12); loop.kick(); }
+    var c = R.domElement;
+    c.addEventListener("pointerdown", function (e) { drag = { x: e.clientX, y: yawTo }; c.setPointerCapture(e.pointerId); });
+    c.addEventListener("pointermove", function (e) { if (!drag) return; yawTo = Math.max(-0.6, Math.min(0.6, drag.y - (e.clientX - drag.x) / host.clientWidth * 1.2)); loop.kick(); });
+    c.addEventListener("pointerup", function () { drag = null; }); c.addEventListener("pointercancel", function () { drag = null; });
+    var fb = $("#map-fallback"); if (fb) fb.remove();
+    select(shopIdx);
+    return { select: select };
+  }
+
+  // ---- そのほかの動き ----
+  $$("[data-bays]").forEach(function (b) { b.addEventListener("click", function () { var el = $("#bays"); el.scrollBy({ left: Number(b.getAttribute("data-bays")) * Math.min(el.clientWidth * 0.8, 900), behavior: REDUCE ? "auto" : "smooth" }); }); });
+  var dock = $(".dock"), fv = $(".fv");
+  if (dock && fv && "IntersectionObserver" in window) new IntersectionObserver(function (es) { dock.classList.toggle("show", !es[0].isIntersecting); }, { rootMargin: "-40% 0px 0px 0px" }).observe(fv);
+  else if (dock) dock.classList.add("show");
+  var sheet = $("#tel-sheet");
+  $$("[data-open-tel]").forEach(function (b) { b.addEventListener("click", function () { if (sheet.showModal) sheet.showModal(); else sheet.setAttribute("open", ""); }); });
+  $("[data-close-tel]").addEventListener("click", function () { sheet.close(); });
+  sheet.addEventListener("click", function (e) { if (e.target === sheet) sheet.close(); });
+
+  // ---- 起動 ----
+  if (CONF.log) sendLog("_pv", "v");
+  var snap = snapshot("ucar-latest-snapshot");
+  getJSON(CONF.latest, 4000).then(applyLatest).catch(function () { if (snap) applyLatest(snap); });
+  getJSON(CONF.cars, 5000).then(loadStaff).catch(function () { var s = snapshot("ucar-staff-snapshot"); if (s) loadStaff(s); });
+  var instaSnap = snapshot("ucar-insta-snapshot");
+  getJSON(CONF.insta, 5000).then(function (j) { var p = normInsta(j); INSTA = p.length ? p : normInsta(instaSnap); }).catch(function () { INSTA = normInsta(instaSnap); }).then(function () { var k = $('#news-seg [aria-selected="true"]').getAttribute("data-news"); if (k === "insta" || k === "all") renderNews(k); });
+  renderNews("all");
+  if (webglOK()) {
+    var start = function () {
+      loadThree().then(function (T) {
+        try { turntable = initTurntable(T); if (turntable) { turntable.onSelect(function (i) { showAnshin(i, true); }); turntable.select(anshinIdx); } } catch (e) { console.warn(e); }
+        try { mapApi = initMap(T); } catch (e) { console.warn(e); }
+      }).catch(function () {});
+    };
+    if (document.readyState === "complete") setTimeout(start, 50); else window.addEventListener("load", function () { setTimeout(start, 50); });
+  }
+})();
+
+</script>
+</body>
+</html>
