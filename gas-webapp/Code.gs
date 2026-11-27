@@ -232,15 +232,18 @@ function getBootstrap(auth) {
   try { published = readPublished_(); } catch (err) { /* 初回GitHub投入前でも画面は開ける */ }
   let draft = readDraft_();
   if (!draft && published) {
-    draft = writeDraft_(normalizeModel_(published), editor, null, true);
+    const first = normalizeModel_(published);
+    draft = writeDraft_(first, editor, null, true, pagesHash_(first));
   }
   if (!draft) {
     draft = writeDraft_({ version: 2, cars: [], pages: [{ id: 'main', name: '中古車フェア', carUids: [] }] }, editor, null, true);
   }
+  let syncState = 'same';
   if (published) {
-    const merged = mergeAutomatedFields_(draft.data, normalizeModel_(published));
-    if (JSON.stringify(merged) !== JSON.stringify(draft.data)) {
-      draft = writeDraft_(merged, editor, draft.revision, false);
+    const sync = syncWithPublished_(draft, normalizeModel_(published));
+    syncState = sync.state;
+    if (JSON.stringify(sync.data) !== JSON.stringify(draft.data) || sync.baseHash !== draft.baseHash) {
+      draft = writeDraft_(sync.data, editor, draft.revision, false, sync.baseHash);
     }
   }
   return {
@@ -254,6 +257,8 @@ function getBootstrap(auth) {
     revision: draft.revision,
     updatedAt: draft.updatedAt,
     updatedBy: draft.updatedBy,
+    syncState: syncState,
+    staffImages: listStaffImages_(),
     data: draft.data,
   };
 }
@@ -275,18 +280,27 @@ function publishCurrent(auth, expectedRevision) {
     assertRevision_(draft.revision, numberOrNull_(expectedRevision));
 
     let model = normalizeModel_(draft.data);
-    try {
-      const published = normalizeModel_(readPublished_());
-      model = mergeAutomatedFields_(model, published);
-    } catch (err) { /* 初回公開では既存データなしでもよい */ }
+    // 読めなかったとき（GitHubの不調など）は止める。初回公開（ファイル無し）だけ素通り。
+    const file = readPublishedFile_();
+    const published = file ? normalizeModel_(file.data) : null;
+    if (published) {
+      // 下書きを作った後に、サイト側の掲載ページがほかの場所で変わっていたら、
+      // 古い下書きのまま反映するとその入れ替えが消える（10/27に実際に起きた）。
+      const sync = syncWithPublished_({ data: model, baseHash: draft.baseHash }, published);
+      if (sync.state === 'conflict') {
+        throw new Error('サイト側の掲載ページが、ほかの場所で更新されています（おすすめ車の入れ替えなど）。\nこのまま反映するとその変更が消えるため、反映を止めました。\n画面上部の「サイトの掲載ページを取り込む」を押してから、もう一度反映してください（クルマごとの編集内容は残ります）。');
+      }
+      // 下書きでページ構成を触っていなければ、サイト側の構成を取り込んだうえで反映する
+      model = sync.data;
+    }
 
     validateModel_(model);
     model.updatedAt = new Date().toISOString();
-    putJsonToGitHub_(APP.dataPath, model, '管理画面から掲載内容を公開');
+    putJsonToGitHub_(APP.dataPath, model, '管理画面から掲載内容を公開', file ? file.sha : null);
     // たまったクリック数もこのタイミングでGitHubへ残す
     try { flushClicks_(); } catch (err) { /* 公開そのものは止めない */ }
 
-    const saved = writeDraftUnlocked_(model, editor, draft.revision + 1);
+    const saved = writeDraftUnlocked_(model, editor, draft.revision + 1, pagesHash_(model));
     return {
       ok: true,
       revision: saved.revision,
@@ -299,11 +313,22 @@ function publishCurrent(auth, expectedRevision) {
   }
 }
 
+// 「サイトの掲載ページを取り込む」：ページ構成だけ公開側にそろえ、クルマごとの編集は残す
+function adoptPublishedPages(auth) {
+  const editor = requireEditor_(auth);
+  const draft = readDraft_();
+  const published = normalizeModel_(readPublished_());
+  if (!draft) return writeDraft_(published, editor, null, true, pagesHash_(published));
+  const adopted = syncWithPublished_({ data: draft.data, baseHash: pagesHash_(draft.data) }, published);
+  validateModel_(adopted.data);
+  return writeDraft_(adopted.data, editor, null, true, adopted.baseHash);
+}
+
 function pullPublished(auth) {
   const editor = requireEditor_(auth);
   const model = normalizeModel_(readPublished_());
   validateModel_(model);
-  return writeDraft_(model, editor, null, true);
+  return writeDraft_(model, editor, null, true, pagesHash_(model));
 }
 
 function uploadCarImage(auth, uid, dataUrl) {
@@ -317,6 +342,65 @@ function uploadCarImage(auth, uid, dataUrl) {
   const path = 'images/' + String(uid) + '.' + ext;
   putBase64ToGitHub_(path, m[2], '車両写真を更新: ' + uid);
   return { ok: true, path: path };
+}
+
+// 吹き出しに入れるスタッフの似顔絵。透過PNGをそのまま残せるよう png/jpg/webp を受け付ける。
+function uploadStaffImage(auth, dataUrl) {
+  requireEditor_(auth);
+  const m = String(dataUrl || '').match(/^data:image\/(png|jpeg|jpg|webp);base64,([A-Za-z0-9+/=]+)$/i);
+  if (!m) throw new Error('対応していない画像形式です（PNG・JPEG・WebP）。');
+  const bytes = Utilities.base64Decode(m[2]);
+  if (bytes.length > 1024 * 1024) throw new Error('画像が大きすぎます（1MBまで）。');
+  const ext = /png/i.test(m[1]) ? 'png' : (/webp/i.test(m[1]) ? 'webp' : 'jpg');
+  const name = 'staff-' + Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyyMMddHHmmss') + '-' + Math.floor(Math.random() * 1e4);
+  const path = 'images/staff/' + name + '.' + ext;
+  putBase64ToGitHub_(path, m[2], '似顔絵を追加: ' + name);
+  return { ok: true, path: path };
+}
+
+// 登録した似顔絵を GitHub から消す（images/staff/ の中だけ）
+function deleteStaffImage(auth, path) {
+  requireEditor_(auth);
+  const p = String(path || '');
+  if (!/^images\/staff\/[A-Za-z0-9_-]+\.(png|jpg|webp)$/i.test(p)) throw new Error('削除できない画像です。');
+  // まず一覧から外す（GitHub から消せなくても、管理画面には二度と出さない）
+  const props = PropertiesService.getScriptProperties();
+  const hidden = hiddenStaffImages_();
+  if (hidden.indexOf(p) < 0) { hidden.push(p); props.setProperty('UCAR_HIDDEN_STAFF', JSON.stringify(hidden.slice(-200))); }
+  // GitHub からも消す（失敗しても一覧からは外れているので、処理は成功として返す）
+  let removed = false;
+  try {
+    const cfg = getConfig_();
+    const getRes = githubFetch_('/contents/' + p + '?ref=' + encodeURIComponent(cfg.branch), 'get');
+    if (getRes.getResponseCode() === 404) removed = true;
+    else if (getRes.getResponseCode() === 200) {
+      const sha = JSON.parse(getRes.getContentText()).sha;
+      const res = githubFetch_('/contents/' + p, 'delete', { message: '似顔絵を削除: ' + p.split('/').pop(), sha: sha, branch: cfg.branch });
+      removed = res.getResponseCode() === 200 || res.getResponseCode() === 404;
+    }
+  } catch (err) {}
+  return { ok: true, path: p, removed: removed };
+}
+
+function hiddenStaffImages_() {
+  try { const v = JSON.parse(PropertiesService.getScriptProperties().getProperty('UCAR_HIDDEN_STAFF') || '[]'); return Array.isArray(v) ? v : []; }
+  catch (err) { return []; }
+}
+
+// 登録済みの似顔絵の一覧（どのクルマでも使っていなくても選べるように）
+function listStaffImages_() {
+  try {
+    const hidden = hiddenStaffImages_();
+    const cfg = getConfig_();
+    const res = githubFetch_('/contents/images/staff?ref=' + encodeURIComponent(cfg.branch), 'get');
+    if (res.getResponseCode() !== 200) return [];
+    return JSON.parse(res.getContentText())
+      .filter(function (f) { return f && f.type === 'file' && /\.(png|jpg|webp)$/i.test(f.name); })
+      .map(function (f) { return 'images/staff/' + f.name; })
+      .filter(function (path) { return hidden.indexOf(path) < 0; });
+  } catch (err) {
+    return [];
+  }
 }
 
 function runGazooNow(auth) {
@@ -357,7 +441,7 @@ function importGazooCar(auth, gazooUrl) {
   });
   const code = res.getResponseCode();
   const html = res.getContentText('UTF-8');
-  if (code === 404 || code === 410 || /すでに売約済み|売約済みとなって|掲載を終了|ページが見つかりません|該当する車両がありません/.test(html)) {
+  if (gazooLooksGone_(code, html)) {
     throw new Error('このクルマはGazooにまだ掲載されていないか、売約済みです。販売開始前のURLはこの画面になります。Excelから取り込んでおけば、掲載が始まった時点で自動更新へ切り替わります。');
   }
   if (code < 200 || code >= 300) throw new Error('Gazooを読み込めませんでした（HTTP ' + code + '）。');
@@ -403,9 +487,63 @@ function previewExcelImport(auth, fileName, base64) {
   const sheetPaths = Object.keys(files).filter(function (p) { return /^xl\/worksheets\/sheet\d+\.xml$/i.test(p); }).sort();
   for (let i = 0; i < sheetPaths.length; i++) {
     const parsed = parseSpecialCarsSheet_(files[sheetPaths[i]], shared, name);
-    if (parsed && parsed.cars.length) return { ok: true, preview: parsed };
+    if (parsed && parsed.cars.length) {
+      fillFromGazoo_(parsed.cars);
+      return { ok: true, preview: parsed };
+    }
   }
   throw new Error('「車両NO」「車名」「GAZOOリンク先」がある特選車表を見つけられませんでした。');
+}
+
+// Gazooが「まだ掲載されていない／売約済み」の画面かどうか（販売開始前もこの画面になる）
+function gazooLooksGone_(code, html) {
+  return code === 404 || code === 410 || /すでに売約済み|売約済みとなって|掲載を終了|ページが見つかりません|該当する車両がありません/.test(String(html || ''));
+}
+
+// ExcelのURLから、Gazooの車両情報をまとめて取りにいく。
+// 最近のExcelは「URL・車台番号・車両NO・店舗・車名」程度しか入っていないため、
+// 価格・年式・写真などはGazooから埋める。掲載中の車は自動更新、販売開始前は掲載待ちのまま。
+// 相手に負荷をかけないよう、6件ずつ並行で取得する。
+function fillFromGazoo_(cars) {
+  const targets = cars.filter(function (c) { return /^https:\/\/(?:www\.)?gazoo\.com\/(?:DealerU-Car|U-Car)\/detail/i.test(String(c.gazooUrl || '')); });
+  const now = new Date().toISOString();
+  for (let i = 0; i < targets.length; i += 6) {
+    const chunk = targets.slice(i, i + 6);
+    let responses = [];
+    try {
+      responses = UrlFetchApp.fetchAll(chunk.map(function (c) {
+        return { url: c.gazooUrl, method: 'get', followRedirects: true, muteHttpExceptions: true, headers: { 'User-Agent': 'Mozilla/5.0 fukuoka-toyopet-ucar-gas/1.2' } };
+      }));
+    } catch (err) {
+      chunk.forEach(function (c) { c.gazooFetch = 'error'; });
+      continue;
+    }
+    chunk.forEach(function (c, k) {
+      const res = responses[k];
+      const code = res.getResponseCode();
+      const html = res.getContentText('UTF-8');
+      if (gazooLooksGone_(code, html)) { c.gazooFetch = 'pending'; return; }
+      if (code < 200 || code >= 300) { c.gazooFetch = 'error'; return; }
+      const g = parseGazooImport_(html, c.gazooUrl);
+      if (!g.name && g.priceTotal == null && !g.image) { c.gazooFetch = 'error'; return; }
+      // 車両NO・車台番号はExcelの値を使う（車台番号はGazooに載っていない）
+      if (g.name) c.name = g.name;
+      if (g.store && APP.stores.indexOf(g.store) >= 0) c.store = g.store;
+      if (g.priceTotal != null) c.priceTotal = g.priceTotal;
+      if (g.priceVehicle != null) c.priceVehicle = g.priceVehicle;
+      if (g.image) { c.image = g.image; c.gazooImageUrl = g.gazooImageUrl || g.image; }
+      c.specs = c.specs || {};
+      Object.keys(g.specs || {}).forEach(function (key) { if (g.specs[key]) c.specs[key] = g.specs[key]; });
+      if (g.badges && g.badges.length) c.badges = g.badges.slice();
+      if (g.cert) c.cert = g.cert;
+      c.autoUpdate = true;
+      delete c.gazooPending;
+      c.lastGazooCheck = now;
+      c.gazooStatus = 'ok';
+      c.gazooFetch = 'ok';
+    });
+  }
+  return cars;
 }
 
 function parseXlsxSharedStrings_(xml) {
@@ -513,6 +651,9 @@ function parseSpecialCarsSheet_(xml, shared, fileName) {
     const url = cleanExcelText_(c[col.gazooUrl]);
     const name = formatExcelCarName_(c[col.name]);
     if (!id && !url && !name) continue;
+    // 前月分の数式が残った行（車両NOが0、車名が #N/A など）は、URLだけ残っていても空行として飛ばす。
+    // 以前はこれが「0 / #N/A」という1台として取り込まれていた。
+    if (/^0*$/.test(id) && (!name || /^#/.test(name))) continue;
     if (!id) { warnings.push((i + 1) + '行目：車両NOがないため除外'); continue; }
     if (seen[id]) { warnings.push((i + 1) + '行目：車両NO ' + id + ' が重複しているため後の行を除外'); continue; }
     seen[id] = true;
@@ -609,6 +750,7 @@ function formatExcelYear_(value) {
 
 function formatExcelKm_(value) {
   const s = cleanExcelText_(value).replace(/,/g, '');
+  if (!s) return '';
   const n = Number(s);
   if (!isFinite(n)) return s;
   return String(Math.round(n * 10) / 10).replace(/\.0$/, '') + '万km';
@@ -668,6 +810,8 @@ function parseGazooImport_(html, url) {
   name = decodeGazoo_(String(name || '').replace(/<[^>]*>/g, ' ')).replace(/^トヨタ[\s　]*/, '');
 
   let store = gazooAttr_(html, 'data-shopnm') || gazooAttr_(html, 'data-dealershopnm');
+  // 今のGazooは隠し項目 id="shopNm" に「福岡トヨペットトヨタ認定中古車 ○○店」が入る（自動更新側と同じ読み方）
+  if (!store) store = gazooFirst_(html, [/id=["']shopNm["']\s+value=["']([^"']*)["']/i]);
   if (!store) store = gazooFirst_(text, [/福岡トヨペット\s*トヨタ認定中古車\s*([^ ]{2,30}店)/]);
   store = decodeGazoo_(store).replace(/^福岡トヨペット\s*/, '').replace(/^トヨタ認定中古車\s*/, '').trim();
 
@@ -864,30 +1008,47 @@ function secureEqual_(a, b) {
 }
 
 function readPublished_() {
+  const file = readPublishedFile_();
+  if (!file) throw new Error('公開データを読み込めませんでした（HTTP 404：まだ公開されていません）');
+  return file.data;
+}
+
+// 公開データと、そのときのファイルの版（sha）。まだ一度も公開していなければ null。
+// 一時的なGitHubの不調（5xx・制限）は null にせず例外にする。null と区別しないと、
+// 反映時の安全確認を飛ばして古い下書きで上書きしてしまうため。
+function readPublishedFile_() {
   const cfg = getConfig_();
   const path = '/contents/' + APP.dataPath + '?ref=' + encodeURIComponent(cfg.branch);
   const res = githubFetch_(path, 'get');
+  if (res.getResponseCode() === 404) return null;
   if (res.getResponseCode() !== 200) throw githubError_(res, '公開データを読み込めませんでした');
   const j = JSON.parse(res.getContentText());
   const json = Utilities.newBlob(Utilities.base64Decode(String(j.content || '').replace(/\s/g, ''))).getDataAsString('UTF-8');
-  return JSON.parse(json);
+  return { data: JSON.parse(json), sha: j.sha };
 }
 
-function putJsonToGitHub_(path, obj, message) {
+// expectedSha：読んだ時点の版。指定すると、その後にほかで更新されていた場合は
+// 上書きせずにエラーにする（読んでから書くまでの間に自動更新が入っても消さない）。
+function putJsonToGitHub_(path, obj, message, expectedSha) {
   const json = JSON.stringify(obj, null, 2);
   const b64 = Utilities.base64Encode(json, Utilities.Charset.UTF_8);
-  return putBase64ToGitHub_(path, b64, message);
+  return putBase64ToGitHub_(path, b64, message, expectedSha);
 }
 
-function putBase64ToGitHub_(path, base64, message) {
+function putBase64ToGitHub_(path, base64, message, expectedSha) {
   const cfg = getConfig_();
-  const getRes = githubFetch_('/contents/' + path + '?ref=' + encodeURIComponent(cfg.branch), 'get');
-  let sha = null;
-  if (getRes.getResponseCode() === 200) sha = JSON.parse(getRes.getContentText()).sha;
-  else if (getRes.getResponseCode() !== 404) throw githubError_(getRes, 'GitHubのファイル確認に失敗しました');
+  let sha = expectedSha || null;
+  if (!sha) {
+    const getRes = githubFetch_('/contents/' + path + '?ref=' + encodeURIComponent(cfg.branch), 'get');
+    if (getRes.getResponseCode() === 200) sha = JSON.parse(getRes.getContentText()).sha;
+    else if (getRes.getResponseCode() !== 404) throw githubError_(getRes, 'GitHubのファイル確認に失敗しました');
+  }
   const payload = { message: message, content: base64, branch: cfg.branch };
   if (sha) payload.sha = sha;
   const putRes = githubFetch_('/contents/' + path, 'put', payload);
+  if (expectedSha && (putRes.getResponseCode() === 409 || putRes.getResponseCode() === 422)) {
+    throw new Error('反映の直前に、自動更新などでサイトのデータが更新されました。もう一度「変更をサイトへ反映」を押してください。');
+  }
   if (putRes.getResponseCode() !== 200 && putRes.getResponseCode() !== 201) throw githubError_(putRes, 'GitHubへの保存に失敗しました');
   return JSON.parse(putRes.getContentText());
 }
@@ -943,23 +1104,25 @@ function readDraftUnlocked_() {
     revision: Number(meta.revision || 0),
     updatedAt: meta.updatedAt || null,
     updatedBy: meta.updatedBy || '',
+    baseHash: meta.baseHash || '',
   };
 }
 
-function writeDraft_(data, email, expectedRevision, force) {
+function writeDraft_(data, email, expectedRevision, force, baseHash) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
     const old = readDraftUnlocked_();
     if (!force && old) assertRevision_(old.revision, expectedRevision);
     const next = old ? old.revision + 1 : 1;
-    return writeDraftUnlocked_(data, email, next);
+    return writeDraftUnlocked_(data, email, next, baseHash);
   } finally {
     lock.releaseLock();
   }
 }
 
-function writeDraftUnlocked_(data, email, revision) {
+// baseHash：この下書きの元になった公開内容のページ構成。省略すると今の値を引き継ぐ。
+function writeDraftUnlocked_(data, email, revision, baseHash) {
   const p = PropertiesService.getScriptProperties();
   const json = JSON.stringify(normalizeModel_(data));
   const encoded = Utilities.base64EncodeWebSafe(json, Utilities.Charset.UTF_8);
@@ -967,15 +1130,16 @@ function writeDraftUnlocked_(data, email, revision) {
   for (let i = 0; i < encoded.length; i += APP.draftChunkSize) chunks.push(encoded.slice(i, i + APP.draftChunkSize));
 
   const oldMetaRaw = p.getProperty(APP.draftMetaKey);
-  let oldChunks = 0;
-  if (oldMetaRaw) { try { oldChunks = Number(JSON.parse(oldMetaRaw).chunks || 0); } catch (err) {} }
+  let oldChunks = 0, oldBase = '';
+  if (oldMetaRaw) { try { const om = JSON.parse(oldMetaRaw); oldChunks = Number(om.chunks || 0); oldBase = om.baseHash || ''; } catch (err) {} }
+  const base = baseHash == null ? oldBase : baseHash;
   const props = {};
   chunks.forEach(function (chunk, i) { props[APP.draftChunkPrefix + pad3_(i)] = chunk; });
   const now = new Date().toISOString();
-  props[APP.draftMetaKey] = JSON.stringify({ revision: revision, chunks: chunks.length, updatedAt: now, updatedBy: email });
+  props[APP.draftMetaKey] = JSON.stringify({ revision: revision, chunks: chunks.length, updatedAt: now, updatedBy: email, baseHash: base });
   p.setProperties(props, false);
   for (let i = chunks.length; i < oldChunks; i++) p.deleteProperty(APP.draftChunkPrefix + pad3_(i));
-  return { ok: true, data: normalizeModel_(data), revision: revision, updatedAt: now, updatedBy: email };
+  return { ok: true, data: normalizeModel_(data), revision: revision, updatedAt: now, updatedBy: email, baseHash: base };
 }
 
 function assertRevision_(current, expected) {
@@ -1015,6 +1179,62 @@ function mergeAutomatedFields_(draft, published) {
   return out;
 }
 
+// カードの色：決まった5色か #rrggbb のみ受け付ける
+function themeValue_(value) {
+  const v = String(value || '').trim();
+  return /^(red|blue|black|orange|green)$/.test(v) || /^#[0-9a-f]{6}$/i.test(v) ? v : '';
+}
+
+// 吹き出し：形は4種類、文言は12文字まで、似顔絵は images/staff/ に保存したものだけ
+function normalizeBubble_(b) {
+  if (!b || typeof b !== 'object') return null;
+  const shape = ['round', 'rect', 'pop', 'burst'].indexOf(b.shape) >= 0 ? b.shape : '';
+  const text = String(b.text || '').replace(/[\r\n\t]+/g, ' ').trim().slice(0, 12);
+  const face = /^images\/staff\/[0-9A-Za-z_-]+\.(png|jpg|webp)$/.test(String(b.face || '')) ? String(b.face) : '';
+  if (!shape) return null;
+  // 文言も似顔絵も無い間は表示されないが、選んだ形は残す（あとで似顔絵を足せるように）
+  const out = { shape: shape, text: text };
+  if (face) out.face = face;
+  return out;
+}
+
+// どのページにどの車がどの順で載っているか（＋ページ名・色）の指紋。
+// 下書きが作られた時点の公開内容と、いまの公開内容を比べるのに使う。
+function pagesHash_(model) {
+  const pages = ((model && model.pages) || []).map(function (p) {
+    return [p.id, p.name, p.theme || '', p.themeAlt || '', p.carUids || []];
+  });
+  const bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, JSON.stringify(pages), Utilities.Charset.UTF_8);
+  return bytes.map(function (b) { return ('0' + (b & 255).toString(16)).slice(-2); }).join('');
+}
+
+// サイト側（GitHub）の掲載ページが、この下書きの元になった時点から変わっていないか確かめる。
+//   same     : 下書きと公開内容のページ構成が同じ
+//   local    : 下書きだけで変更している（ふつうの編集中）
+//   adopted  : ほかの場所（GitHub直接・別の担当者）で変わっていたので、下書きへ取り込んだ
+//   conflict : 両方で変わっている。古い下書きで上書きしないよう、読み直しを求める
+function syncWithPublished_(draft, published) {
+  const pubHash = pagesHash_(published);
+  const draftHash = pagesHash_(draft.data);
+  const base = draft.baseHash || '';
+  const merge = function (data) { return mergeAutomatedFields_(data, published); };
+  if (pubHash === draftHash) return { state: 'same', data: merge(draft.data), baseHash: pubHash };
+  // ※基準の記録が無い下書き（この仕組みを入れる前のもの）でページが違う場合は、
+  //   どちらが新しいか判断できないので conflict にする。取り込みは
+  //   adoptPublishedPages（クルマごとの編集は残す）で行える。
+  if (base && base === pubHash) return { state: 'local', data: merge(draft.data), baseHash: base };
+  if (base && base === draftHash) {
+    // 下書きではページ構成を触っていないので、公開側の構成をそのまま採用する。
+    // 車ごとの手入力（手動管理の価格など）は下書きの値を残す。
+    const byUid = {};
+    draft.data.cars.forEach(function (c) { byUid[c.uid] = c; });
+    const adopted = JSON.parse(JSON.stringify(published));
+    adopted.cars = published.cars.map(function (c) { return byUid[c.uid] ? JSON.parse(JSON.stringify(byUid[c.uid])) : c; });
+    return { state: 'adopted', data: merge(normalizeModel_(adopted)), baseHash: pubHash };
+  }
+  return { state: 'conflict', data: merge(draft.data), baseHash: base };
+}
+
 function normalizeModel_(input) {
   const d = input && typeof input === 'object' ? JSON.parse(JSON.stringify(input)) : {};
   d.version = 2;
@@ -1034,6 +1254,9 @@ function normalizeModel_(input) {
     if (c.autoUpdate === true) delete c.gazooPending;
     // 非公開のときだけ印を残す。公開が既定なので、公開なら項目ごと消す
     if (c.hidden === true) c.hidden = true; else delete c.hidden;
+    // 吹き出し（形・文言・似顔絵）。中身が無いものは項目ごと消す
+    const bubble = normalizeBubble_(c.bubble);
+    if (bubble) c.bubble = bubble; else delete c.bubble;
     // 認定区分は「認定中古車」「認定中古車ライト」「なし」の3つだけ
     if (c.cert !== 'standard' && c.cert !== 'light') delete c.cert;
   });
@@ -1051,7 +1274,12 @@ function normalizeModel_(input) {
       if (!valid[uid] || seen[uid]) return false;
       seen[uid] = true; return true;
     });
-    return { id: id, name: String(p.name || ('ページ' + (i + 1))), carUids: uids };
+    const out = { id: id, name: String(p.name || ('ページ' + (i + 1))), carUids: uids };
+    // カードの色。以前はここで捨てていたため、管理画面で選んだ色がサイトに届いていなかった。
+    const theme = themeValue_(p.theme), themeAlt = themeValue_(p.themeAlt);
+    if (theme) out.theme = theme;
+    if (themeAlt) out.themeAlt = themeAlt;
+    return out;
   });
   return d;
 }
