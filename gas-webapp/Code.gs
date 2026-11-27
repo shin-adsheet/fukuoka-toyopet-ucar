@@ -1202,7 +1202,10 @@ function normalizeBubble_(b) {
 // 下書きが作られた時点の公開内容と、いまの公開内容を比べるのに使う。
 function pagesHash_(model) {
   const pages = ((model && model.pages) || []).map(function (p) {
-    return [p.id, p.name, p.theme || '', p.themeAlt || '', p.carUids || []];
+    const row = [p.id, p.name, p.theme || '', p.themeAlt || '', p.carUids || []];
+    // 写真の自動補正。OFF のページは以前と同じ値になるよう、ON のときだけ足す
+    if (p.photoBoost === true) row.push('photoBoost');
+    return row;
   });
   const bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, JSON.stringify(pages), Utilities.Charset.UTF_8);
   return bytes.map(function (b) { return ('0' + (b & 255).toString(16)).slice(-2); }).join('');
@@ -1279,6 +1282,7 @@ function normalizeModel_(input) {
     const theme = themeValue_(p.theme), themeAlt = themeValue_(p.themeAlt);
     if (theme) out.theme = theme;
     if (themeAlt) out.themeAlt = themeAlt;
+    if (p.photoBoost === true) out.photoBoost = true;
     return out;
   });
   return d;

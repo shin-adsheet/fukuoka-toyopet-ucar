@@ -137,6 +137,10 @@
       + '<h3 class="utc-name">' + esc(car.name || "") + '</h3><p class="utc-specs">' + specText + '</p><div class="utc-btns">' + detailButton + phoneButton + "</div></div></div>" + sold + "</div>";
   }
 
+  // 写真の明るさ自動補正（管理画面 index.html と同じ計算）。ページごとに ON/OFF。
+  function photoFilter(m){var b=Math.min(1.45,Math.max(1,.52/Math.max(m,.08)));return b<1.03?'':'brightness('+b.toFixed(2)+') contrast(1.06) saturate(1.08)'}
+  function photoFix(img){var src=img.currentSrc||img.src;if(!src||img.getAttribute('data-photo-fix'))return;img.setAttribute('data-photo-fix','1');var mild='brightness(1.15) contrast(1.05) saturate(1.06)';if(!/^data:|^https:\/\/raw\.githubusercontent\.com\//.test(src)){img.style.filter=mild;return}var t=new Image();t.crossOrigin='anonymous';t.onload=function(){try{var c=document.createElement('canvas');c.width=32;c.height=24;var x=c.getContext('2d');x.drawImage(t,0,0,32,24);var d=x.getImageData(0,0,32,24).data,s=0;for(var i=0;i<d.length;i+=4)s+=.2126*d[i]+.7152*d[i+1]+.0722*d[i+2];img.style.filter=photoFilter(s/(d.length/4)/255)}catch(e){img.style.filter=mild}};t.onerror=function(){img.style.filter=mild};t.src=src}
+
   function pageThemeOf(data, pageId) {
     var pages = (data && data.pages) || [];
     var found = pages.filter(function (p) { return p && p.id === pageId; })[0];
@@ -253,6 +257,8 @@
         box.style.setProperty("--utc-accent", theme.accent);
         box.style.setProperty("--utc-phone", theme.phone);
         box.innerHTML = carsForPage(data, pageId).map(function (car, index) { return card(car, index, pageId, base); }).join("");
+        var pg = ((data && data.pages) || []).filter(function (p) { return p && p.id === pageId; })[0];
+        if (pg && pg.photoBoost === true) Array.prototype.forEach.call(box.querySelectorAll(".ph img"), photoFix);
         box.setAttribute("data-ucar-ready", "1");
         watchViews(box, pageId, logUrl);
       })
@@ -261,7 +267,7 @@
   }
 
   // どの版が動いているか確認できるようにする（ブラウザのコンソールで確認可能）
-  window.FukuokaToyopetUcarVersion = "20260909-1";
+  window.FukuokaToyopetUcarVersion = "20261127-1";
 
   window.FukuokaToyopetUcarRenderAll = function () {
     addStyle();

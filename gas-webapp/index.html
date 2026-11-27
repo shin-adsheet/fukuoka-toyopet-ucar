@@ -210,6 +210,8 @@
         <div class="swatches" id="themeAltSwatches"></div>
         <input type="color" id="themeAltCustom" value="#1462b4" title="好きな色を選ぶ">
       </div>
+      <label class="check" style="margin:2px 0 4px"><input type="checkbox" id="photoBoostOn">写真を明るく自動補正</label>
+      <p class="tip" style="margin:0 0 6px">暗い写真だけを自動で明るくします（このページだけ）。明るい写真はそのままです。</p>
       <div class="page-actions">
         <button class="btn" id="btnPageAdd">＋ ページ追加</button>
         <button class="btn" id="btnPageDuplicate">ページ複製</button>
@@ -456,8 +458,13 @@ var showTotal=c.priceTotal!=null,mainPrice=showTotal?c.priceTotal:c.priceVehicle
 var price=mainPrice==null?'':String(mainPrice),p=price.split('.'),fee='';
 if(showTotal&&c.priceVehicle!=null){var f=Math.round((Number(c.priceTotal)-Number(c.priceVehicle))*10)/10;fee='<div class="utc-subprice">車両価格 '+esc(c.priceVehicle)+'万円'+(f>=0?'<br>諸費用 '+f+'万円':'')+'</div>'}
 var priceBlock=price===''?'':'<div class="utc-price"><span class="utc-label">'+(showTotal?'支払総額':'車両価格')+'</span><span class="utc-mainprice">'+esc(p[0]||'')+(p[1]?'<small>.'+esc(p[1])+'</small>':'')+'<em>万円</em></span>'+fee+'</div>';var im=imgSrc(c.image),s=c.specs||{},spec=[s.year,s.km,s.shaken,s.fuel,s.mission,s.color?'色：'+s.color:''].filter(Boolean).map(function(x){return'■'+esc(x)}).join('　'),phone=PHONES[c.store]||'',sold=c.soldout?'<img class="soldout-img" src="'+esc(soldSrc())+'" alt="売約済">':'';var bb=bubbleOf(c),fit=bubbleFit(bb,c.store);return'<div class="utc-card'+(c.soldout?' soldout':'')+(bb?' has-bubble':'')+(altCard?' is-alt':'')+'"><div class="utc-main"><div class="utc-head"'+(bb?' style="padding-right:'+fit.shift+'cqw"':'')+'><span class="utc-store"><small>トヨタ認定中古車</small>'+esc(c.store||'')+'</span><span class="utc-id">'+esc(c.id||'')+'</span></div><div class="utc-inner"><div class="utc-body"><div class="utc-photo"><div class="ph">'+(im?'<img src="'+esc(im)+'" alt="">':'写真なし')+'</div>'+certTag(c)+(c.stock?'<span class="utc-stock">'+esc(c.stock)+'</span>':'')+'</div><div class="utc-info"><ul class="utc-badges">'+badgeHtml(c)+'</ul>'+priceBlock+'</div></div><h3 class="utc-name">'+esc(c.name||'')+'</h3><p class="utc-specs">'+spec+'</p><div class="utc-btns"><a class="utc-btn utc-detail" href="'+esc(c.gazooUrl||'#')+'" target="_blank">詳しくはこちら</a>'+(phone?'<a class="utc-btn utc-phone" href="tel:'+esc(phone.replace(/-/g,''))+'"><svg class="utc-btn-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>確認する</a>':'')+'</div></div></div>'+sold+bubbleTag(bb,fit)+'</div>'}
-function renderPreview(){var box=document.getElementById('preview'),c=selected();if(!c){box.innerHTML='';return}var i=pageCars().filter(isPublished).indexOf(c),alt=!!(page()||{}).themeAlt&&i>=0&&(i%4===1||i%4===2);box.innerHTML=cardMarkup(c,alt)}
-function renderPagePreview(){var box=document.getElementById('pagePreview');if(!box)return;var all=pageCars(),cars=all.filter(isPublished),off=all.length-cars.length;box.classList.toggle('has-bubble',cars.some(function(x){return !!bubbleOf(x)}));box.innerHTML=cars.length?cars.map(function(x){return cardMarkup(x)}).join(''):'<div class="page-preview-empty">このページに公開中のクルマがありません。</div>';var note=document.getElementById('pagePreviewNote');if(note)note.textContent=off?('非公開のクルマ '+off+'台は、サイトには表示されません。'):''}
+// 写真の明るさ自動補正（サイトの ucar-cards.core.js と同じ計算）
+function photoFilter(m){var b=Math.min(1.45,Math.max(1,.52/Math.max(m,.08)));return b<1.03?'':'brightness('+b.toFixed(2)+') contrast(1.06) saturate(1.08)'}
+function photoFix(img){var src=img.currentSrc||img.src;if(!src||img.getAttribute('data-photo-fix'))return;img.setAttribute('data-photo-fix','1');var mild='brightness(1.15) contrast(1.05) saturate(1.06)';if(!/^data:|^https:\/\/raw\.githubusercontent\.com\//.test(src)){img.style.filter=mild;return}var t=new Image();t.crossOrigin='anonymous';t.onload=function(){try{var c=document.createElement('canvas');c.width=32;c.height=24;var x=c.getContext('2d');x.drawImage(t,0,0,32,24);var d=x.getImageData(0,0,32,24).data,s=0;for(var i=0;i<d.length;i+=4)s+=.2126*d[i]+.7152*d[i+1]+.0722*d[i+2];img.style.filter=photoFilter(s/(d.length/4)/255)}catch(e){img.style.filter=mild}};t.onerror=function(){img.style.filter=mild};t.src=src}
+function boostPhotos(box){if(box&&(page()||{}).photoBoost)box.querySelectorAll('.ph img').forEach(photoFix)}
+function setPhotoBoost(on){var p=page();if(!p)return;if(on)p.photoBoost=true;else delete p.photoBoost;markDirty();renderPreview();renderPagePreview()}
+function renderPreview(){var box=document.getElementById('preview'),c=selected();if(!c){box.innerHTML='';return}var i=pageCars().filter(isPublished).indexOf(c),alt=!!(page()||{}).themeAlt&&i>=0&&(i%4===1||i%4===2);box.innerHTML=cardMarkup(c,alt);boostPhotos(box)}
+function renderPagePreview(){var box=document.getElementById('pagePreview');if(!box)return;var all=pageCars(),cars=all.filter(isPublished),off=all.length-cars.length;box.classList.toggle('has-bubble',cars.some(function(x){return !!bubbleOf(x)}));box.innerHTML=cars.length?cars.map(function(x){return cardMarkup(x)}).join(''):'<div class="page-preview-empty">このページに公開中のクルマがありません。</div>';boostPhotos(box);var note=document.getElementById('pagePreviewNote');if(note)note.textContent=off?('非公開のクルマ '+off+'台は、サイトには表示されません。'):''}
 function cmsEmbedCode(){var p=page(),owner=boot&&boot.owner?boot.owner:'shin-adsheet',repo=boot&&boot.repo?boot.repo:'fukuoka-toyopet-ucar',branch=boot&&boot.branch?boot.branch:'main',base='https://raw.githubusercontent.com/'+owner+'/'+repo+'/'+branch+'/',cdn='https://cdn.jsdelivr.net/gh/'+owner+'/'+repo+'@'+branch+'/assets/ucar-cards.js?v='+EMBED_VERSION;var log=boot&&boot.logUrl?' data-ucar-log="'+esc(boot.logUrl)+'"':'';
 return'<div class="event-ucar-cards" data-ucar-page="'+(p?p.id:'main')+'" data-ucar-base="'+base+'"'+log+'>読み込み中…</div>\n<script src="'+cdn+'"><\/script>'}
 function renderCmsCode(){var el=document.getElementById('cmsCode');if(el)el.value=cmsEmbedCode()}
@@ -918,7 +925,7 @@ function applyTheme(){
   var g=document.getElementById('pagePreview');if(g)g.classList.toggle('alternate',!!p.themeAlt);
 }
 function renderThemePicker(){
-  renderAltPicker();
+  renderAltPicker();var pb=document.getElementById('photoBoostOn');if(pb){pb.checked=!!(page()||{}).photoBoost;pb.onchange=function(){setPhotoBoost(pb.checked)}}
   var box=document.getElementById('themeSwatches');if(!box)return;
   var cur=String((page()||{}).theme||'red');
   box.innerHTML=Object.keys(THEMES).map(function(k){
