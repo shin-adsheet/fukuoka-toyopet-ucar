@@ -74,7 +74,19 @@
       ".event-ucar-cards .utc-detail-btn{flex:1.35;}.event-ucar-cards .utc-phone-btn{flex:1;background:var(--utc-phone,#2077c8);}.event-ucar-cards .utc-detail-btn::after{content:'▶';position:absolute;right:2.1cqw;font-size:2.3cqw;top:50%;transform:translateY(-50%);}",
       ".event-ucar-cards .utc-soldout-img{position:absolute;z-index:5;width:58%;max-width:270px;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;}.event-ucar-cards .utc-card.soldout a{pointer-events:none;cursor:default;opacity:.65;}",
       // スマホは1列。文字はカード幅に連動するので、ここで大きさを指定し直す必要はない。
-      "@media screen and (max-width:767px){.event-ucar-cards{display:block;padding:0 4%;}.event-ucar-cards .utc-card{width:100%;margin-bottom:12px;}}"
+      "@media screen and (max-width:767px){.event-ucar-cards{display:block;padding:0 4%;}.event-ucar-cards .utc-card{width:100%;margin-bottom:12px;}}",
+      "@media screen and (min-width:768px){.event-ucar-cards.alternate .utc-card:nth-child(4n+2),.event-ucar-cards.alternate .utc-card:nth-child(4n+3){--utc-accent:var(--utc-accent2);--utc-phone:var(--utc-phone2);}}",
+      "@media screen and (max-width:767px){.event-ucar-cards.alternate .utc-card:nth-child(even){--utc-accent:var(--utc-accent2);--utc-phone:var(--utc-phone2);}}",
+      ".event-ucar-cards.has-bubble{padding-top:18px;}.event-ucar-cards.has-bubble .utc-card{margin-bottom:24px;}.event-ucar-cards .utc-card.has-bubble{overflow:visible;}.event-ucar-cards .utc-id{margin-left:2cqw;flex:none;}.event-ucar-cards .utc-store{white-space:nowrap;}",
+      ".event-ucar-cards .utc-bubble{position:absolute;top:-3.2cqw;right:-3cqw;z-index:6;transform-origin:top right;display:flex;align-items:center;pointer-events:none;filter:drop-shadow(0 .35cqw .8cqw rgba(0,0,0,.28));}",
+      ".event-ucar-cards .utc-bubble-face{width:9.5cqw;height:9.5cqw;border-radius:50%;background:#fff;border:.55cqw solid #fff;object-fit:cover;flex:none;position:relative;z-index:2;margin-right:-1.4cqw;box-sizing:border-box;}",
+      ".event-ucar-cards .utc-bubble-text{position:relative;display:block;text-align:center;font-weight:900;line-height:1.15;min-height:7.4cqw;padding:0 1.4cqw;box-sizing:border-box;white-space:nowrap;}",
+      ".event-ucar-cards .utc-bubble-text span{display:flex;align-items:center;justify-content:center;min-height:inherit;}",
+      ".event-ucar-cards .utc-bubble-text::after{content:'';position:absolute;left:24%;bottom:-1.15cqw;width:2.1cqw;height:2.1cqw;background:inherit;border-right:inherit;border-bottom:inherit;transform:rotate(45deg);}",
+      ".event-ucar-cards .b-round .utc-bubble-text,.event-ucar-cards .b-rect .utc-bubble-text{background:#fff;color:var(--utc-accent,#e60012);border:.5cqw solid var(--utc-accent,#e60012);}",
+      ".event-ucar-cards .b-round .utc-bubble-text{border-radius:999px;}.event-ucar-cards .b-rect .utc-bubble-text{border-radius:1.4cqw;}",
+      ".event-ucar-cards .b-pop .utc-bubble-text{background:#ffe100;color:#1a1a1a;border:.5cqw solid #fff;border-radius:999px;}",
+      ".event-ucar-cards .b-burst .utc-bubble-text{background:#ffe100;color:#e60012;min-height:10cqw;padding:0 3cqw;clip-path:polygon(50% 0,59% 13%,75% 5%,76% 21%,93% 17%,86% 33%,100% 42%,87% 52%,97% 67%,80% 69%,81% 87%,65% 80%,55% 97%,45% 82%,30% 94%,26% 77%,9% 81%,15% 64%,0 55%,13% 45%,4% 28%,21% 26%,21% 9%,37% 14%);}.event-ucar-cards .b-burst .utc-bubble-text::after{display:none;}"
     ].join("")
       // CMSページ側のCSSに負けないよう、クラスを重ねて詳細度を上げる
       .replace(/\.event-ucar-cards/g, ".event-ucar-cards.event-ucar-cards");
@@ -97,6 +109,33 @@
     // 管理画面プレビュー（index.html の imgSrc）と表示を揃えるため。
     if (value.charAt(0) === "/") return SITE_ORIGIN + value;
     return value;
+  }
+
+  // 吹き出し（管理画面 index.html の bubbleOf / bubbleFit / bubbleTag と同じ計算）
+  var BUBBLE_SHAPES = ["round", "rect", "pop", "burst"];
+  function bubbleOf(c) {
+    var b = c && c.bubble;
+    if (!b || BUBBLE_SHAPES.indexOf(b.shape) < 0) return null;
+    var text = String(b.text || "").trim().slice(0, 12), face = String(b.face || "");
+    if (!text && !face) return null;
+    var len = text.length, font = len <= 5 ? 3.3 : len <= 8 ? 2.6 : 2.2, half = Math.ceil(len / 2);
+    var lines = len <= 5 ? [text] : [text.slice(0, half), text.slice(half)];
+    var cols = lines.reduce(function (n, l) { return Math.max(n, l.length); }, 0);
+    var tw = text ? cols * font + (b.shape === "burst" ? 6 : 2.8) + 1 : 0;
+    return { shape: b.shape, text: text, face: face, font: font, lines: lines, width: (face ? 9.5 : 0) + tw - (face && text ? 1.4 : 0) };
+  }
+  // 店舗名が長いときは吹き出しを縮め、掲載番号は吹き出しの分だけ左へずらす
+  function bubbleFit(b, store) {
+    if (!b) return { scale: 1, shift: 0 };
+    var room = 100 - (2.1 + 23.6 + 4.3 * String(store || "").length) - 16 - 2;
+    var scale = Math.min(1, Math.max(0.6, (room + 2) / b.width));
+    return { scale: Math.round(scale * 100) / 100, shift: Math.max(0, Math.round((b.width * scale - 2) * 10) / 10) };
+  }
+  function bubbleTag(b, fit, base) {
+    if (!b) return "";
+    var face = b.face ? '<img class="utc-bubble-face" src="' + esc(imageSource(b.face, base)) + '" alt="">' : "";
+    var text = b.text ? '<span class="utc-bubble-text" style="font-size:' + b.font + 'cqw"><span>' + b.lines.map(esc).join("<br>") + "</span></span>" : "";
+    return '<div class="utc-bubble b-' + b.shape + '"' + (fit.scale < 1 ? ' style="transform:scale(' + fit.scale + ')"' : "") + ">" + face + text + "</div>";
   }
 
   function card(car, index, pageId, base) {
@@ -130,11 +169,12 @@
     var tag = pageId + "_" + ("0" + (index + 1)).slice(-2) + "_" + (car.name || "") + "_" + (car.store || "").replace(/店$/, "");
     var detailButton = '<a class="utc-btn utc-detail-btn clicktag" data-clicktag="' + esc(tag) + '" data-clicktagaction="gazooURL" href="' + esc(car.gazooUrl || "#") + '" target="_blank" rel="noopener">詳しくはこちら</a>';
     var phoneButton = phone ? '<a class="utc-btn utc-phone-btn" href="tel:' + esc(phone.replace(/[^0-9+]/g, "")) + '" aria-label="' + esc((car.store || "") + "へ電話で確認する") + '">' + PHONE_ICON + "確認する</a>" : "";
-    return '<div class="utc-card' + (car.soldout ? " soldout" : "") + '" data-uid="' + esc(car.uid || "") + '"><div class="utc-card-main">'
-      + '<div class="utc-head"><span class="utc-store"><small>トヨタ認定中古車</small>' + esc(car.store || "") + '</span><span class="utc-id">' + esc(car.id || "") + "</span></div>"
+    var bb = bubbleOf(car), fit = bubbleFit(bb, car.store);
+    return '<div class="utc-card' + (car.soldout ? " soldout" : "") + (bb ? " has-bubble" : "") + '" data-uid="' + esc(car.uid || "") + '"><div class="utc-card-main">'
+      + '<div class="utc-head"' + (bb ? ' style="padding-right:' + fit.shift + 'cqw"' : "") + '><span class="utc-store"><small>トヨタ認定中古車</small>' + esc(car.store || "") + '</span><span class="utc-id">' + esc(car.id || "") + "</span></div>"
       + '<div class="utc-inner"><div class="utc-body"><div class="utc-photo"><div class="ph">' + image + "</div>" + certTag(car) + (car.stock ? '<span class="utc-stock">' + esc(car.stock) + "</span>" : "") + "</div>"
       + '<div class="utc-info"><ul class="utc-badges">' + badges + "</ul>" + priceBlock + "</div></div>"
-      + '<h3 class="utc-name">' + esc(car.name || "") + '</h3><p class="utc-specs">' + specText + '</p><div class="utc-btns">' + detailButton + phoneButton + "</div></div></div>" + sold + "</div>";
+      + '<h3 class="utc-name">' + esc(car.name || "") + '</h3><p class="utc-specs">' + specText + '</p><div class="utc-btns">' + detailButton + phoneButton + "</div></div></div>" + sold + bubbleTag(bb, fit, base) + "</div>";
   }
 
   // 写真の明るさ自動補正（管理画面 index.html と同じ計算）。ページごとに ON/OFF。
@@ -256,7 +296,15 @@
         var theme = pageThemeOf(data, pageId);
         box.style.setProperty("--utc-accent", theme.accent);
         box.style.setProperty("--utc-phone", theme.phone);
-        box.innerHTML = carsForPage(data, pageId).map(function (car, index) { return card(car, index, pageId, base); }).join("");
+        // 交互色（2色目）。PCは市松、スマホは1枚ごと
+        var pgAlt = ((data && data.pages) || []).filter(function (p) { return p && p.id === pageId; })[0];
+        var alt = pgAlt && pgAlt.themeAlt ? themeOf(pgAlt.themeAlt) : null;
+        box.style.setProperty("--utc-accent2", alt ? alt.accent : theme.accent);
+        box.style.setProperty("--utc-phone2", alt ? alt.phone : theme.phone);
+        if (alt) box.classList.add("alternate"); else box.classList.remove("alternate");
+        var pageCarsList = carsForPage(data, pageId);
+        box.innerHTML = pageCarsList.map(function (car, index) { return card(car, index, pageId, base); }).join("");
+        if (pageCarsList.some(function (car) { return !!bubbleOf(car); })) box.classList.add("has-bubble"); else box.classList.remove("has-bubble");
         var pg = ((data && data.pages) || []).filter(function (p) { return p && p.id === pageId; })[0];
         if (pg && pg.photoBoost === true) Array.prototype.forEach.call(box.querySelectorAll(".ph img"), photoFix);
         box.setAttribute("data-ucar-ready", "1");
@@ -267,7 +315,7 @@
   }
 
   // どの版が動いているか確認できるようにする（ブラウザのコンソールで確認可能）
-  window.FukuokaToyopetUcarVersion = "20261127-1";
+  window.FukuokaToyopetUcarVersion = "20261127-2";
 
   window.FukuokaToyopetUcarRenderAll = function () {
     addStyle();
